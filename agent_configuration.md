@@ -43,7 +43,26 @@ For sensitive queries, remind users about data governance policies and suggest a
 
 ### Tools Configuration
 
-#### 1. Cortex Search Services
+#### 1. Cortex Analyst Services
+**Tool Name:** `Citizen_Services_Analytics`
+- **Database:** `SG_PUBSEC_DEMO`
+- **Schema:** `SEMANTIC_MODELS`
+- **Semantic Model:** `citizen_services_model.yaml`
+- **Description:** Natural language queries with automatic chart generation for citizen service analytics
+
+**Tool Name:** `Policy_Impact_Analytics`
+- **Database:** `SG_PUBSEC_DEMO`
+- **Schema:** `SEMANTIC_MODELS`
+- **Semantic Model:** `policy_impact_model.yaml`
+- **Description:** Policy effectiveness analysis with visual insights and trend analysis
+
+**Tool Name:** `Service_Performance_Analytics`
+- **Database:** `SG_PUBSEC_DEMO`
+- **Schema:** `SEMANTIC_MODELS`
+- **Semantic Model:** `service_performance_model.yaml`
+- **Description:** Government service performance monitoring with benchmark comparisons
+
+#### 2. Cortex Search Services
 **Tool Name:** `Singapore_Government_Knowledge`
 - **Database:** `SG_PUBSEC_DEMO`
 - **Schema:** `INTELLIGENCE`  
@@ -52,7 +71,7 @@ For sensitive queries, remind users about data governance policies and suggest a
 - **Title Column:** `DOCUMENT_TITLE`
 - **Description:** Search through Singapore government policies, procedures, and best practices
 
-#### 2. Custom Tools
+#### 3. Custom Tools
 
 ##### Policy Brief Generator
 - **Name:** `Generate_Policy_Brief`

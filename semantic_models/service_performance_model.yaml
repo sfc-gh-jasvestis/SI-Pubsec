@@ -1,0 +1,171 @@
+# Semantic Model for Singapore Service Performance Analytics
+# For use with Cortex Analyst in Snowflake Intelligence Demo
+
+name: "Singapore Service Performance Analytics"
+description: "Analytics model for monitoring and analyzing government service performance across agencies"
+
+tables:
+  - name: "service_performance_analytics"
+    description: "Government service performance metrics and benchmarks"
+    base_table:
+      database: "SG_PUBSEC_DEMO"
+      schema: "ANALYTICS"
+      table: "SERVICE_PERFORMANCE_ANALYTICS"
+    
+    dimensions:
+      - name: "service_name"
+        synonyms: ["service", "government service", "digital service", "service platform"]
+        description: "Name of the government service"
+        expr: "SERVICE_NAME"
+        data_type: "text"
+        
+      - name: "agency"
+        synonyms: ["government agency", "ministry", "department", "organization"]
+        description: "Government agency responsible for the service"
+        expr: "AGENCY"
+        data_type: "text"
+        
+      - name: "service_category"
+        synonyms: ["category", "service type", "service group", "service classification"]
+        description: "Category of government service (Identity, Healthcare, Tax, Housing, Education, Transport, Social)"
+        expr: "SERVICE_CATEGORY"
+        data_type: "text"
+        
+      - name: "metric_type"
+        synonyms: ["metric", "performance metric", "KPI", "measurement type"]
+        description: "Type of performance metric being measured"
+        expr: "METRIC_TYPE"
+        data_type: "text"
+        
+      - name: "performance_status"
+        synonyms: ["status", "performance level", "benchmark status"]
+        description: "Performance status compared to benchmark (Meeting, Exceeding, Below)"
+        expr: "PERFORMANCE_STATUS"
+        data_type: "text"
+        
+      - name: "measurement_date"
+        synonyms: ["date", "measurement date", "metric date"]
+        description: "Date when performance was measured"
+        expr: "MEASUREMENT_DATE"
+        data_type: "date"
+        
+      - name: "measurement_year"
+        synonyms: ["year", "measurement year", "performance year"]
+        description: "Year of performance measurement"
+        expr: "MEASUREMENT_YEAR"
+        data_type: "number"
+        
+      - name: "measurement_month"
+        synonyms: ["month", "measurement month", "performance month"]
+        description: "Month of performance measurement"
+        expr: "MEASUREMENT_MONTH"
+        data_type: "number"
+        
+      - name: "measurement_week"
+        synonyms: ["week", "measurement week", "performance week"]
+        description: "Week of performance measurement"
+        expr: "MEASUREMENT_WEEK"
+        data_type: "number"
+        
+      - name: "day_of_week"
+        synonyms: ["weekday", "day", "measurement day"]
+        description: "Day of week for measurement (0=Sunday, 6=Saturday)"
+        expr: "DAY_OF_WEEK"
+        data_type: "number"
+
+    measures:
+      - name: "metric_value"
+        synonyms: ["performance value", "actual value", "measured value", "current performance"]
+        description: "Actual performance metric value"
+        expr: "AVG(METRIC_VALUE)"
+        data_type: "number"
+        
+      - name: "benchmark_value"
+        synonyms: ["benchmark", "target", "expected value", "performance target"]
+        description: "Benchmark or target value for the metric"
+        expr: "AVG(BENCHMARK_VALUE)"
+        data_type: "number"
+        
+      - name: "performance_vs_benchmark"
+        synonyms: ["vs benchmark", "benchmark comparison", "performance gap", "variance"]
+        description: "Performance compared to benchmark as percentage"
+        expr: "AVG(PERFORMANCE_VS_BENCHMARK_PCT)"
+        data_type: "number"
+        
+      - name: "services_meeting_benchmark"
+        synonyms: ["meeting benchmark", "on target", "successful services"]
+        description: "Number of services meeting or exceeding benchmark"
+        expr: "SUM(MEETS_BENCHMARK_FLAG)"
+        data_type: "number"
+        
+      - name: "total_measurements"
+        synonyms: ["measurement count", "total metrics", "data points"]
+        description: "Total number of performance measurements"
+        expr: "COUNT(*)"
+        data_type: "number"
+        
+      - name: "benchmark_achievement_rate"
+        synonyms: ["achievement rate", "success rate", "benchmark rate"]
+        description: "Percentage of measurements meeting benchmark"
+        expr: "ROUND((SUM(MEETS_BENCHMARK_FLAG) * 100.0 / COUNT(*)), 2)"
+        data_type: "number"
+        
+      - name: "average_response_time"
+        synonyms: ["response time", "avg response", "service speed"]
+        description: "Average response time in minutes (for response time metrics)"
+        expr: "AVG(CASE WHEN METRIC_TYPE = 'Response Time (minutes)' THEN METRIC_VALUE END)"
+        data_type: "number"
+        
+      - name: "average_success_rate"
+        synonyms: ["success rate", "completion rate", "service reliability"]
+        description: "Average success rate percentage (for success rate metrics)"
+        expr: "AVG(CASE WHEN METRIC_TYPE = 'Success Rate (%)' THEN METRIC_VALUE END)"
+        data_type: "number"
+        
+      - name: "average_satisfaction"
+        synonyms: ["satisfaction", "user satisfaction", "service rating"]
+        description: "Average user satisfaction score (for satisfaction metrics)"
+        expr: "AVG(CASE WHEN METRIC_TYPE = 'User Satisfaction' THEN METRIC_VALUE END)"
+        data_type: "number"
+        
+      - name: "daily_transactions"
+        synonyms: ["transactions", "daily volume", "service volume"]
+        description: "Average daily transaction volume (for transaction metrics)"
+        expr: "AVG(CASE WHEN METRIC_TYPE = 'Daily Transactions' THEN METRIC_VALUE END)"
+        data_type: "number"
+
+    filters:
+      - name: "recent_performance"
+        synonyms: ["recent", "last 30 days", "current month"]
+        description: "Filter for performance data in the last 30 days"
+        expr: "MEASUREMENT_DATE >= DATEADD(day, -30, CURRENT_DATE())"
+        
+      - name: "exceeding_benchmark"
+        synonyms: ["exceeding", "above target", "high performance"]
+        description: "Filter for services exceeding benchmark"
+        expr: "PERFORMANCE_STATUS = 'Exceeding'"
+        
+      - name: "below_benchmark"
+        synonyms: ["below target", "underperforming", "needs improvement"]
+        description: "Filter for services below benchmark"
+        expr: "PERFORMANCE_STATUS = 'Below'"
+        
+      - name: "identity_services"
+        synonyms: ["identity", "SingPass", "authentication"]
+        description: "Filter for identity-related services"
+        expr: "SERVICE_CATEGORY = 'Identity Services'"
+        
+      - name: "healthcare_services"
+        synonyms: ["healthcare", "health", "medical services"]
+        description: "Filter for healthcare services"
+        expr: "SERVICE_CATEGORY = 'Healthcare Services'"
+        
+      - name: "response_time_metrics"
+        synonyms: ["response time", "speed metrics", "performance time"]
+        description: "Filter for response time measurements"
+        expr: "METRIC_TYPE = 'Response Time (minutes)'"
+        
+      - name: "satisfaction_metrics"
+        synonyms: ["satisfaction", "user ratings", "service ratings"]
+        description: "Filter for user satisfaction measurements"
+        expr: "METRIC_TYPE = 'User Satisfaction'"

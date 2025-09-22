@@ -30,20 +30,22 @@
 **Context:** Monday morning executive briefing  
 **Goal:** Understand weekend service performance and identify issues
 
-### Live Query 1: Weekend Performance Overview
-**Question:** *"How did our digital services perform over the weekend compared to last month? Show me the key metrics and any concerning trends."*
+### Live Query 1: Weekend Performance Overview (with Cortex Analyst)
+**Question:** *"How did our digital services perform over the weekend compared to last month? Show me the key metrics and any concerning trends with charts."*
 
 **Expected Response:**
-- Service performance dashboard with key metrics
-- Comparison charts showing weekend vs. average performance
-- Identification of services below benchmark
-- Automatic highlighting of SingPass authentication delays
-- Visual charts showing citizen satisfaction scores
+- **Cortex Analyst automatically generates charts** showing service performance trends
+- Interactive visualizations comparing weekend vs. weekday performance
+- Automatic identification of services below benchmark with visual indicators
+- Bar charts showing response times by agency and service type
+- Line graphs displaying citizen satisfaction trends over time
+- Heat maps showing performance by hour of day and day of week
 
 **Key Talking Points:**
-- "Notice how the AI instantly aggregated data from 7 different agencies"
-- "It automatically identified that SingPass had 15% higher response times"
-- "The visualization makes it immediately clear which services need attention"
+- "Notice how Cortex Analyst automatically created these visualizations from natural language"
+- "The AI not only analyzed the data but chose the best chart types to tell the story"
+- "These interactive charts let you drill down into specific services or time periods"
+- "The heat map reveals peak usage patterns we might have missed in traditional reports"
 
 ### Live Query 2: Drill-Down Analysis
 **Question:** *"What's causing the SingPass authentication delays? Are there any patterns by user demographics or time of day?"*
@@ -68,20 +70,22 @@
 **Context:** Quarterly policy review meeting  
 **Goal:** Assess effectiveness of digital inclusion initiatives
 
-### Live Query 3: Digital Inclusion Impact
-**Question:** *"Show me the impact of our Digital Inclusion Initiative for seniors. How has their engagement with government services changed since implementation?"*
+### Live Query 3: Digital Inclusion Impact (with Cortex Analyst Visualizations)
+**Question:** *"Show me the impact of our Digital Inclusion Initiative for seniors with before and after charts. How has their engagement with government services changed since implementation?"*
 
 **Expected Response:**
-- Before/after comparison of senior citizen service usage
-- Digital literacy score improvements over time
-- Service channel preferences (mobile vs. web vs. in-person)
-- Success stories and areas needing improvement
-- ROI analysis of the initiative
+- **Cortex Analyst generates comparison charts** showing before/after metrics
+- Interactive timeline showing digital literacy score improvements
+- Stacked bar charts comparing service channel preferences over time
+- Pie charts showing demographic breakdown of service usage
+- ROI dashboard with cost savings calculations and projections
+- Success rate trends with statistical significance indicators
 
 **Key Talking Points:**
-- "80% improvement in digital literacy scores among seniors"
-- "Mobile app usage increased by 60% in the target demographic"
-- "The AI is calculating ROI in real-time based on service cost savings"
+- "Cortex Analyst automatically created these before/after comparison charts"
+- "The timeline visualization clearly shows the 80% improvement trajectory"
+- "Notice how the pie chart reveals the shift from in-person to digital channels"
+- "The ROI dashboard calculates real-time savings - $2.3M in operational costs avoided"
 
 ### Live Query 4: Predictive Insights
 **Question:** *"Based on current trends, what should we expect for senior citizen digital service adoption in the next quarter? Generate a policy briefing for the Minister."*

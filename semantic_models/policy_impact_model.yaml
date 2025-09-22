@@ -1,0 +1,125 @@
+# Semantic Model for Singapore Policy Impact Analytics
+# For use with Cortex Analyst in Snowflake Intelligence Demo
+
+name: "Singapore Policy Impact Analytics"
+description: "Analytics model for tracking and measuring the effectiveness of Singapore government policies and initiatives"
+
+tables:
+  - name: "policy_performance_analytics"
+    description: "Policy implementation tracking and impact measurement"
+    base_table:
+      database: "SG_PUBSEC_DEMO"
+      schema: "ANALYTICS"
+      table: "POLICY_PERFORMANCE_ANALYTICS"
+    
+    dimensions:
+      - name: "policy_name"
+        synonyms: ["policy", "initiative", "program", "government policy"]
+        description: "Name of the government policy or initiative"
+        expr: "POLICY_NAME"
+        data_type: "text"
+        
+      - name: "target_demographic"
+        synonyms: ["target group", "beneficiary", "target population", "demographic"]
+        description: "Target demographic for the policy"
+        expr: "TARGET_DEMOGRAPHIC"
+        data_type: "text"
+        
+      - name: "policy_status"
+        synonyms: ["status", "implementation status", "policy state"]
+        description: "Current status of the policy (Active, Pilot, Rolling Out)"
+        expr: "POLICY_STATUS"
+        data_type: "text"
+        
+      - name: "implementation_date"
+        synonyms: ["start date", "launch date", "implementation", "policy start"]
+        description: "Date when policy was implemented"
+        expr: "IMPLEMENTATION_DATE"
+        data_type: "date"
+        
+      - name: "implementation_year"
+        synonyms: ["year", "implementation year", "launch year"]
+        description: "Year when policy was implemented"
+        expr: "IMPLEMENTATION_YEAR"
+        data_type: "number"
+        
+      - name: "implementation_month"
+        synonyms: ["month", "implementation month", "launch month"]
+        description: "Month when policy was implemented"
+        expr: "IMPLEMENTATION_MONTH"
+        data_type: "number"
+        
+      - name: "success_category"
+        synonyms: ["success level", "effectiveness", "performance category", "impact level"]
+        description: "Categorized success level (Highly Successful, Successful, Moderately Successful, Needs Improvement)"
+        expr: "SUCCESS_CATEGORY"
+        data_type: "text"
+
+    measures:
+      - name: "baseline_metric"
+        synonyms: ["baseline", "starting point", "initial value", "before value"]
+        description: "Baseline metric value before policy implementation"
+        expr: "AVG(BASELINE_METRIC)"
+        data_type: "number"
+        
+      - name: "current_metric"
+        synonyms: ["current value", "latest metric", "after value", "current performance"]
+        description: "Current metric value after policy implementation"
+        expr: "AVG(CURRENT_METRIC)"
+        data_type: "number"
+        
+      - name: "impact_percentage"
+        synonyms: ["impact", "improvement", "change percentage", "policy impact"]
+        description: "Percentage impact of the policy"
+        expr: "AVG(IMPACT_PERCENTAGE)"
+        data_type: "number"
+        
+      - name: "absolute_improvement"
+        synonyms: ["improvement", "change", "absolute change", "net improvement"]
+        description: "Absolute improvement in metric value"
+        expr: "AVG(ABSOLUTE_IMPROVEMENT)"
+        data_type: "number"
+        
+      - name: "roi_percentage"
+        synonyms: ["ROI", "return on investment", "effectiveness ratio"]
+        description: "Return on investment percentage for the policy"
+        expr: "AVG(ROI_PERCENTAGE)"
+        data_type: "number"
+        
+      - name: "days_since_implementation"
+        synonyms: ["policy age", "implementation duration", "days running"]
+        description: "Average days since policy implementation"
+        expr: "AVG(DAYS_SINCE_IMPLEMENTATION)"
+        data_type: "number"
+        
+      - name: "total_policies"
+        synonyms: ["policy count", "number of policies", "total initiatives"]
+        description: "Total number of policies"
+        expr: "COUNT(*)"
+        data_type: "number"
+
+    filters:
+      - name: "active_policies"
+        synonyms: ["active", "current policies", "running policies"]
+        description: "Filter for currently active policies"
+        expr: "POLICY_STATUS = 'Active'"
+        
+      - name: "successful_policies"
+        synonyms: ["successful", "high impact", "effective policies"]
+        description: "Filter for highly successful or successful policies"
+        expr: "SUCCESS_CATEGORY IN ('Highly Successful', 'Successful')"
+        
+      - name: "recent_policies"
+        synonyms: ["recent", "new policies", "last year"]
+        description: "Filter for policies implemented in the last year"
+        expr: "IMPLEMENTATION_DATE >= DATEADD(year, -1, CURRENT_DATE())"
+        
+      - name: "digital_policies"
+        synonyms: ["digital", "technology policies", "digital initiatives"]
+        description: "Filter for digital-related policies"
+        expr: "POLICY_NAME ILIKE '%Digital%'"
+        
+      - name: "senior_focused"
+        synonyms: ["seniors", "elderly", "senior policies"]
+        description: "Filter for policies targeting seniors"
+        expr: "TARGET_DEMOGRAPHIC ILIKE '%65+%' OR TARGET_DEMOGRAPHIC ILIKE '%Senior%'"

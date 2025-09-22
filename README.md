@@ -21,9 +21,13 @@ This demo showcases **Snowflake Intelligence** capabilities for Singapore's publ
 
 ### 2. Demo Architecture
 ```
-Singapore Smart Nation Intelligence Hub
+Singapore Smart Nation Intelligence Hub + Cortex Analyst
 ├── Natural Language Interface (Snowflake Intelligence)
 ├── AI Agent (Singapore Government Context)
+├── Cortex Analyst (Semantic Models + Auto-Charts)
+│   ├── Citizen Services Analytics Model
+│   ├── Policy Impact Analytics Model
+│   └── Service Performance Analytics Model
 ├── Internal Data Sources
 │   ├── Citizen Profiles (10,000 synthetic records)
 │   ├── Service Interactions (50,000 records)
@@ -67,13 +71,19 @@ Singapore Smart Nation Intelligence Hub
 @marketplace_integration.sql
 ```
 
-### Step 4: Configure Snowflake Intelligence Agent
+### Step 4: Set Up Cortex Analyst
+```sql
+-- Create semantic models for natural language analytics with auto-charts
+@cortex_analyst_setup.sql
+```
+
+### Step 5: Configure Snowflake Intelligence Agent
 1. Navigate to **AI & ML** → **Agents** in Snowsight
 2. Create new agent: `SG_Smart_Nation_Assistant`
 3. Follow configuration in `agent_configuration.md`
 4. Add custom tools and sample questions
 
-### Step 5: Test Demo Scenarios
+### Step 6: Test Demo Scenarios
 - Use queries from `demo_scenarios.md`
 - Verify all 4 demo scenarios work correctly
 - Test automated actions (briefing generation, alerts)

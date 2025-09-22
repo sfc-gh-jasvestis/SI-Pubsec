@@ -1,0 +1,150 @@
+# Semantic Model for Singapore Citizen Services Analytics
+# For use with Cortex Analyst in Snowflake Intelligence Demo
+
+name: "Singapore Citizen Services Analytics"
+description: "Comprehensive analytics model for Singapore government digital services, citizen satisfaction, and service performance"
+
+tables:
+  - name: "citizen_service_analytics"
+    description: "Combined view of citizen demographics and service interactions"
+    base_table:
+      database: "SG_PUBSEC_DEMO"
+      schema: "ANALYTICS" 
+      table: "CITIZEN_SERVICE_ANALYTICS"
+    
+    dimensions:
+      - name: "age_group"
+        synonyms: ["age", "age bracket", "age range", "demographic age"]
+        description: "Age group of citizens (18-25, 26-35, 36-50, 51-65, 65+)"
+        expr: "AGE_GROUP"
+        data_type: "text"
+        
+      - name: "postal_district"
+        synonyms: ["district", "area", "location", "postal area", "region"]
+        description: "Postal district where citizen resides"
+        expr: "POSTAL_DISTRICT"
+        data_type: "text"
+        
+      - name: "preferred_language"
+        synonyms: ["language", "communication language", "citizen language"]
+        description: "Citizen's preferred language for government services"
+        expr: "PREFERRED_LANGUAGE"
+        data_type: "text"
+        
+      - name: "service_type"
+        synonyms: ["service", "government service", "digital service", "service category"]
+        description: "Type of government service accessed"
+        expr: "SERVICE_TYPE"
+        data_type: "text"
+        
+      - name: "agency"
+        synonyms: ["government agency", "ministry", "department", "organization"]
+        description: "Government agency providing the service"
+        expr: "AGENCY"
+        data_type: "text"
+        
+      - name: "interaction_channel"
+        synonyms: ["channel", "access method", "service channel", "platform"]
+        description: "How citizen accessed the service (Mobile App, Web Portal, Service Center, Phone)"
+        expr: "INTERACTION_CHANNEL"
+        data_type: "text"
+        
+      - name: "interaction_date"
+        synonyms: ["date", "service date", "transaction date"]
+        description: "Date when service interaction occurred"
+        expr: "INTERACTION_DATE"
+        data_type: "date"
+        
+      - name: "interaction_month"
+        synonyms: ["month", "service month"]
+        description: "Month of service interaction"
+        expr: "INTERACTION_MONTH"
+        data_type: "number"
+        
+      - name: "day_of_week"
+        synonyms: ["weekday", "day", "service day"]
+        description: "Day of week for service interaction (0=Sunday, 6=Saturday)"
+        expr: "DAY_OF_WEEK"
+        data_type: "number"
+        
+      - name: "hour_of_day"
+        synonyms: ["hour", "time", "service time"]
+        description: "Hour of day when service was accessed (0-23)"
+        expr: "HOUR_OF_DAY"
+        data_type: "number"
+        
+      - name: "response_time_category"
+        synonyms: ["speed", "performance", "response speed", "service speed"]
+        description: "Categorized response time (Fast, Moderate, Slow, Very Slow)"
+        expr: "RESPONSE_TIME_CATEGORY"
+        data_type: "text"
+        
+      - name: "satisfaction_category"
+        synonyms: ["satisfaction level", "citizen satisfaction", "service rating"]
+        description: "Categorized satisfaction level (High, Medium, Low)"
+        expr: "SATISFACTION_CATEGORY"
+        data_type: "text"
+
+    measures:
+      - name: "total_interactions"
+        synonyms: ["interactions", "service requests", "transactions", "total services"]
+        description: "Total number of service interactions"
+        expr: "SUM(INTERACTION_COUNT)"
+        data_type: "number"
+        
+      - name: "successful_interactions"
+        synonyms: ["successful services", "completed services", "success count"]
+        description: "Number of successful service interactions"
+        expr: "SUM(SUCCESS_COUNT)"
+        data_type: "number"
+        
+      - name: "failed_interactions"
+        synonyms: ["failed services", "unsuccessful services", "failure count"]
+        description: "Number of failed service interactions"
+        expr: "SUM(FAILURE_COUNT)"
+        data_type: "number"
+        
+      - name: "success_rate"
+        synonyms: ["success percentage", "completion rate", "service success rate"]
+        description: "Percentage of successful service interactions"
+        expr: "ROUND((SUM(SUCCESS_COUNT) * 100.0 / SUM(INTERACTION_COUNT)), 2)"
+        data_type: "number"
+        
+      - name: "average_duration"
+        synonyms: ["avg duration", "average time", "mean duration", "service time"]
+        description: "Average duration of service interactions in minutes"
+        expr: "ROUND(AVG(DURATION_MINUTES), 2)"
+        data_type: "number"
+        
+      - name: "average_satisfaction"
+        synonyms: ["avg satisfaction", "satisfaction score", "citizen satisfaction", "service rating"]
+        description: "Average citizen satisfaction rating (1-5 scale)"
+        expr: "ROUND(AVG(INTERACTION_SATISFACTION), 2)"
+        data_type: "number"
+        
+      - name: "digital_literacy_score"
+        synonyms: ["digital literacy", "tech literacy", "digital skills"]
+        description: "Average digital literacy score of citizens"
+        expr: "ROUND(AVG(DIGITAL_LITERACY_SCORE), 2)"
+        data_type: "number"
+
+    filters:
+      - name: "recent_interactions"
+        synonyms: ["recent", "last 30 days", "current month"]
+        description: "Filter for interactions in the last 30 days"
+        expr: "INTERACTION_DATE >= DATEADD(day, -30, CURRENT_DATE())"
+        
+      - name: "high_satisfaction"
+        synonyms: ["satisfied citizens", "happy customers", "good ratings"]
+        description: "Filter for high satisfaction interactions (rating >= 4)"
+        expr: "INTERACTION_SATISFACTION >= 4"
+        
+      - name: "mobile_users"
+        synonyms: ["mobile", "app users", "smartphone users"]
+        description: "Filter for mobile app users"
+        expr: "INTERACTION_CHANNEL = 'Mobile App'"
+        
+      - name: "seniors"
+        synonyms: ["elderly", "senior citizens", "older adults"]
+        description: "Filter for senior citizens (65+)"
+        expr: "AGE_GROUP = '65+'"
