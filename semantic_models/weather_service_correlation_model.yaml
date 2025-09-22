@@ -163,7 +163,7 @@ verified_queries:
       WHERE HOUR_TIMESTAMP >= DATEADD(day, -30, CURRENT_TIMESTAMP())
       GROUP BY 1, 2
       ORDER BY total_interactions DESC
-    verified_at: "2024-09-22"
+    verified_at: "2024-09-22T10:00:00Z"
     
   - name: "Regional Weather Service Resilience"
     question: "Which regions in Singapore have the most weather-resilient government services?"
@@ -178,7 +178,7 @@ verified_queries:
       WHERE WEATHER_RESILIENCE_SCORE IS NOT NULL
       GROUP BY 1
       ORDER BY avg_resilience_score DESC
-    verified_at: "2024-09-22"
+    verified_at: "2024-09-22T10:00:00Z"
     
   - name: "Afternoon Thunderstorm Service Impact"
     question: "How do afternoon thunderstorms affect government service performance?"
@@ -195,7 +195,7 @@ verified_queries:
         AND HOUR_TIMESTAMP >= DATEADD(day, -60, CURRENT_TIMESTAMP())
       GROUP BY 1, 2
       ORDER BY hour_of_day, avg_rainfall DESC
-    verified_at: "2024-09-22"
+    verified_at: "2024-09-22T10:00:00Z"
     
   - name: "Weather-Driven Digital Adoption"
     question: "Does bad weather increase mobile app usage for government services?"
@@ -216,7 +216,7 @@ verified_queries:
       WHERE HOUR_TIMESTAMP >= DATEADD(day, -90, CURRENT_TIMESTAMP())
       GROUP BY 1, 2
       ORDER BY avg_mobile_adoption DESC
-    verified_at: "2024-09-22"
+    verified_at: "2024-09-22T10:00:00Z"
     
   - name: "Agency Weather Preparedness Comparison"
     question: "Which government agencies maintain the best service levels during severe weather?"
@@ -232,4 +232,4 @@ verified_queries:
       GROUP BY 1
       HAVING alert_day_interactions > 10
       ORDER BY resilience_score DESC
-    verified_at: "2024-09-22"
+    verified_at: "2024-09-22T10:00:00Z"
