@@ -29,16 +29,17 @@ Singapore Smart Nation Intelligence Hub + Cortex Analyst
 │   ├── Policy Impact Analytics Model
 │   └── Service Performance Analytics Model
 ├── Internal Data Sources
-│   ├── Citizen Profiles (10,000 synthetic records)
-│   ├── Service Interactions (50,000 records)
-│   ├── Performance Metrics (Real-time)
-│   ├── Policy Impact Tracking
-│   └── Inter-Agency Workflows
-└── External Data Sources (Snowflake Marketplace)
-    ├── Weather Data
-    ├── Economic Indicators
-    ├── Transportation Data
-    └── Public Health Trends
+│   ├── Citizen Profiles (40,000 synthetic records)
+│   ├── Service Interactions (200,000 records)
+│   ├── Performance Metrics (2,160 metrics)
+│   ├── Policy Impact Tracking (8 policies)
+│   ├── Inter-Agency Workflows (15,000 workflows)
+│   └── Government Knowledge Base (15 documents)
+└── Synthetic External Data (Marketplace Simulation)
+    ├── Singapore Weather Data (2,160 hourly records)
+    ├── Economic Indicators (8 key metrics)
+    ├── Transport Data (1,000 records)
+    └── Health Trends (8 indicators)
 ```
 
 ---

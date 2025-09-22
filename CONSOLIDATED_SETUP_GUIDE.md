@@ -25,7 +25,7 @@ Run this **one script** to set up the entire demo:
 - ✅ 40,000 synthetic citizen profiles
 - ✅ 200,000 service interactions
 - ✅ 2,160 performance metrics
-- ✅ Weather, economic, transport, and health data
+- ✅ Synthetic external data (weather, economic, transport, health)
 - ✅ Government knowledge base (15 documents)
 - ✅ Analytics views and stored procedures
 - ✅ Cortex Search service
