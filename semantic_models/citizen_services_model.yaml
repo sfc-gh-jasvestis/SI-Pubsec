@@ -148,3 +148,86 @@ tables:
         synonyms: ["elderly", "senior citizens", "older adults"]
         description: "Filter for senior citizens (65+)"
         expr: "AGE_GROUP = '65+'"
+
+verified_queries:
+  - name: "Weekend vs Weekday Service Performance"
+    question: "How did our digital services perform over the weekend compared to weekdays?"
+    sql: |
+      SELECT 
+        CASE WHEN DAY_OF_WEEK IN (0, 6) THEN 'Weekend' ELSE 'Weekday' END as period_type,
+        SERVICE_TYPE,
+        AGENCY,
+        COUNT(*) as total_interactions,
+        AVG(DURATION_MINUTES) as avg_duration,
+        AVG(INTERACTION_SATISFACTION) as avg_satisfaction,
+        SUM(SUCCESS_COUNT) * 100.0 / COUNT(*) as success_rate
+      FROM citizen_service_analytics
+      WHERE INTERACTION_DATE >= DATEADD(day, -30, CURRENT_DATE())
+      GROUP BY 1, 2, 3
+      ORDER BY period_type, avg_duration DESC
+    verified_at: "2024-09-22"
+    
+  - name: "Senior Citizen Digital Service Adoption"
+    question: "Show me how senior citizens are using our digital services compared to other age groups"
+    sql: |
+      SELECT 
+        AGE_GROUP,
+        INTERACTION_CHANNEL,
+        COUNT(*) as interactions,
+        AVG(DIGITAL_LITERACY_SCORE) as avg_digital_literacy,
+        AVG(INTERACTION_SATISFACTION) as avg_satisfaction,
+        SUM(SUCCESS_COUNT) * 100.0 / COUNT(*) as success_rate
+      FROM citizen_service_analytics
+      WHERE INTERACTION_DATE >= DATEADD(day, -90, CURRENT_DATE())
+      GROUP BY 1, 2
+      ORDER BY AGE_GROUP, interactions DESC
+    verified_at: "2024-09-22"
+    
+  - name: "Service Performance by District"
+    question: "Which postal districts have the highest citizen satisfaction with government services?"
+    sql: |
+      SELECT 
+        POSTAL_DISTRICT,
+        COUNT(*) as total_interactions,
+        AVG(INTERACTION_SATISFACTION) as avg_satisfaction,
+        AVG(DURATION_MINUTES) as avg_response_time,
+        SUM(SUCCESS_COUNT) * 100.0 / COUNT(*) as success_rate
+      FROM citizen_service_analytics
+      WHERE INTERACTION_DATE >= DATEADD(day, -60, CURRENT_DATE())
+      GROUP BY 1
+      HAVING COUNT(*) >= 100
+      ORDER BY avg_satisfaction DESC
+    verified_at: "2024-09-22"
+    
+  - name: "Mobile vs Web Portal Usage Trends"
+    question: "Compare mobile app usage vs web portal usage across different demographics"
+    sql: |
+      SELECT 
+        INTERACTION_CHANNEL,
+        AGE_GROUP,
+        PREFERRED_LANGUAGE,
+        COUNT(*) as interactions,
+        AVG(DURATION_MINUTES) as avg_duration,
+        AVG(INTERACTION_SATISFACTION) as avg_satisfaction,
+        AVG(DIGITAL_LITERACY_SCORE) as avg_digital_literacy
+      FROM citizen_service_analytics
+      WHERE INTERACTION_CHANNEL IN ('Mobile App', 'Web Portal')
+        AND INTERACTION_DATE >= DATEADD(day, -30, CURRENT_DATE())
+      GROUP BY 1, 2, 3
+      ORDER BY interactions DESC
+    verified_at: "2024-09-22"
+    
+  - name: "Peak Service Usage Patterns"
+    question: "When do citizens most frequently access government services?"
+    sql: |
+      SELECT 
+        HOUR_OF_DAY,
+        DAY_OF_WEEK,
+        COUNT(*) as interactions,
+        AVG(DURATION_MINUTES) as avg_duration,
+        SUM(SUCCESS_COUNT) * 100.0 / COUNT(*) as success_rate
+      FROM citizen_service_analytics
+      WHERE INTERACTION_DATE >= DATEADD(day, -30, CURRENT_DATE())
+      GROUP BY 1, 2
+      ORDER BY interactions DESC
+    verified_at: "2024-09-22"

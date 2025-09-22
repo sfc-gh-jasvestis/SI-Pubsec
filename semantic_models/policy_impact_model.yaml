@@ -123,3 +123,89 @@ tables:
         synonyms: ["seniors", "elderly", "senior policies"]
         description: "Filter for policies targeting seniors"
         expr: "TARGET_DEMOGRAPHIC ILIKE '%65+%' OR TARGET_DEMOGRAPHIC ILIKE '%Senior%'"
+
+verified_queries:
+  - name: "Digital Inclusion Initiative ROI Analysis"
+    question: "What's the ROI of our Digital Inclusion Initiative for seniors?"
+    sql: |
+      SELECT 
+        POLICY_NAME,
+        TARGET_DEMOGRAPHIC,
+        BASELINE_METRIC,
+        CURRENT_METRIC,
+        IMPACT_PERCENTAGE,
+        ROI_PERCENTAGE,
+        DAYS_SINCE_IMPLEMENTATION,
+        SUCCESS_CATEGORY
+      FROM policy_performance_analytics
+      WHERE POLICY_NAME ILIKE '%Digital Inclusion%'
+        AND TARGET_DEMOGRAPHIC ILIKE '%65+%'
+      ORDER BY IMPACT_PERCENTAGE DESC
+    verified_at: "2024-09-22"
+    
+  - name: "Most Successful Government Policies"
+    question: "Which government policies have been most successful this year?"
+    sql: |
+      SELECT 
+        POLICY_NAME,
+        TARGET_DEMOGRAPHIC,
+        IMPACT_PERCENTAGE,
+        ROI_PERCENTAGE,
+        SUCCESS_CATEGORY,
+        DAYS_SINCE_IMPLEMENTATION
+      FROM policy_performance_analytics
+      WHERE IMPLEMENTATION_YEAR = 2024
+        AND POLICY_STATUS = 'Active'
+      ORDER BY IMPACT_PERCENTAGE DESC
+      LIMIT 10
+    verified_at: "2024-09-22"
+    
+  - name: "Policy Implementation Timeline and Impact"
+    question: "Show me the timeline of policy implementations and their impact over time"
+    sql: |
+      SELECT 
+        IMPLEMENTATION_DATE,
+        POLICY_NAME,
+        TARGET_DEMOGRAPHIC,
+        BASELINE_METRIC,
+        CURRENT_METRIC,
+        IMPACT_PERCENTAGE,
+        SUCCESS_CATEGORY
+      FROM policy_performance_analytics
+      WHERE IMPLEMENTATION_DATE >= '2024-01-01'
+      ORDER BY IMPLEMENTATION_DATE, IMPACT_PERCENTAGE DESC
+    verified_at: "2024-09-22"
+    
+  - name: "Cross-Agency Policy Performance Comparison"
+    question: "Compare policy effectiveness across different target demographics"
+    sql: |
+      SELECT 
+        TARGET_DEMOGRAPHIC,
+        COUNT(*) as total_policies,
+        AVG(IMPACT_PERCENTAGE) as avg_impact,
+        AVG(ROI_PERCENTAGE) as avg_roi,
+        COUNT(CASE WHEN SUCCESS_CATEGORY IN ('Highly Successful', 'Successful') THEN 1 END) as successful_policies
+      FROM policy_performance_analytics
+      WHERE POLICY_STATUS = 'Active'
+      GROUP BY 1
+      ORDER BY avg_impact DESC
+    verified_at: "2024-09-22"
+    
+  - name: "Digital vs Non-Digital Policy Effectiveness"
+    question: "How do digital policies compare to traditional policies in terms of impact?"
+    sql: |
+      SELECT 
+        CASE 
+          WHEN POLICY_NAME ILIKE '%Digital%' OR POLICY_NAME ILIKE '%AI%' OR POLICY_NAME ILIKE '%Mobile%' 
+          THEN 'Digital Policies'
+          ELSE 'Traditional Policies'
+        END as policy_type,
+        COUNT(*) as total_policies,
+        AVG(IMPACT_PERCENTAGE) as avg_impact,
+        AVG(ROI_PERCENTAGE) as avg_roi,
+        AVG(DAYS_SINCE_IMPLEMENTATION) as avg_days_running
+      FROM policy_performance_analytics
+      WHERE POLICY_STATUS = 'Active'
+      GROUP BY 1
+      ORDER BY avg_impact DESC
+    verified_at: "2024-09-22"

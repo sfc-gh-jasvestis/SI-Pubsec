@@ -30,28 +30,35 @@ Singapore Smart Nation Intelligence Hub + Cortex Analyst
 - **Purpose:** Analyze citizen interactions with government services
 - **Key Metrics:** Success rates, satisfaction scores, response times
 - **Dimensions:** Age groups, districts, languages, service types, channels
-- **Sample Queries:**
-  - "Show me citizen satisfaction by age group with charts"
-  - "What's the success rate for mobile app users vs web portal users?"
-  - "Create a heat map of service usage by hour and day of week"
+- **Verified Queries (5 pre-tested):**
+  - "How did our digital services perform over the weekend compared to weekdays?"
+  - "Show me how senior citizens are using our digital services compared to other age groups"
+  - "Which postal districts have the highest citizen satisfaction with government services?"
+  - "Compare mobile app usage vs web portal usage across different demographics"
+  - "When do citizens most frequently access government services?"
 
 #### 2. **Policy Impact Analytics Model**
 - **Purpose:** Measure effectiveness of government policies
 - **Key Metrics:** Impact percentages, ROI, baseline vs current performance
 - **Dimensions:** Policy names, target demographics, implementation dates
-- **Sample Queries:**
-  - "Show me the ROI of our digital inclusion policies with trend charts"
-  - "Which policies are most successful for senior citizens?"
-  - "Create a timeline of policy implementations and their impact"
+- **Verified Queries (5 pre-tested):**
+  - "What's the ROI of our Digital Inclusion Initiative for seniors?"
+  - "Which government policies have been most successful this year?"
+  - "Show me the timeline of policy implementations and their impact over time"
+  - "Compare policy effectiveness across different target demographics"
+  - "How do digital policies compare to traditional policies in terms of impact?"
 
 #### 3. **Service Performance Analytics Model**
 - **Purpose:** Monitor government service performance against benchmarks
 - **Key Metrics:** Response times, benchmark achievement, service volumes
 - **Dimensions:** Services, agencies, metric types, performance categories
-- **Sample Queries:**
-  - "Show me which services are underperforming with comparison charts"
-  - "What's the trend in SingPass response times over the last month?"
-  - "Create a dashboard of all agency performance vs benchmarks"
+- **Verified Queries (6 pre-tested):**
+  - "Which government services are meeting their performance benchmarks?"
+  - "How is SingPass performing across different metrics?"
+  - "Compare performance across all government agencies"
+  - "Show me response time trends across different service categories"
+  - "Which services are consistently underperforming and need attention?"
+  - "How do government services perform on weekends compared to weekdays?"
 
 ### 🎭 **Enhanced Demo Scenarios with Cortex Analyst**
 

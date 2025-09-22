@@ -169,3 +169,107 @@ tables:
         synonyms: ["satisfaction", "user ratings", "service ratings"]
         description: "Filter for user satisfaction measurements"
         expr: "METRIC_TYPE = 'User Satisfaction'"
+
+verified_queries:
+  - name: "Services Meeting Performance Benchmarks"
+    question: "Which government services are meeting their performance benchmarks?"
+    sql: |
+      SELECT 
+        SERVICE_NAME,
+        AGENCY,
+        SERVICE_CATEGORY,
+        METRIC_TYPE,
+        AVG(METRIC_VALUE) as avg_performance,
+        AVG(BENCHMARK_VALUE) as benchmark,
+        AVG(PERFORMANCE_VS_BENCHMARK_PCT) as vs_benchmark_pct,
+        COUNT(CASE WHEN PERFORMANCE_STATUS IN ('Meeting', 'Exceeding') THEN 1 END) as meeting_benchmark_count,
+        COUNT(*) as total_measurements
+      FROM service_performance_analytics
+      WHERE MEASUREMENT_DATE >= DATEADD(day, -30, CURRENT_DATE())
+      GROUP BY 1, 2, 3, 4
+      ORDER BY vs_benchmark_pct DESC
+    verified_at: "2024-09-22"
+    
+  - name: "SingPass Performance Analysis"
+    question: "How is SingPass performing across different metrics?"
+    sql: |
+      SELECT 
+        SERVICE_NAME,
+        METRIC_TYPE,
+        AVG(METRIC_VALUE) as avg_value,
+        AVG(BENCHMARK_VALUE) as benchmark,
+        AVG(PERFORMANCE_VS_BENCHMARK_PCT) as performance_vs_benchmark,
+        PERFORMANCE_STATUS,
+        COUNT(*) as measurement_count
+      FROM service_performance_analytics
+      WHERE SERVICE_NAME ILIKE '%SingPass%'
+        AND MEASUREMENT_DATE >= DATEADD(day, -30, CURRENT_DATE())
+      GROUP BY 1, 2, 6
+      ORDER BY METRIC_TYPE, performance_vs_benchmark DESC
+    verified_at: "2024-09-22"
+    
+  - name: "Agency Performance Comparison"
+    question: "Compare performance across all government agencies"
+    sql: |
+      SELECT 
+        AGENCY,
+        COUNT(DISTINCT SERVICE_NAME) as total_services,
+        AVG(METRIC_VALUE) as avg_performance,
+        AVG(BENCHMARK_VALUE) as avg_benchmark,
+        SUM(MEETS_BENCHMARK_FLAG) * 100.0 / COUNT(*) as benchmark_achievement_rate,
+        COUNT(CASE WHEN PERFORMANCE_STATUS = 'Exceeding' THEN 1 END) as exceeding_count
+      FROM service_performance_analytics
+      WHERE MEASUREMENT_DATE >= DATEADD(day, -30, CURRENT_DATE())
+      GROUP BY 1
+      ORDER BY benchmark_achievement_rate DESC
+    verified_at: "2024-09-22"
+    
+  - name: "Response Time Trends by Service Category"
+    question: "Show me response time trends across different service categories"
+    sql: |
+      SELECT 
+        SERVICE_CATEGORY,
+        MEASUREMENT_DATE,
+        AVG(CASE WHEN METRIC_TYPE = 'Response Time (minutes)' THEN METRIC_VALUE END) as avg_response_time,
+        AVG(CASE WHEN METRIC_TYPE = 'Response Time (minutes)' THEN BENCHMARK_VALUE END) as response_time_benchmark
+      FROM service_performance_analytics
+      WHERE METRIC_TYPE = 'Response Time (minutes)'
+        AND MEASUREMENT_DATE >= DATEADD(day, -60, CURRENT_DATE())
+      GROUP BY 1, 2
+      ORDER BY SERVICE_CATEGORY, MEASUREMENT_DATE
+    verified_at: "2024-09-22"
+    
+  - name: "Underperforming Services Analysis"
+    question: "Which services are consistently underperforming and need attention?"
+    sql: |
+      SELECT 
+        SERVICE_NAME,
+        AGENCY,
+        SERVICE_CATEGORY,
+        METRIC_TYPE,
+        AVG(METRIC_VALUE) as avg_performance,
+        AVG(BENCHMARK_VALUE) as benchmark,
+        AVG(PERFORMANCE_VS_BENCHMARK_PCT) as performance_gap,
+        COUNT(CASE WHEN PERFORMANCE_STATUS = 'Below' THEN 1 END) as below_benchmark_count,
+        COUNT(*) as total_measurements
+      FROM service_performance_analytics
+      WHERE MEASUREMENT_DATE >= DATEADD(day, -30, CURRENT_DATE())
+      GROUP BY 1, 2, 3, 4
+      HAVING AVG(PERFORMANCE_VS_BENCHMARK_PCT) < -10
+      ORDER BY performance_gap ASC
+    verified_at: "2024-09-22"
+    
+  - name: "Weekend vs Weekday Service Performance"
+    question: "How do government services perform on weekends compared to weekdays?"
+    sql: |
+      SELECT 
+        CASE WHEN DAY_OF_WEEK IN (0, 6) THEN 'Weekend' ELSE 'Weekday' END as period_type,
+        SERVICE_CATEGORY,
+        AVG(METRIC_VALUE) as avg_performance,
+        AVG(BENCHMARK_VALUE) as avg_benchmark,
+        SUM(MEETS_BENCHMARK_FLAG) * 100.0 / COUNT(*) as benchmark_achievement_rate
+      FROM service_performance_analytics
+      WHERE MEASUREMENT_DATE >= DATEADD(day, -30, CURRENT_DATE())
+      GROUP BY 1, 2
+      ORDER BY period_type, benchmark_achievement_rate DESC
+    verified_at: "2024-09-22"
