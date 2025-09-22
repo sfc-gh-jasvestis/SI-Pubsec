@@ -2,7 +2,7 @@
 ## Snowflake Intelligence Agent Setup for Public Sector Day Demo
 
 ### Agent Details
-- **Agent Name:** `SG_Smart_Nation_Assistant`
+- **Agent Name:** `SNOWFLAKE_Smart_Nation_Assistant`
 - **Display Name:** `Singapore Smart Nation Intelligence Assistant`
 - **Schema:** `snowflake_intelligence.agents`
 - **Description:** AI-powered assistant for Singapore's digital government services, providing instant insights across citizen services, policy impact, and inter-agency coordination.
@@ -45,28 +45,28 @@ For sensitive queries, remind users about data governance policies and suggest a
 
 #### 1. Cortex Analyst Services
 **Tool Name:** `Citizen_Services_Analytics`
-- **Database:** `SG_PUBSEC_DEMO`
+- **Database:** `SNOWFLAKE_PUBSEC_DEMO`
 - **Schema:** `SEMANTIC_MODELS`
 - **Semantic Model:** `citizen_services_model.yaml`
 - **Description:** Natural language queries with automatic chart generation for citizen service analytics
 
 **Tool Name:** `Policy_Impact_Analytics`
-- **Database:** `SG_PUBSEC_DEMO`
+- **Database:** `SNOWFLAKE_PUBSEC_DEMO`
 - **Schema:** `SEMANTIC_MODELS`
 - **Semantic Model:** `policy_impact_model.yaml`
 - **Description:** Policy effectiveness analysis with visual insights and trend analysis
 
 **Tool Name:** `Service_Performance_Analytics`
-- **Database:** `SG_PUBSEC_DEMO`
+- **Database:** `SNOWFLAKE_PUBSEC_DEMO`
 - **Schema:** `SEMANTIC_MODELS`
 - **Semantic Model:** `service_performance_model.yaml`
 - **Description:** Government service performance monitoring with benchmark comparisons
 
 #### 2. Cortex Search Services
 **Tool Name:** `Singapore_Government_Knowledge`
-- **Database:** `SG_PUBSEC_DEMO`
+- **Database:** `SNOWFLAKE_PUBSEC_DEMO`
 - **Schema:** `INTELLIGENCE`  
-- **Search Service:** `SG_GOV_KNOWLEDGE_SERVICE` (to be created)
+- **Search Service:** `SNOWFLAKE_GOV_KNOWLEDGE_SERVICE` (to be created)
 - **ID Column:** `DOCUMENT_ID`
 - **Title Column:** `DOCUMENT_TITLE`
 - **Description:** Search through Singapore government policies, procedures, and best practices
@@ -76,36 +76,36 @@ For sensitive queries, remind users about data governance policies and suggest a
 ##### Policy Brief Generator
 - **Name:** `Generate_Policy_Brief`
 - **Resource Type:** `procedure`
-- **Database & Schema:** `SG_PUBSEC_DEMO.INTELLIGENCE`
-- **Identifier:** `SG_PUBSEC_DEMO.INTELLIGENCE.GENERATE_POLICY_BRIEF(STRING, STRING)`
+- **Database & Schema:** `SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE`
+- **Identifier:** `SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.GENERATE_POLICY_BRIEF(STRING, STRING)`
 - **Parameters:**
   - `policy_name` (STRING): Name of the policy or topic for the brief
   - `recipient_email` (STRING): Email address to send the brief (default: demo@govtech.gov.sg)
 - **Description:** Generate and send executive policy briefings to government officials
-- **Warehouse:** `SG_DEMO_WH`
+- **Warehouse:** `SNOWFLAKE_DEMO_WH`
 
 ##### Service Alert System
 - **Name:** `Send_Service_Alert`
 - **Resource Type:** `procedure`
-- **Database & Schema:** `SG_PUBSEC_DEMO.INTELLIGENCE`
-- **Identifier:** `SG_PUBSEC_DEMO.INTELLIGENCE.SEND_SERVICE_ALERT(STRING, STRING, STRING)`
+- **Database & Schema:** `SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE`
+- **Identifier:** `SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.SEND_SERVICE_ALERT(STRING, STRING, STRING)`
 - **Parameters:**
   - `alert_message` (STRING): The alert message content
   - `severity` (STRING): Alert severity level (LOW, MEDIUM, HIGH, CRITICAL)
   - `target_agencies` (STRING): Comma-separated list of agencies to notify
 - **Description:** Send alerts to relevant government agencies about service issues or updates
-- **Warehouse:** `SG_DEMO_WH`
+- **Warehouse:** `SNOWFLAKE_DEMO_WH`
 
 ##### Resource Optimizer
 - **Name:** `Optimize_Resources`
 - **Resource Type:** `procedure`
-- **Database & Schema:** `SG_PUBSEC_DEMO.INTELLIGENCE`
-- **Identifier:** `SG_PUBSEC_DEMO.INTELLIGENCE.OPTIMIZE_RESOURCES(STRING, STRING)`
+- **Database & Schema:** `SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE`
+- **Identifier:** `SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.OPTIMIZE_RESOURCES(STRING, STRING)`
 - **Parameters:**
   - `service_type` (STRING): Type of service to optimize
   - `time_period` (STRING): Time period for optimization (NEXT_WEEK, NEXT_MONTH, etc.)
 - **Description:** Analyze service patterns and recommend resource allocation optimizations
-- **Warehouse:** `SG_DEMO_WH`
+- **Warehouse:** `SNOWFLAKE_DEMO_WH`
 
 ### Orchestration Instructions
 ```
@@ -135,17 +135,17 @@ When taking actions:
 - **Primary Role:** `SNOWFLAKE_INTELLIGENCE_ADMIN`
 - **Additional Roles:** (to be configured based on agency needs)
 - **Data Access:** Read access to all demo schemas, execute access to custom procedures
-- **Warehouse:** `SG_DEMO_WH`
+- **Warehouse:** `SNOWFLAKE_DEMO_WH`
 
 ### Data Sources Integration
 
 #### Internal Data Sources
-1. **Citizen Profiles** - `SG_PUBSEC_DEMO.CITIZEN_DATA.CITIZEN_PROFILES`
-2. **Service Interactions** - `SG_PUBSEC_DEMO.SERVICES.SERVICE_INTERACTIONS`
-3. **Performance Metrics** - `SG_PUBSEC_DEMO.ANALYTICS.SERVICE_PERFORMANCE`
-4. **Policy Impact** - `SG_PUBSEC_DEMO.ANALYTICS.POLICY_IMPACT`
-5. **Inter-Agency Workflows** - `SG_PUBSEC_DEMO.SERVICES.INTER_AGENCY_WORKFLOWS`
-6. **Current Events Impact** - `SG_PUBSEC_DEMO.ANALYTICS.CURRENT_EVENTS_IMPACT`
+1. **Citizen Profiles** - `SNOWFLAKE_PUBSEC_DEMO.CITIZEN_DATA.CITIZEN_PROFILES`
+2. **Service Interactions** - `SNOWFLAKE_PUBSEC_DEMO.SERVICES.SERVICE_INTERACTIONS`
+3. **Performance Metrics** - `SNOWFLAKE_PUBSEC_DEMO.ANALYTICS.SERVICE_PERFORMANCE`
+4. **Policy Impact** - `SNOWFLAKE_PUBSEC_DEMO.ANALYTICS.POLICY_IMPACT`
+5. **Inter-Agency Workflows** - `SNOWFLAKE_PUBSEC_DEMO.SERVICES.INTER_AGENCY_WORKFLOWS`
+6. **Current Events Impact** - `SNOWFLAKE_PUBSEC_DEMO.ANALYTICS.CURRENT_EVENTS_IMPACT`
 
 #### External Data Sources (Snowflake Marketplace)
 1. **Weather Data** - For correlating service usage with weather patterns

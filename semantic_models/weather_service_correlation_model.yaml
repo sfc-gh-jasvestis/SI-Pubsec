@@ -8,7 +8,7 @@ tables:
   - name: "weather_service_correlation"
     description: "Hourly correlation between weather conditions and citizen service interactions"
     base_table:
-      database: "SG_PUBSEC_DEMO"
+      database: "SNOWFLAKE_PUBSEC_DEMO"
       schema: "ANALYTICS"
       table: "WEATHER_SERVICE_CORRELATION"
     

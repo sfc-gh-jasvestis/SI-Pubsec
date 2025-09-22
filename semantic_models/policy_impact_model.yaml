@@ -8,7 +8,7 @@ tables:
   - name: "policy_performance_analytics"
     description: "Policy implementation tracking and impact measurement"
     base_table:
-      database: "SG_PUBSEC_DEMO"
+      database: "SNOWFLAKE_PUBSEC_DEMO"
       schema: "ANALYTICS"
       table: "POLICY_PERFORMANCE_ANALYTICS"
     
