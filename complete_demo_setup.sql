@@ -799,39 +799,39 @@ VALUES
 
     ('DOC002', 'Smart Nation Initiative Overview', 'Strategic Plan', 'Smart Nation Office', 
      'Smart Nation Singapore is a national initiative to harness technology and data to improve living, create economic opportunities, and build stronger communities. Key pillars include Digital Economy, Digital Government, and Digital Society. Major projects encompass autonomous vehicles, cashless payments, smart healthcare systems, and urban sensing platforms. The initiative promotes innovation through public-private partnerships and citizen engagement.', 
-     'Smart Nation', '2024-08-15', 'https://www.smartnation.gov.sg/about', 'smart nation, digital economy, autonomous vehicles, cashless payments'),
+     'Smart Nation', '2024-08-15', 'https://www.smartnation.gov.sg', 'smart nation, digital economy, autonomous vehicles, cashless payments'),
 
     ('DOC003', 'SingPass Digital Identity Services', 'Service Guide', 'GovTech', 
      'SingPass is Singapore national digital identity platform providing secure access to government and private sector services. Features include biometric authentication, digital wallet, document storage, and API integration. Citizens can access over 1,400 government services through SingPass. The platform supports multi-factor authentication, facial recognition, and blockchain-based document verification for enhanced security.', 
-     'Digital Identity', '2024-09-10', 'https://www.singpass.gov.sg/main', 'SingPass, digital identity, biometric, authentication, government services'),
+     'Digital Identity', '2024-09-10', 'https://www.singpass.gov.sg', 'SingPass, digital identity, biometric, authentication, government services'),
 
     ('DOC004', 'Healthcare Digital Transformation Strategy', 'Policy Document', 'MOH', 
      'Ministry of Health digital transformation strategy focuses on integrated healthcare delivery, predictive analytics, and personalized medicine. Key components include HealthHub digital platform, telemedicine services, AI-powered diagnostics, and electronic health records integration. The strategy emphasizes preventive care, chronic disease management, and health data interoperability across healthcare providers.', 
-     'Healthcare', '2024-08-20', 'https://www.moh.gov.sg/digital-health', 'healthcare, HealthHub, telemedicine, AI diagnostics, electronic health records'),
+     'Healthcare', '2024-08-20', 'https://www.moh.gov.sg', 'healthcare, HealthHub, telemedicine, AI diagnostics, electronic health records'),
 
-    ('DOC005', 'Education Technology Roadmap', 'Strategic Plan', 'MOE', 
-     'Ministry of Education technology roadmap outlines digital learning transformation for Singapore schools. Initiatives include personalized learning platforms, AI-powered tutoring systems, virtual reality classrooms, and digital assessment tools. The roadmap emphasizes teacher training, infrastructure development, and equitable access to technology across all educational institutions.', 
-     'Education', '2024-07-30', 'https://www.moe.gov.sg/education-technology', 'education technology, personalized learning, AI tutoring, virtual reality, digital assessment'),
+    ('DOC005', 'EdTech Masterplan 2030', 'Strategic Plan', 'MOE', 
+     'Ministry of Education EdTech Masterplan 2030 outlines technology-transformed learning to prepare students for a technology-transformed world. Key initiatives include AI-enabled personalized learning, digital literacy integration, 21st century competencies development, and enhanced collaborative culture. The plan emphasizes teacher professional development, learning analytics, and intelligent responsive learning environments.', 
+     'Education', '2024-07-30', 'https://www.moe.gov.sg/education-in-sg/educational-technology-journey/edtech-masterplan', 'EdTech Masterplan, digital literacy, AI-enabled learning, 21st century competencies'),
 
     ('FAQ001', 'How to Apply for HDB Housing', 'FAQ', 'HDB', 
      'Housing Development Board (HDB) housing application process: 1) Register for HDB Flat Eligibility (HFE) letter online, 2) Submit application during sales launch, 3) Complete required documents including income assessment, 4) Attend appointment for verification, 5) Sign lease agreement upon successful allocation. Eligibility criteria include citizenship, age, income ceiling, and first-time applicant status. Various housing schemes available including BTO, SBF, and resale options.', 
-     'Housing', '2024-09-01', 'https://www.hdb.gov.sg/residential/buying-a-flat', 'HDB, housing application, BTO, eligibility, lease agreement'),
+     'Housing', '2024-09-01', 'https://www.hdb.gov.sg', 'HDB, housing application, BTO, eligibility, lease agreement'),
 
     ('FAQ002', 'SingPass Account Setup and Troubleshooting', 'FAQ', 'GovTech', 
      'SingPass account setup: 1) Visit SingPass website or download mobile app, 2) Register using NRIC and personal details, 3) Verify identity through SMS or physical verification, 4) Set up 2FA authentication, 5) Complete profile setup. Troubleshooting common issues: password reset through SMS verification, account lockout resolution through customer service, biometric setup for mobile app, and API integration for developers.', 
-     'Digital Services', '2024-09-15', 'https://www.singpass.gov.sg/setup', 'SingPass, account setup, 2FA, biometric, troubleshooting'),
+     'Digital Services', '2024-09-15', 'https://www.singpass.gov.sg', 'SingPass, account setup, 2FA, biometric, troubleshooting'),
 
     ('FAQ003', 'Healthcare Subsidies and Medisave Usage', 'FAQ', 'MOH', 
      'Healthcare subsidies in Singapore: Medisave for hospitalization and approved medical procedures, Medishield Life for catastrophic medical expenses, Community Health Assist Scheme (CHAS) for primary care, and Pioneer Generation Package for seniors. Medisave usage guidelines include withdrawal limits, approved procedures, and family member coverage. Subsidy eligibility based on income assessment and citizenship status.', 
-     'Healthcare', '2024-08-30', 'https://www.moh.gov.sg/healthcare-subsidies', 'healthcare subsidies, Medisave, Medishield, CHAS, Pioneer Generation'),
+     'Healthcare', '2024-08-30', 'https://www.moh.gov.sg', 'healthcare subsidies, Medisave, Medishield, CHAS, Pioneer Generation'),
 
     ('FAQ004', 'Business Registration and Licensing', 'FAQ', 'ACRA', 
      'Business registration process: 1) Reserve company name through BizFile+, 2) Prepare incorporation documents, 3) Submit application with required fees, 4) Obtain business registration certificate, 5) Apply for relevant business licenses. Required documents include memorandum and articles of association, director and shareholder details, registered office address. Various business structures available including private limited company, sole proprietorship, and partnership.', 
-     'Business Services', '2024-08-10', 'https://www.acra.gov.sg/how-to-guides/before-you-start/how-to-register-a-company', 'business registration, ACRA, BizFile+, incorporation, licensing'),
+     'Business Services', '2024-08-10', 'https://www.acra.gov.sg', 'business registration, ACRA, BizFile+, incorporation, licensing'),
 
     ('FAQ005', 'Work Pass and Employment Guidelines', 'FAQ', 'MOM', 
      'Work pass applications for foreign workers: Employment Pass for professionals, S Pass for mid-skilled workers, Work Permit for semi-skilled workers. Application process includes employer sponsorship, salary requirements, educational qualifications, and quota limitations. Renewal procedures, dependent pass applications, and permanent residence pathways. Compliance requirements for employers including levy payments and worker welfare standards.', 
-     'Employment', '2024-09-08', 'https://www.mom.gov.sg/passes-and-permits', 'work pass, Employment Pass, S Pass, Work Permit, MOM');
+     'Employment', '2024-09-08', 'https://www.mom.gov.sg', 'work pass, Employment Pass, S Pass, Work Permit, MOM');
 
 SELECT 'Phase 5: Government knowledge base populated (15 documents)' as SETUP_PHASE;
 
