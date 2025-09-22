@@ -261,22 +261,26 @@ INSERT INTO SNOWFLAKE_PUBSEC_DEMO.ANALYTICS.CURRENT_EVENTS_IMPACT (
     RESPONSE_MEASURES,
     STATUS
 )
-VALUES 
-    ('EVT001', 'Monsoon Season Service Adjustments', '2024-09-15', 
-     ARRAY_CONSTRUCT('Transport Services', 'Emergency Services', 'Healthcare'), 
-     3.2, 45.6, 
-     ARRAY_CONSTRUCT('Extended Service Hours', 'Mobile Response Units', 'Proactive Alerts'), 
-     'Active'),
-    ('EVT002', 'Digital Services Upgrade Weekend', '2024-09-20', 
-     ARRAY_CONSTRUCT('SingPass', 'Government Portals', 'Mobile Apps'), 
-     2.1, 23.4, 
-     ARRAY_CONSTRUCT('Advance Notifications', 'Alternative Channels', 'Extended Support'), 
-     'Completed'),
-    ('EVT003', 'Public Holiday Service Planning', '2024-09-30', 
-     ARRAY_CONSTRUCT('All Government Services'), 
-     1.8, 15.2, 
-     ARRAY_CONSTRUCT('Adjusted Operating Hours', 'Emergency Contact Info', 'Self-Service Options'), 
-     'Planned');
+SELECT 
+    'EVT001', 'Monsoon Season Service Adjustments', '2024-09-15', 
+    ARRAY_CONSTRUCT('Transport Services', 'Emergency Services', 'Healthcare'), 
+    3.2, 45.6, 
+    ARRAY_CONSTRUCT('Extended Service Hours', 'Mobile Response Units', 'Proactive Alerts'), 
+    'Active'
+UNION ALL
+SELECT 
+    'EVT002', 'Digital Services Upgrade Weekend', '2024-09-20', 
+    ARRAY_CONSTRUCT('SingPass', 'Government Portals', 'Mobile Apps'), 
+    2.1, 23.4, 
+    ARRAY_CONSTRUCT('Advance Notifications', 'Alternative Channels', 'Extended Support'), 
+    'Completed'
+UNION ALL
+SELECT 
+    'EVT003', 'Public Holiday Service Planning', '2024-09-30', 
+    ARRAY_CONSTRUCT('All Government Services'), 
+    1.8, 15.2, 
+    ARRAY_CONSTRUCT('Adjusted Operating Hours', 'Emergency Contact Info', 'Self-Service Options'), 
+    'Planned';
 
 -- Create summary statistics for demo
 CREATE OR REPLACE VIEW SNOWFLAKE_PUBSEC_DEMO.ANALYTICS.DEMO_SUMMARY_STATS AS
