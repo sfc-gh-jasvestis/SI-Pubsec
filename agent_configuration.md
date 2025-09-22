@@ -62,6 +62,12 @@ For sensitive queries, remind users about data governance policies and suggest a
 - **Semantic Model:** `service_performance_model.yaml`
 - **Description:** Government service performance monitoring with benchmark comparisons
 
+**Tool Name:** `Weather_Service_Analytics`
+- **Database:** `SNOWFLAKE_PUBSEC_DEMO`
+- **Schema:** `SEMANTIC_MODELS`
+- **Semantic Model:** `weather_service_correlation_model.yaml`
+- **Description:** Weather impact analysis on government services with regional and temporal correlations
+
 #### 2. Cortex Search Services
 **Tool Name:** `Singapore_Government_Knowledge`
 - **Database:** `SNOWFLAKE_PUBSEC_DEMO`
