@@ -52,7 +52,15 @@ CREATE OR REPLACE TABLE SNOWFLAKE_PUBSEC_DEMO.EXTERNAL_DATA.WEATHER_DATA (
 
 -- Generate realistic Singapore weather data based on historical climate patterns
 -- Singapore has a tropical rainforest climate with consistent temperature and high humidity
-INSERT INTO SNOWFLAKE_PUBSEC_DEMO.EXTERNAL_DATA.WEATHER_DATA
+INSERT INTO SNOWFLAKE_PUBSEC_DEMO.EXTERNAL_DATA.WEATHER_DATA (
+    DATE_TIME,
+    LOCATION,
+    TEMPERATURE_C,
+    HUMIDITY_PCT,
+    RAINFALL_MM,
+    WEATHER_CONDITION,
+    ALERT_LEVEL
+)
 WITH SINGAPORE_WEATHER AS (
     SELECT 
         DATEADD(hour, -ROW_NUMBER() OVER (ORDER BY SEQ4()), CURRENT_TIMESTAMP()) as DATE_TIME,
