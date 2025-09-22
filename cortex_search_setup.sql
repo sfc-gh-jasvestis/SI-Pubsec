@@ -47,7 +47,7 @@ SELECT PARSE_JSON(
         'SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.SNOWFLAKE_GOV_KNOWLEDGE_SERVICE',
         '{
             "query": "How do I set up SingPass account?",
-            "columns": ["CONTENT", "DOCUMENT_TITLE", "AGENCY"],
+            "columns": ["CONTENT", "TITLE", "METADATA"],
             "limit": 3
         }'
     )
@@ -59,7 +59,7 @@ SELECT PARSE_JSON(
         'SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.SNOWFLAKE_GOV_KNOWLEDGE_SERVICE',
         '{
             "query": "HDB housing application process",
-            "columns": ["CONTENT", "DOCUMENT_TITLE", "AGENCY"],
+            "columns": ["CONTENT", "TITLE", "METADATA"],
             "limit": 3
         }'
     )
@@ -71,7 +71,7 @@ SELECT PARSE_JSON(
         'SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.SNOWFLAKE_GOV_KNOWLEDGE_SERVICE',
         '{
             "query": "healthcare subsidies and Medisave",
-            "columns": ["CONTENT", "DOCUMENT_TITLE", "AGENCY"],
+            "columns": ["CONTENT", "TITLE", "METADATA"],
             "limit": 3
         }'
     )
@@ -83,7 +83,7 @@ SELECT PARSE_JSON(
         'SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.SNOWFLAKE_GOV_KNOWLEDGE_SERVICE',
         '{
             "query": "how to register a business in Singapore",
-            "columns": ["CONTENT", "DOCUMENT_TITLE", "AGENCY"],
+            "columns": ["CONTENT", "TITLE", "METADATA"],
             "limit": 3
         }'
     )
@@ -95,7 +95,7 @@ SELECT PARSE_JSON(
         'SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.SNOWFLAKE_GOV_KNOWLEDGE_SERVICE',
         '{
             "query": "digital government transformation strategy",
-            "columns": ["CONTENT", "DOCUMENT_TITLE", "AGENCY"],
+            "columns": ["CONTENT", "TITLE", "METADATA"],
             "limit": 3
         }'
     )
