@@ -1,7 +1,7 @@
 -- Snowflake Marketplace Data Integration
 -- Singapore Public Sector Demo - External Data Sources
 
-USE ROLE SG_INTELLIGENCE_ADMIN;
+USE ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
 USE DATABASE SG_PUBSEC_DEMO;
 USE WAREHOUSE SG_DEMO_WH;
 
@@ -293,7 +293,7 @@ WHERE HEALTH_INDICATOR = 'Digital Health App Usage'
 AND REPORT_DATE = (SELECT MAX(REPORT_DATE) FROM SG_PUBSEC_DEMO.EXTERNAL_DATA.HEALTH_TRENDS);
 
 -- Grant permissions for the integrated views
-GRANT SELECT ON ALL VIEWS IN SCHEMA SG_PUBSEC_DEMO.ANALYTICS TO ROLE SG_INTELLIGENCE_ADMIN;
+GRANT SELECT ON ALL VIEWS IN SCHEMA SG_PUBSEC_DEMO.ANALYTICS TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
 
 SELECT 'Marketplace data integration completed successfully!' as STATUS,
        'External data sources are now available for Snowflake Intelligence queries' as NEXT_STEP;

@@ -2,7 +2,7 @@
 -- Privacy-compliant synthetic citizen data for demonstration purposes
 -- All data is artificially generated and does not represent real citizens
 
-USE ROLE SG_INTELLIGENCE_ADMIN;
+USE ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
 USE DATABASE SG_PUBSEC_DEMO;
 USE WAREHOUSE SG_DEMO_WH;
 

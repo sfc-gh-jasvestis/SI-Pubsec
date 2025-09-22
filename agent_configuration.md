@@ -4,7 +4,7 @@
 ### Agent Details
 - **Agent Name:** `SG_Smart_Nation_Assistant`
 - **Display Name:** `Singapore Smart Nation Intelligence Assistant`
-- **Schema:** `SG_PUBSEC_DEMO.INTELLIGENCE`
+- **Schema:** `snowflake_intelligence.agents`
 - **Description:** AI-powered assistant for Singapore's digital government services, providing instant insights across citizen services, policy impact, and inter-agency coordination.
 
 ### Agent Instructions
@@ -113,7 +113,7 @@ When taking actions:
 ```
 
 ### Access Control
-- **Primary Role:** `SG_INTELLIGENCE_ADMIN`
+- **Primary Role:** `SNOWFLAKE_INTELLIGENCE_ADMIN`
 - **Additional Roles:** (to be configured based on agency needs)
 - **Data Access:** Read access to all demo schemas, execute access to custom procedures
 - **Warehouse:** `SG_DEMO_WH`
