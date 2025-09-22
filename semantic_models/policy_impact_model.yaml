@@ -141,7 +141,7 @@ verified_queries:
       WHERE POLICY_NAME ILIKE '%Digital Inclusion%'
         AND TARGET_DEMOGRAPHIC ILIKE '%65+%'
       ORDER BY IMPACT_PERCENTAGE DESC
-    verified_at: "2024-09-22T10:00:00Z"
+    verified_at: 1727006400
     
   - name: "Most Successful Government Policies"
     question: "Which government policies have been most successful this year?"
@@ -158,7 +158,7 @@ verified_queries:
         AND POLICY_STATUS = 'Active'
       ORDER BY IMPACT_PERCENTAGE DESC
       LIMIT 10
-    verified_at: "2024-09-22T10:00:00Z"
+    verified_at: 1727006400
     
   - name: "Policy Implementation Timeline and Impact"
     question: "Show me the timeline of policy implementations and their impact over time"
@@ -174,7 +174,7 @@ verified_queries:
       FROM policy_performance_analytics
       WHERE IMPLEMENTATION_DATE >= '2024-01-01'
       ORDER BY IMPLEMENTATION_DATE, IMPACT_PERCENTAGE DESC
-    verified_at: "2024-09-22T10:00:00Z"
+    verified_at: 1727006400
     
   - name: "Cross-Agency Policy Performance Comparison"
     question: "Compare policy effectiveness across different target demographics"
@@ -189,7 +189,7 @@ verified_queries:
       WHERE POLICY_STATUS = 'Active'
       GROUP BY 1
       ORDER BY avg_impact DESC
-    verified_at: "2024-09-22T10:00:00Z"
+    verified_at: 1727006400
     
   - name: "Digital vs Non-Digital Policy Effectiveness"
     question: "How do digital policies compare to traditional policies in terms of impact?"
@@ -208,4 +208,4 @@ verified_queries:
       WHERE POLICY_STATUS = 'Active'
       GROUP BY 1
       ORDER BY avg_impact DESC
-    verified_at: "2024-09-22T10:00:00Z"
+    verified_at: 1727006400

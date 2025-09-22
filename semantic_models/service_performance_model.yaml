@@ -188,7 +188,7 @@ verified_queries:
       WHERE MEASUREMENT_DATE >= DATEADD(day, -30, CURRENT_DATE())
       GROUP BY 1, 2, 3, 4
       ORDER BY vs_benchmark_pct DESC
-    verified_at: "2024-09-22T10:00:00Z"
+    verified_at: 1727006400
     
   - name: "SingPass Performance Analysis"
     question: "How is SingPass performing across different metrics?"
@@ -206,7 +206,7 @@ verified_queries:
         AND MEASUREMENT_DATE >= DATEADD(day, -30, CURRENT_DATE())
       GROUP BY 1, 2, 6
       ORDER BY METRIC_TYPE, performance_vs_benchmark DESC
-    verified_at: "2024-09-22T10:00:00Z"
+    verified_at: 1727006400
     
   - name: "Agency Performance Comparison"
     question: "Compare performance across all government agencies"
@@ -222,7 +222,7 @@ verified_queries:
       WHERE MEASUREMENT_DATE >= DATEADD(day, -30, CURRENT_DATE())
       GROUP BY 1
       ORDER BY benchmark_achievement_rate DESC
-    verified_at: "2024-09-22T10:00:00Z"
+    verified_at: 1727006400
     
   - name: "Response Time Trends by Service Category"
     question: "Show me response time trends across different service categories"
@@ -237,7 +237,7 @@ verified_queries:
         AND MEASUREMENT_DATE >= DATEADD(day, -60, CURRENT_DATE())
       GROUP BY 1, 2
       ORDER BY SERVICE_CATEGORY, MEASUREMENT_DATE
-    verified_at: "2024-09-22T10:00:00Z"
+    verified_at: 1727006400
     
   - name: "Underperforming Services Analysis"
     question: "Which services are consistently underperforming and need attention?"
@@ -257,7 +257,7 @@ verified_queries:
       GROUP BY 1, 2, 3, 4
       HAVING AVG(PERFORMANCE_VS_BENCHMARK_PCT) < -10
       ORDER BY performance_gap ASC
-    verified_at: "2024-09-22T10:00:00Z"
+    verified_at: 1727006400
     
   - name: "Weekend vs Weekday Service Performance"
     question: "How do government services perform on weekends compared to weekdays?"
@@ -272,4 +272,4 @@ verified_queries:
       WHERE MEASUREMENT_DATE >= DATEADD(day, -30, CURRENT_DATE())
       GROUP BY 1, 2
       ORDER BY period_type, benchmark_achievement_rate DESC
-    verified_at: "2024-09-22T10:00:00Z"
+    verified_at: 1727006400

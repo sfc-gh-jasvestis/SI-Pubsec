@@ -165,7 +165,7 @@ verified_queries:
       WHERE INTERACTION_DATE >= DATEADD(day, -30, CURRENT_DATE())
       GROUP BY 1, 2, 3
       ORDER BY period_type, avg_duration DESC
-    verified_at: "2024-09-22T10:00:00Z"
+    verified_at: 1727006400
     
   - name: "Senior Citizen Digital Service Adoption"
     question: "Show me how senior citizens are using our digital services compared to other age groups"
@@ -181,7 +181,7 @@ verified_queries:
       WHERE INTERACTION_DATE >= DATEADD(day, -90, CURRENT_DATE())
       GROUP BY 1, 2
       ORDER BY AGE_GROUP, interactions DESC
-    verified_at: "2024-09-22T10:00:00Z"
+    verified_at: 1727006400
     
   - name: "Service Performance by District"
     question: "Which postal districts have the highest citizen satisfaction with government services?"
@@ -197,7 +197,7 @@ verified_queries:
       GROUP BY 1
       HAVING COUNT(*) >= 100
       ORDER BY avg_satisfaction DESC
-    verified_at: "2024-09-22T10:00:00Z"
+    verified_at: 1727006400
     
   - name: "Mobile vs Web Portal Usage Trends"
     question: "Compare mobile app usage vs web portal usage across different demographics"
@@ -215,7 +215,7 @@ verified_queries:
         AND INTERACTION_DATE >= DATEADD(day, -30, CURRENT_DATE())
       GROUP BY 1, 2, 3
       ORDER BY interactions DESC
-    verified_at: "2024-09-22T10:00:00Z"
+    verified_at: 1727006400
     
   - name: "Peak Service Usage Patterns"
     question: "When do citizens most frequently access government services?"
@@ -230,4 +230,4 @@ verified_queries:
       WHERE INTERACTION_DATE >= DATEADD(day, -30, CURRENT_DATE())
       GROUP BY 1, 2
       ORDER BY interactions DESC
-    verified_at: "2024-09-22T10:00:00Z"
+    verified_at: 1727006400
