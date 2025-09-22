@@ -105,6 +105,10 @@ VALUES
      'Work pass applications for foreign workers: Employment Pass for professionals, S Pass for mid-skilled workers, Work Permit for semi-skilled workers. Application process includes employer sponsorship, salary requirements, educational qualifications, and quota limitations. Renewal procedures, dependent pass applications, and permanent residence pathways. Compliance requirements for employers including levy payments and worker welfare standards.', 
      'Employment', '2024-09-08', 'https://www.mom.gov.sg/passes-and-permits', 'work pass, Employment Pass, S Pass, Work Permit, MOM');
 
+-- Enable change tracking (required for Cortex Search)
+ALTER TABLE SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.GOVERNMENT_KNOWLEDGE SET
+  CHANGE_TRACKING = TRUE;
+
 -- Create summary statistics
 SELECT 'Government knowledge base created successfully!' as STATUS,
        COUNT(*) as TOTAL_DOCUMENTS,

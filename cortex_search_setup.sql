@@ -35,35 +35,53 @@ TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
 -- Test the search service
 SELECT 'Cortex Search service created successfully!' as STATUS;
 
--- Example search queries to test the service
-SELECT 'Testing search functionality...' as STATUS;
+-- Wait for the search service to be ready (may take a few minutes)
+SELECT 'Cortex Search service created. Waiting for indexing to complete...' as STATUS;
+
+-- Example search queries to test the service (run these after a few minutes)
+-- Use the correct syntax for Cortex Search queries
 
 -- Search for SingPass information
-SELECT CORTEX_SEARCH(
-    'SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.SNOWFLAKE_GOV_KNOWLEDGE_SERVICE',
-    'How do I set up SingPass account?'
-) as SINGPASS_SEARCH_RESULTS;
+SELECT *
+FROM TABLE(
+    SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.SNOWFLAKE_GOV_KNOWLEDGE_SERVICE(
+        QUERY => 'How do I set up SingPass account?',
+        LIMIT => 5
+    )
+) as SINGPASS_SEARCH;
 
 -- Search for housing information  
-SELECT CORTEX_SEARCH(
-    'SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.SNOWFLAKE_GOV_KNOWLEDGE_SERVICE',
-    'HDB housing application process'
-) as HOUSING_SEARCH_RESULTS;
+SELECT *
+FROM TABLE(
+    SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.SNOWFLAKE_GOV_KNOWLEDGE_SERVICE(
+        QUERY => 'HDB housing application process',
+        LIMIT => 3
+    )
+) as HOUSING_SEARCH;
 
 -- Search for healthcare information
-SELECT CORTEX_SEARCH(
-    'SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.SNOWFLAKE_GOV_KNOWLEDGE_SERVICE',
-    'healthcare subsidies and Medisave'
-) as HEALTHCARE_SEARCH_RESULTS;
+SELECT *
+FROM TABLE(
+    SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.SNOWFLAKE_GOV_KNOWLEDGE_SERVICE(
+        QUERY => 'healthcare subsidies and Medisave',
+        LIMIT => 3
+    )
+) as HEALTHCARE_SEARCH;
 
 -- Search for business registration
-SELECT CORTEX_SEARCH(
-    'SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.SNOWFLAKE_GOV_KNOWLEDGE_SERVICE',
-    'how to register a business in Singapore'
-) as BUSINESS_SEARCH_RESULTS;
+SELECT *
+FROM TABLE(
+    SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.SNOWFLAKE_GOV_KNOWLEDGE_SERVICE(
+        QUERY => 'how to register a business in Singapore',
+        LIMIT => 3
+    )
+) as BUSINESS_SEARCH;
 
 -- Search for digital government services
-SELECT CORTEX_SEARCH(
-    'SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.SNOWFLAKE_GOV_KNOWLEDGE_SERVICE',
-    'digital government transformation strategy'
-) as DIGITAL_GOV_SEARCH_RESULTS;
+SELECT *
+FROM TABLE(
+    SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.SNOWFLAKE_GOV_KNOWLEDGE_SERVICE(
+        QUERY => 'digital government transformation strategy',
+        LIMIT => 3
+    )
+) as DIGITAL_GOV_SEARCH;
