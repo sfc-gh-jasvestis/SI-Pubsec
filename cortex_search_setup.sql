@@ -12,7 +12,7 @@ WAREHOUSE = SNOWFLAKE_DEMO_WH
 TARGET_LAG = '1 hour'
 AS (
     SELECT 
-        DOCUMENT_ID,
+        DOCUMENT_URL as DOCUMENT_ID,  -- Use URL as the primary ID for proper linking
         DOCUMENT_TITLE || ' - ' || AGENCY || ' (' || DOCUMENT_TYPE || ')' as TITLE,
         CONTENT,
         OBJECT_CONSTRUCT(
@@ -23,7 +23,8 @@ AS (
             'category', CATEGORY,
             'last_updated', LAST_UPDATED,
             'url', DOCUMENT_URL,
-            'keywords', KEYWORDS
+            'keywords', KEYWORDS,
+            'source_link', DOCUMENT_URL  -- Explicit source link field
         ) as METADATA
     FROM SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.GOVERNMENT_KNOWLEDGE
 );

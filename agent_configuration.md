@@ -72,10 +72,10 @@ For sensitive queries, remind users about data governance policies and suggest a
 **Tool Name:** `Singapore_Government_Knowledge`
 - **Database:** `SNOWFLAKE_PUBSEC_DEMO`
 - **Schema:** `INTELLIGENCE`  
-- **Search Service:** `SNOWFLAKE_GOV_KNOWLEDGE_SERVICE` (to be created)
-- **ID Column:** `DOCUMENT_ID`
-- **Title Column:** `DOCUMENT_TITLE`
-- **Description:** Search through Singapore government policies, procedures, and best practices
+- **Search Service:** `SNOWFLAKE_GOV_KNOWLEDGE_SERVICE`
+- **ID Column:** `DOCUMENT_ID` (contains actual government website URLs)
+- **Title Column:** `TITLE`
+- **Description:** Search through Singapore government policies, procedures, and best practices with direct links to official government websites
 
 #### 3. Custom Tools
 
@@ -135,6 +135,12 @@ When taking actions:
 - Provide clear feedback on what actions were taken
 - Log all automated actions for audit purposes
 - Respect data governance and privacy requirements
+
+When providing information from government knowledge sources:
+- Always include the official government website URL as the source
+- Use the actual government website URLs (e.g., https://www.moh.gov.sg) not internal document IDs
+- Encourage users to visit the official government websites for the most up-to-date information
+- Reference the specific government agency responsible for each service or policy
 ```
 
 ### Access Control
