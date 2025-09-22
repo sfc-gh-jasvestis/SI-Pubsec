@@ -9,25 +9,6 @@ USE ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
 USE DATABASE SNOWFLAKE_PUBSEC_DEMO;
 USE WAREHOUSE SNOWFLAKE_DEMO_WH;
 
--- Verify current context
-SELECT 
-    CURRENT_ROLE() as CURRENT_ROLE,
-    CURRENT_DATABASE() as CURRENT_DATABASE,
-    CURRENT_WAREHOUSE() as CURRENT_WAREHOUSE;
-
--- Check if schema exists and create if needed
-SELECT 'Checking for EXTERNAL_DATA schema...' as STATUS;
-
--- Create schema with proper error handling
-CREATE SCHEMA IF NOT EXISTS SNOWFLAKE_PUBSEC_DEMO.EXTERNAL_DATA
-    COMMENT = 'External data sources from Snowflake Marketplace';
-
--- Verify schema creation
-SHOW SCHEMAS IN DATABASE SNOWFLAKE_PUBSEC_DEMO;
-
--- Grant permissions on the schema
-GRANT USAGE ON SCHEMA SNOWFLAKE_PUBSEC_DEMO.EXTERNAL_DATA TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
-GRANT ALL ON SCHEMA SNOWFLAKE_PUBSEC_DEMO.EXTERNAL_DATA TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
 
 -- Instructions for integrating Snowflake Marketplace data sources
 -- These would be actual marketplace integrations in a real environment
