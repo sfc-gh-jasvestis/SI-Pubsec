@@ -50,39 +50,137 @@ CREATE OR REPLACE TABLE SG_PUBSEC_DEMO.EXTERNAL_DATA.WEATHER_DATA (
     CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP()
 );
 
--- Sample weather data for demo
+-- Generate realistic Singapore weather data based on historical climate patterns
+-- Singapore has a tropical rainforest climate with consistent temperature and high humidity
 INSERT INTO SG_PUBSEC_DEMO.EXTERNAL_DATA.WEATHER_DATA
-WITH WEATHER_SAMPLE AS (
+WITH SINGAPORE_WEATHER AS (
     SELECT 
         DATEADD(hour, -ROW_NUMBER() OVER (ORDER BY SEQ4()), CURRENT_TIMESTAMP()) as DATE_TIME,
         CASE 
-            WHEN UNIFORM(1, 5, RANDOM()) = 1 THEN 'Central Singapore'
-            WHEN UNIFORM(1, 5, RANDOM()) = 2 THEN 'East Singapore'
-            WHEN UNIFORM(1, 5, RANDOM()) = 3 THEN 'West Singapore'
-            WHEN UNIFORM(1, 5, RANDOM()) = 4 THEN 'North Singapore'
-            ELSE 'South Singapore'
+            WHEN UNIFORM(1, 10, RANDOM()) <= 2 THEN 'Central Singapore'     -- 20% CBD/Central
+            WHEN UNIFORM(1, 10, RANDOM()) <= 4 THEN 'East Singapore'        -- 20% East (Changi, Tampines)
+            WHEN UNIFORM(1, 10, RANDOM()) <= 6 THEN 'West Singapore'        -- 20% West (Jurong, Tuas)
+            WHEN UNIFORM(1, 10, RANDOM()) <= 8 THEN 'North Singapore'       -- 20% North (Woodlands, Yishun)
+            ELSE 'South Singapore'                                           -- 20% South (Sentosa, Marina)
         END as LOCATION,
-        UNIFORM(24, 34, RANDOM()) + (UNIFORM(0, 9, RANDOM()) / 10.0) as TEMPERATURE_C,
-        UNIFORM(60, 95, RANDOM()) as HUMIDITY_PCT,
+        
+        -- Singapore temperature: typically 24-34°C with seasonal variations
+        -- Slightly cooler during monsoon season (Nov-Mar), warmer during dry season
         CASE 
-            WHEN UNIFORM(1, 100, RANDOM()) <= 70 THEN 0
-            WHEN UNIFORM(1, 100, RANDOM()) <= 90 THEN UNIFORM(1, 10, RANDOM())
-            ELSE UNIFORM(10, 50, RANDOM())
+            WHEN EXTRACT(MONTH FROM DATEADD(hour, -ROW_NUMBER() OVER (ORDER BY SEQ4()), CURRENT_TIMESTAMP())) IN (11, 12, 1, 2, 3) THEN
+                -- Monsoon season: slightly cooler and more variable
+                ROUND(UNIFORM(23.5, 32.0, RANDOM()) + 
+                      -- Add daily temperature cycle (cooler at night, warmer in afternoon)
+                      CASE 
+                          WHEN EXTRACT(HOUR FROM DATEADD(hour, -ROW_NUMBER() OVER (ORDER BY SEQ4()), CURRENT_TIMESTAMP())) BETWEEN 6 AND 18 THEN UNIFORM(0, 3, RANDOM())
+                          ELSE UNIFORM(-2, 1, RANDOM())
+                      END, 1)
+            ELSE
+                -- Dry season: warmer and more consistent
+                ROUND(UNIFORM(25.0, 34.5, RANDOM()) + 
+                      -- Daily temperature cycle
+                      CASE 
+                          WHEN EXTRACT(HOUR FROM DATEADD(hour, -ROW_NUMBER() OVER (ORDER BY SEQ4()), CURRENT_TIMESTAMP())) BETWEEN 6 AND 18 THEN UNIFORM(0, 2.5, RANDOM())
+                          ELSE UNIFORM(-1.5, 0.5, RANDOM())
+                      END, 1)
+        END as TEMPERATURE_C,
+        
+        -- Singapore humidity: consistently high (65-95%), higher during rain
+        CASE 
+            WHEN UNIFORM(1, 100, RANDOM()) <= 30 THEN UNIFORM(85, 95, RANDOM())  -- 30% very high humidity
+            WHEN UNIFORM(1, 100, RANDOM()) <= 70 THEN UNIFORM(75, 90, RANDOM())  -- 40% high humidity  
+            ELSE UNIFORM(65, 85, RANDOM())                                        -- 30% moderate-high humidity
+        END as HUMIDITY_PCT,
+        
+        -- Singapore rainfall: frequent but brief showers, heavier during monsoon
+        CASE 
+            WHEN EXTRACT(MONTH FROM DATEADD(hour, -ROW_NUMBER() OVER (ORDER BY SEQ4()), CURRENT_TIMESTAMP())) IN (11, 12, 1, 2, 3) THEN
+                -- Monsoon season: more frequent and heavier rain
+                CASE 
+                    WHEN UNIFORM(1, 100, RANDOM()) <= 40 THEN 0                           -- 40% no rain
+                    WHEN UNIFORM(1, 100, RANDOM()) <= 60 THEN UNIFORM(0.1, 5, RANDOM())  -- 20% light rain
+                    WHEN UNIFORM(1, 100, RANDOM()) <= 85 THEN UNIFORM(5, 25, RANDOM())   -- 25% moderate rain
+                    ELSE UNIFORM(25, 80, RANDOM())                                        -- 15% heavy rain
+                END
+            ELSE
+                -- Dry season: less frequent but still regular afternoon showers
+                CASE 
+                    WHEN UNIFORM(1, 100, RANDOM()) <= 60 THEN 0                           -- 60% no rain
+                    WHEN UNIFORM(1, 100, RANDOM()) <= 80 THEN UNIFORM(0.1, 3, RANDOM())  -- 20% light rain
+                    WHEN UNIFORM(1, 100, RANDOM()) <= 95 THEN UNIFORM(3, 15, RANDOM())   -- 15% moderate rain
+                    ELSE UNIFORM(15, 50, RANDOM())                                        -- 5% heavy rain
+                END
         END as RAINFALL_MM,
+        
+        -- Weather conditions based on rainfall and time patterns
         CASE 
-            WHEN UNIFORM(1, 100, RANDOM()) <= 60 THEN 'Sunny'
-            WHEN UNIFORM(1, 100, RANDOM()) <= 80 THEN 'Cloudy'
-            WHEN UNIFORM(1, 100, RANDOM()) <= 95 THEN 'Light Rain'
-            ELSE 'Heavy Rain'
+            WHEN UNIFORM(1, 100, RANDOM()) <= 40 THEN 'Sunny'                    -- 40% sunny (tropical sun)
+            WHEN UNIFORM(1, 100, RANDOM()) <= 65 THEN 'Partly Cloudy'           -- 25% partly cloudy
+            WHEN UNIFORM(1, 100, RANDOM()) <= 80 THEN 'Cloudy'                  -- 15% cloudy
+            WHEN UNIFORM(1, 100, RANDOM()) <= 92 THEN 'Light Rain'              -- 12% light rain
+            WHEN UNIFORM(1, 100, RANDOM()) <= 98 THEN 'Heavy Rain'              -- 6% heavy rain
+            ELSE 'Thunderstorm'                                                  -- 2% thunderstorm
         END as WEATHER_CONDITION,
+        
+        -- Alert levels based on Singapore's weather warning system
         CASE 
-            WHEN UNIFORM(1, 100, RANDOM()) <= 85 THEN 'Normal'
-            WHEN UNIFORM(1, 100, RANDOM()) <= 95 THEN 'Advisory'
-            ELSE 'Warning'
+            WHEN UNIFORM(1, 1000, RANDOM()) <= 900 THEN 'Normal'                -- 90% normal conditions
+            WHEN UNIFORM(1, 1000, RANDOM()) <= 970 THEN 'Advisory'              -- 7% weather advisory
+            WHEN UNIFORM(1, 1000, RANDOM()) <= 995 THEN 'Warning'               -- 2.5% weather warning
+            ELSE 'Red Alert'                                                     -- 0.5% red alert (rare)
         END as ALERT_LEVEL
-    FROM TABLE(GENERATOR(ROWCOUNT => 720)) -- 30 days of hourly data
+    FROM TABLE(GENERATOR(ROWCOUNT => 2160)) -- 90 days of hourly data (more comprehensive)
+),
+
+-- Add realistic temporal patterns for Singapore weather
+ENHANCED_WEATHER AS (
+    SELECT 
+        DATE_TIME,
+        LOCATION,
+        TEMPERATURE_C,
+        HUMIDITY_PCT,
+        -- Adjust rainfall based on time of day (afternoon showers are common in Singapore)
+        CASE 
+            WHEN EXTRACT(HOUR FROM DATE_TIME) BETWEEN 14 AND 18 THEN 
+                -- Afternoon shower pattern - increase rainfall probability
+                CASE 
+                    WHEN RAINFALL_MM = 0 AND UNIFORM(1, 100, RANDOM()) <= 25 THEN UNIFORM(0.1, 8, RANDOM())
+                    WHEN RAINFALL_MM > 0 THEN RAINFALL_MM * UNIFORM(1.2, 2.0, RANDOM())
+                    ELSE RAINFALL_MM
+                END
+            WHEN EXTRACT(HOUR FROM DATE_TIME) BETWEEN 2 AND 6 THEN
+                -- Early morning - less rain, more stable conditions
+                CASE 
+                    WHEN RAINFALL_MM > 10 THEN RAINFALL_MM * UNIFORM(0.3, 0.7, RANDOM())
+                    ELSE RAINFALL_MM
+                END
+            ELSE RAINFALL_MM
+        END as RAINFALL_MM,
+        
+        -- Update weather condition based on adjusted rainfall
+        CASE 
+            WHEN RAINFALL_MM = 0 THEN 
+                CASE 
+                    WHEN UNIFORM(1, 100, RANDOM()) <= 50 THEN 'Sunny'
+                    WHEN UNIFORM(1, 100, RANDOM()) <= 80 THEN 'Partly Cloudy'
+                    ELSE 'Cloudy'
+                END
+            WHEN RAINFALL_MM <= 2 THEN 'Light Rain'
+            WHEN RAINFALL_MM <= 10 THEN 'Moderate Rain'
+            WHEN RAINFALL_MM <= 30 THEN 'Heavy Rain'
+            ELSE 'Thunderstorm'
+        END as WEATHER_CONDITION,
+        
+        -- Update alert level based on rainfall intensity
+        CASE 
+            WHEN RAINFALL_MM <= 5 THEN 'Normal'
+            WHEN RAINFALL_MM <= 15 THEN 'Advisory'
+            WHEN RAINFALL_MM <= 40 THEN 'Warning'
+            ELSE 'Red Alert'
+        END as ALERT_LEVEL
+    FROM SINGAPORE_WEATHER
 )
-SELECT * FROM WEATHER_SAMPLE;
+SELECT * FROM ENHANCED_WEATHER;
 
 -- 2. ECONOMIC INDICATORS INTEGRATION
 -- Search for "Economic Data" or "Federal Reserve Economic Data" in Marketplace
