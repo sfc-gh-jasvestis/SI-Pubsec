@@ -11,13 +11,13 @@ This demo showcases **Snowflake Intelligence** capabilities for Singapore's publ
 ## 📋 Demo Components
 
 ### 1. Core Files
-- **`demo_concept.md`** - Complete demo strategy and concept
-- **`setup.sql`** - Database and schema setup script
-- **`generate_synthetic_data.sql`** - Privacy-compliant synthetic data generation
-- **`marketplace_integration.sql`** - External data source integration
+- **`complete_demo_setup.sql`** - Single comprehensive setup script (all-in-one)
+- **`demo_reset.sql`** - Complete environment cleanup script
+- **`CONSOLIDATED_SETUP_GUIDE.md`** - Streamlined setup instructions
 - **`agent_configuration.md`** - Snowflake Intelligence agent setup guide
 - **`demo_scenarios.md`** - Live demo script with 4 compelling scenarios
 - **`demo_presentation.md`** - Complete presentation deck (17 slides)
+- **`semantic_models/`** - Cortex Analyst YAML files (4 models)
 
 ### 2. Demo Architecture
 ```
@@ -50,46 +50,46 @@ Singapore Smart Nation Intelligence Hub + Cortex Analyst
 - Access to Anthropic Claude 4 or OpenAI GPT 4.1
 - Snowflake Intelligence enabled in your region
 
-### Step 1: Environment Setup
+### Single-Command Setup
 ```sql
--- Run the setup script
--- This creates database, schemas, roles, and procedures
-@setup.sql
+-- Run the complete setup script (5-10 minutes)
+-- Creates everything: database, data, external sources, semantic models
+@complete_demo_setup.sql
 ```
 
-### Step 2: Generate Demo Data
+### Reset Environment (if needed)
 ```sql
--- Generate privacy-compliant synthetic data
--- Creates 10,000 citizen profiles and 50,000 service interactions
-@generate_synthetic_data.sql
+-- Clean slate for fresh demo
+@demo_reset.sql
+@complete_demo_setup.sql
 ```
 
-### Step 3: Integrate External Data
+### Upload Semantic Models
 ```sql
--- Set up marketplace data integration
--- Adds weather, economic, transport, and health data
-@marketplace_integration.sql
+-- Upload YAML files to Snowflake stage
+PUT file:///path/to/semantic_models/*.yaml @SNOWFLAKE_PUBSEC_DEMO.SEMANTIC_MODELS.ANALYST_STAGE;
+
+-- Create semantic models from uploaded files
+CREATE SEMANTIC MODEL SNOWFLAKE_PUBSEC_DEMO.SEMANTIC_MODELS.CITIZEN_SERVICES_MODEL 
+FROM '@SNOWFLAKE_PUBSEC_DEMO.SEMANTIC_MODELS.ANALYST_STAGE/citizen_services_model.yaml';
+
+CREATE SEMANTIC MODEL SNOWFLAKE_PUBSEC_DEMO.SEMANTIC_MODELS.POLICY_IMPACT_MODEL 
+FROM '@SNOWFLAKE_PUBSEC_DEMO.SEMANTIC_MODELS.ANALYST_STAGE/policy_impact_model.yaml';
+
+CREATE SEMANTIC MODEL SNOWFLAKE_PUBSEC_DEMO.SEMANTIC_MODELS.SERVICE_PERFORMANCE_MODEL 
+FROM '@SNOWFLAKE_PUBSEC_DEMO.SEMANTIC_MODELS.ANALYST_STAGE/service_performance_model.yaml';
+
+CREATE SEMANTIC MODEL SNOWFLAKE_PUBSEC_DEMO.SEMANTIC_MODELS.WEATHER_SERVICE_CORRELATION_MODEL 
+FROM '@SNOWFLAKE_PUBSEC_DEMO.SEMANTIC_MODELS.ANALYST_STAGE/weather_service_correlation_model.yaml';
 ```
 
-### Step 4: Set Up Cortex Analyst
-```sql
--- Create semantic models for natural language analytics with auto-charts
-@cortex_analyst_setup.sql
-```
+### Create Snowflake Intelligence Agent
+1. Navigate to **Data → Agents → + Agent**
+2. Configure with settings from `agent_configuration.md`
+3. Add semantic models and search services as tools
+4. Test with sample questions from `demo_scenarios.md`
 
-### Step 5: Integrate Weather-Service Analytics
-```sql
--- Create weather-service correlation analytics for advanced insights
-@weather_service_integration.sql
-```
-
-### Step 6: Configure Snowflake Intelligence Agent
-1. Navigate to **AI & ML** → **Agents** in Snowsight
-2. Create new agent: `SG_Smart_Nation_Assistant`
-3. Follow configuration in `agent_configuration.md`
-4. Add custom tools and sample questions
-
-### Step 7: Test Demo Scenarios
+### Test Demo Scenarios
 - Use queries from `demo_scenarios.md`
 - Verify all 4 demo scenarios work correctly
 - Test automated actions (briefing generation, alerts)
