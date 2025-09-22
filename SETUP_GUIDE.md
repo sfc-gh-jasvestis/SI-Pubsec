@@ -48,14 +48,11 @@ This will:
 
 ## 🏗️ **Step 3: Core Environment Setup**
 
-### **3.1 Interactive Setup**
+### **3.1 Core Setup**
 ```sql
--- Replace placeholders with your actual values:
--- SET ACCOUNT_IDENTIFIER = 'your_account_id';
--- SET DEMO_EMAIL = 'your.email@company.com';
--- SET CURRENT_USERNAME = 'your_username';
-
-@interactive_setup.sql
+-- Run the main setup script
+-- This creates all databases, schemas, roles, and procedures
+@setup.sql
 ```
 
 **Expected Result:** Database, schemas, roles, and warehouse created

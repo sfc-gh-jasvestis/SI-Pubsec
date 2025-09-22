@@ -12,7 +12,7 @@ echo "📁 Created backup directory for removed files"
 # Define essential files to keep
 ESSENTIAL_FILES=(
     "README.md"
-    "interactive_setup.sql"
+    "setup.sql"
     "generate_synthetic_data.sql"
     "marketplace_integration.sql"
     "cortex_analyst_setup.sql"
@@ -82,7 +82,7 @@ ls -la
 echo ""
 echo "🎯 Demo Setup Order:"
 echo "1. Run: cleanup_environment.sql (if needed to clean existing setup)"
-echo "2. Run: interactive_setup.sql (basic environment setup)"
+echo "2. Run: setup.sql (basic environment setup)"
 echo "3. Run: generate_synthetic_data.sql (create demo data)"
 echo "4. Run: marketplace_integration.sql (external data sources)"
 echo "5. Run: cortex_analyst_setup.sql (semantic models)"

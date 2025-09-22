@@ -1,0 +1,283 @@
+-- Singapore Smart Nation Intelligence Demo Setup
+-- Public Sector Day Singapore 2025
+-- Setup script for Snowflake Intelligence Agent
+
+-- Switch to ACCOUNTADMIN role for initial setup
+USE ROLE ACCOUNTADMIN;
+
+-- Create the standard Snowflake Intelligence database (as per documentation)
+CREATE DATABASE IF NOT EXISTS snowflake_intelligence
+    COMMENT = 'Snowflake Intelligence configuration and agents';
+GRANT USAGE ON DATABASE snowflake_intelligence TO ROLE PUBLIC;
+
+-- Create the agents schema (as per documentation)
+CREATE SCHEMA IF NOT EXISTS snowflake_intelligence.agents
+    COMMENT = 'Snowflake Intelligence agents for all users';
+GRANT USAGE ON SCHEMA snowflake_intelligence.agents TO ROLE PUBLIC;
+
+-- Create database and schemas for Singapore Public Sector Demo
+CREATE DATABASE IF NOT EXISTS SG_PUBSEC_DEMO
+    COMMENT = 'Singapore Smart Nation Intelligence Demo - Public Sector Day 2025';
+
+CREATE SCHEMA IF NOT EXISTS SG_PUBSEC_DEMO.INTELLIGENCE
+    COMMENT = 'Snowflake Intelligence agents and configurations';
+
+CREATE SCHEMA IF NOT EXISTS SG_PUBSEC_DEMO.CITIZEN_DATA
+    COMMENT = 'Privacy-compliant synthetic citizen data';
+
+CREATE SCHEMA IF NOT EXISTS SG_PUBSEC_DEMO.SERVICES
+    COMMENT = 'Government service interactions and workflows';
+
+CREATE SCHEMA IF NOT EXISTS SG_PUBSEC_DEMO.ANALYTICS
+    COMMENT = 'Analytics views and performance metrics';
+
+CREATE SCHEMA IF NOT EXISTS SG_PUBSEC_DEMO.EXTERNAL_DATA
+    COMMENT = 'External data sources from Snowflake Marketplace';
+
+CREATE SCHEMA IF NOT EXISTS SG_PUBSEC_DEMO.SEMANTIC_MODELS
+    COMMENT = 'Semantic models for Cortex Analyst integration';
+
+-- Create the standard Snowflake Intelligence admin role (as per documentation)
+CREATE ROLE IF NOT EXISTS SNOWFLAKE_INTELLIGENCE_ADMIN
+    COMMENT = 'Role for managing Snowflake Intelligence agents and demo';
+
+-- Grant database and schema privileges for Snowflake Intelligence
+GRANT USAGE ON DATABASE snowflake_intelligence TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
+GRANT ALL ON SCHEMA snowflake_intelligence.agents TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
+
+-- Grant CREATE AGENT privilege on the schema (not account)
+GRANT CREATE AGENT ON SCHEMA snowflake_intelligence.agents TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
+
+-- Grant other necessary privileges
+GRANT CREATE CORTEX SEARCH SERVICE ON SCHEMA snowflake_intelligence.agents TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
+
+-- Grant database and schema privileges for demo data
+GRANT USAGE ON DATABASE SG_PUBSEC_DEMO TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
+GRANT ALL ON SCHEMA SG_PUBSEC_DEMO.INTELLIGENCE TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
+GRANT ALL ON SCHEMA SG_PUBSEC_DEMO.CITIZEN_DATA TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
+GRANT ALL ON SCHEMA SG_PUBSEC_DEMO.SERVICES TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
+GRANT ALL ON SCHEMA SG_PUBSEC_DEMO.ANALYTICS TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
+GRANT ALL ON SCHEMA SG_PUBSEC_DEMO.EXTERNAL_DATA TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
+GRANT ALL ON SCHEMA SG_PUBSEC_DEMO.SEMANTIC_MODELS TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
+
+-- Create compute warehouse for demo
+CREATE WAREHOUSE IF NOT EXISTS SG_DEMO_WH
+    WAREHOUSE_SIZE = 'MEDIUM'
+    AUTO_SUSPEND = 60
+    AUTO_RESUME = TRUE
+    INITIALLY_SUSPENDED = TRUE
+    COMMENT = 'Warehouse for Singapore Public Sector Intelligence Demo';
+
+-- Grant warehouse privileges
+GRANT USAGE ON WAREHOUSE SG_DEMO_WH TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
+GRANT OPERATE ON WAREHOUSE SG_DEMO_WH TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
+
+-- Grant role to current user
+GRANT ROLE SNOWFLAKE_INTELLIGENCE_ADMIN TO USER CURRENT_USER();
+
+-- Switch to the Snowflake Intelligence role and context
+USE ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
+USE DATABASE SG_PUBSEC_DEMO;
+USE SCHEMA INTELLIGENCE;
+USE WAREHOUSE SG_DEMO_WH;
+
+-- Create tables for synthetic citizen data (privacy-compliant)
+CREATE OR REPLACE TABLE SG_PUBSEC_DEMO.CITIZEN_DATA.CITIZEN_PROFILES (
+    CITIZEN_ID STRING,
+    AGE_GROUP STRING,
+    POSTAL_DISTRICT STRING,
+    PREFERRED_LANGUAGE STRING,
+    DIGITAL_LITERACY_SCORE NUMBER(3,2),
+    SERVICE_USAGE_FREQUENCY STRING,
+    LAST_INTERACTION_DATE DATE,
+    SATISFACTION_SCORE NUMBER(3,2),
+    CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP()
+);
+
+-- Create table for digital service interactions
+CREATE OR REPLACE TABLE SG_PUBSEC_DEMO.SERVICES.SERVICE_INTERACTIONS (
+    INTERACTION_ID STRING,
+    CITIZEN_ID STRING,
+    SERVICE_TYPE STRING,
+    AGENCY STRING,
+    INTERACTION_CHANNEL STRING,
+    DURATION_MINUTES NUMBER,
+    SUCCESS_FLAG BOOLEAN,
+    SATISFACTION_RATING NUMBER(1,0),
+    INTERACTION_TIMESTAMP TIMESTAMP,
+    CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP()
+);
+
+-- Create table for service performance metrics
+CREATE OR REPLACE TABLE SG_PUBSEC_DEMO.ANALYTICS.SERVICE_PERFORMANCE (
+    METRIC_ID STRING,
+    SERVICE_NAME STRING,
+    AGENCY STRING,
+    METRIC_TYPE STRING,
+    METRIC_VALUE NUMBER,
+    MEASUREMENT_DATE DATE,
+    BENCHMARK_VALUE NUMBER,
+    PERFORMANCE_STATUS STRING,
+    CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP()
+);
+
+-- Create table for policy impact tracking
+CREATE OR REPLACE TABLE SG_PUBSEC_DEMO.ANALYTICS.POLICY_IMPACT (
+    POLICY_ID STRING,
+    POLICY_NAME STRING,
+    IMPLEMENTATION_DATE DATE,
+    TARGET_DEMOGRAPHIC STRING,
+    BASELINE_METRIC NUMBER,
+    CURRENT_METRIC NUMBER,
+    IMPACT_PERCENTAGE NUMBER(5,2),
+    STATUS STRING,
+    LAST_UPDATED TIMESTAMP DEFAULT CURRENT_TIMESTAMP()
+);
+
+-- Create table for inter-agency workflows
+CREATE OR REPLACE TABLE SG_PUBSEC_DEMO.SERVICES.INTER_AGENCY_WORKFLOWS (
+    WORKFLOW_ID STRING,
+    CITIZEN_REQUEST_ID STRING,
+    SOURCE_AGENCY STRING,
+    TARGET_AGENCY STRING,
+    WORKFLOW_TYPE STRING,
+    STATUS STRING,
+    PROCESSING_TIME_HOURS NUMBER(5,2),
+    HANDOFF_TIMESTAMP TIMESTAMP,
+    COMPLETION_TIMESTAMP TIMESTAMP,
+    CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP()
+);
+
+-- Create stored procedures for demo automation
+
+-- Procedure to generate policy briefing
+CREATE OR REPLACE PROCEDURE SG_PUBSEC_DEMO.INTELLIGENCE.GENERATE_POLICY_BRIEF(
+    POLICY_NAME STRING,
+    RECIPIENT_EMAIL STRING DEFAULT 'demo@govtech.gov.sg'
+)
+RETURNS STRING
+LANGUAGE SQL
+AS
+$$
+BEGIN
+    -- This would integrate with actual email service in production
+    LET brief_content STRING := 'Policy Brief Generated for: ' || POLICY_NAME || 
+                               ' - Sent to: ' || RECIPIENT_EMAIL || 
+                               ' at ' || CURRENT_TIMESTAMP()::STRING;
+    
+    -- Log the briefing action
+    INSERT INTO SG_PUBSEC_DEMO.ANALYTICS.SERVICE_PERFORMANCE 
+    VALUES (
+        'BRIEF_' || UNIFORM(1000000, 9999999, RANDOM()),
+        'Policy Briefing Service',
+        'Prime Ministers Office',
+        'Briefings Generated',
+        1,
+        CURRENT_DATE(),
+        5,
+        'Active',
+        CURRENT_TIMESTAMP()
+    );
+    
+    RETURN brief_content;
+END;
+$$;
+
+-- Procedure to send service alerts
+CREATE OR REPLACE PROCEDURE SG_PUBSEC_DEMO.INTELLIGENCE.SEND_SERVICE_ALERT(
+    ALERT_MESSAGE STRING,
+    SEVERITY STRING DEFAULT 'MEDIUM',
+    TARGET_AGENCIES STRING DEFAULT 'ALL'
+)
+RETURNS STRING
+LANGUAGE SQL
+AS
+$$
+BEGIN
+    LET alert_id STRING := 'ALERT_' || UNIFORM(1000000, 9999999, RANDOM());
+    
+    -- Log the alert
+    INSERT INTO SG_PUBSEC_DEMO.ANALYTICS.SERVICE_PERFORMANCE 
+    VALUES (
+        alert_id,
+        'Alert System',
+        'Smart Nation Office',
+        'Alerts Sent',
+        1,
+        CURRENT_DATE(),
+        10,
+        'Active',
+        CURRENT_TIMESTAMP()
+    );
+    
+    RETURN 'Alert sent: ' || alert_id || ' - Message: ' || ALERT_MESSAGE || 
+           ' - Severity: ' || SEVERITY || ' - Targets: ' || TARGET_AGENCIES;
+END;
+$$;
+
+-- Procedure to optimize resource allocation
+CREATE OR REPLACE PROCEDURE SG_PUBSEC_DEMO.INTELLIGENCE.OPTIMIZE_RESOURCES(
+    SERVICE_TYPE STRING,
+    TIME_PERIOD STRING DEFAULT 'NEXT_WEEK'
+)
+RETURNS STRING
+LANGUAGE SQL
+AS
+$$
+BEGIN
+    LET optimization_id STRING := 'OPT_' || UNIFORM(1000000, 9999999, RANDOM());
+    
+    -- This would contain actual optimization logic in production
+    LET recommendation STRING := 'Resource optimization completed for ' || SERVICE_TYPE || 
+                                ' for period: ' || TIME_PERIOD || 
+                                '. Recommendation ID: ' || optimization_id;
+    
+    -- Log the optimization
+    INSERT INTO SG_PUBSEC_DEMO.ANALYTICS.SERVICE_PERFORMANCE 
+    VALUES (
+        optimization_id,
+        'Resource Optimization',
+        'Ministry of Finance',
+        'Optimizations Performed',
+        1,
+        CURRENT_DATE(),
+        3,
+        'Active',
+        CURRENT_TIMESTAMP()
+    );
+    
+    RETURN recommendation;
+END;
+$$;
+
+-- Grant execute permissions on procedures
+GRANT USAGE ON PROCEDURE SG_PUBSEC_DEMO.INTELLIGENCE.GENERATE_POLICY_BRIEF(STRING, STRING) TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
+GRANT USAGE ON PROCEDURE SG_PUBSEC_DEMO.INTELLIGENCE.SEND_SERVICE_ALERT(STRING, STRING, STRING) TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
+GRANT USAGE ON PROCEDURE SG_PUBSEC_DEMO.INTELLIGENCE.OPTIMIZE_RESOURCES(STRING, STRING) TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
+
+-- Create views for common analytics queries
+CREATE OR REPLACE VIEW SG_PUBSEC_DEMO.ANALYTICS.CITIZEN_SATISFACTION_SUMMARY AS
+SELECT 
+    cp.AGE_GROUP,
+    cp.POSTAL_DISTRICT,
+    AVG(cp.SATISFACTION_SCORE) as AVG_SATISFACTION,
+    COUNT(*) as CITIZEN_COUNT,
+    AVG(cp.DIGITAL_LITERACY_SCORE) as AVG_DIGITAL_LITERACY
+FROM SG_PUBSEC_DEMO.CITIZEN_DATA.CITIZEN_PROFILES cp
+GROUP BY cp.AGE_GROUP, cp.POSTAL_DISTRICT;
+
+CREATE OR REPLACE VIEW SG_PUBSEC_DEMO.ANALYTICS.SERVICE_PERFORMANCE_DASHBOARD AS
+SELECT 
+    sp.AGENCY,
+    sp.SERVICE_NAME,
+    sp.METRIC_TYPE,
+    AVG(sp.METRIC_VALUE) as AVG_PERFORMANCE,
+    AVG(sp.BENCHMARK_VALUE) as BENCHMARK,
+    COUNT(CASE WHEN sp.PERFORMANCE_STATUS = 'Exceeding' THEN 1 END) as EXCEEDING_COUNT,
+    COUNT(*) as TOTAL_METRICS
+FROM SG_PUBSEC_DEMO.ANALYTICS.SERVICE_PERFORMANCE sp
+WHERE sp.MEASUREMENT_DATE >= DATEADD(day, -30, CURRENT_DATE())
+GROUP BY sp.AGENCY, sp.SERVICE_NAME, sp.METRIC_TYPE;
+
+-- Setup complete message
+SELECT 'Singapore Public Sector Intelligence Demo setup completed successfully!' as SETUP_STATUS;
