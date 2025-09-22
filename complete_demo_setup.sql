@@ -829,6 +829,26 @@ VALUES
      'Business registration process: 1) Reserve company name through BizFile+, 2) Prepare incorporation documents, 3) Submit application with required fees, 4) Obtain business registration certificate, 5) Apply for relevant business licenses. Required documents include memorandum and articles of association, director and shareholder details, registered office address. Various business structures available including private limited company, sole proprietorship, and partnership.', 
      'Business Services', '2024-08-10', 'https://www.acra.gov.sg', 'business registration, ACRA, BizFile+, incorporation, licensing'),
 
+    ('DOC006', 'Urban Planning and Smart City Infrastructure', 'Technical Guide', 'URA', 
+     'Urban Redevelopment Authority smart city infrastructure guide covers intelligent transportation systems, smart building standards, environmental monitoring networks, and integrated urban planning platforms. Key technologies include IoT sensors, 5G connectivity, digital twins, and predictive analytics for urban management. The guide emphasizes sustainable development and citizen quality of life improvements.', 
+     'Urban Planning', '2024-08-05', 'https://www.ura.gov.sg', 'urban planning, smart city, IoT sensors, 5G, digital twins, sustainable development'),
+
+    ('DOC007', 'Cybersecurity Framework for Government Agencies', 'Security Policy', 'CSA', 
+     'Cyber Security Agency framework provides comprehensive cybersecurity guidelines for government agencies. Components include threat assessment protocols, incident response procedures, security architecture standards, and staff training requirements. The framework emphasizes zero-trust security models, continuous monitoring, and inter-agency threat intelligence sharing for robust cyber defense.', 
+     'Cybersecurity', '2024-09-05', 'https://www.csa.gov.sg', 'cybersecurity, threat assessment, incident response, zero-trust, threat intelligence'),
+
+    ('DOC008', 'Data Governance and Privacy Protection Guidelines', 'Policy Document', 'PDPC', 
+     'Personal Data Protection Commission guidelines establish data governance standards for government agencies. Key principles include data minimization, purpose limitation, consent management, and privacy by design. The guidelines cover data sharing protocols, citizen rights, breach notification procedures, and compliance monitoring frameworks to ensure responsible data stewardship.', 
+     'Data Governance', '2024-08-25', 'https://www.pdpc.gov.sg', 'data governance, privacy protection, data minimization, consent management, compliance'),
+
+    ('DOC009', 'Inter-Agency Collaboration Framework', 'Operational Guide', 'PMO', 
+     'Prime Minister Office inter-agency collaboration framework facilitates seamless coordination across government agencies. Components include shared service platforms, standardized APIs, common data formats, and collaborative workflow systems. The framework promotes efficiency, reduces duplication, and enables holistic policy implementation through integrated government operations.', 
+     'Inter-Agency Collaboration', '2024-07-15', 'https://www.pmo.gov.sg', 'inter-agency, collaboration, shared services, APIs, workflow systems'),
+
+    ('DOC010', 'Citizen Engagement and Feedback Systems', 'Service Guide', 'REACH', 
+     'REACH citizen engagement platform enables government-citizen communication through multiple channels including online portals, mobile apps, community forums, and feedback systems. The platform supports policy consultation, service feedback, and community participation in government decision-making processes. Features include sentiment analysis, trend identification, and responsive communication protocols.', 
+     'Citizen Engagement', '2024-09-12', 'https://www.reach.gov.sg', 'citizen engagement, feedback systems, policy consultation, community participation, sentiment analysis'),
+
     ('FAQ005', 'Work Pass and Employment Guidelines', 'FAQ', 'MOM', 
      'Work pass applications for foreign workers: Employment Pass for professionals, S Pass for mid-skilled workers, Work Permit for semi-skilled workers. Application process includes employer sponsorship, salary requirements, educational qualifications, and quota limitations. Renewal procedures, dependent pass applications, and permanent residence pathways. Compliance requirements for employers including levy payments and worker welfare standards.', 
      'Employment', '2024-09-08', 'https://www.mom.gov.sg', 'work pass, Employment Pass, S Pass, Work Permit, MOM');
