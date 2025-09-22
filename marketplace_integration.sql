@@ -1,9 +1,33 @@
 -- Snowflake Marketplace Data Integration
 -- Singapore Public Sector Demo - External Data Sources
 
+-- Snowflake Marketplace Data Integration
+-- Singapore Public Sector Demo - External Data Sources
+-- Enhanced error handling and context management
+
 USE ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
 USE DATABASE SG_PUBSEC_DEMO;
 USE WAREHOUSE SG_DEMO_WH;
+
+-- Verify current context
+SELECT 
+    CURRENT_ROLE() as CURRENT_ROLE,
+    CURRENT_DATABASE() as CURRENT_DATABASE,
+    CURRENT_WAREHOUSE() as CURRENT_WAREHOUSE;
+
+-- Check if schema exists and create if needed
+SELECT 'Checking for EXTERNAL_DATA schema...' as STATUS;
+
+-- Create schema with proper error handling
+CREATE SCHEMA IF NOT EXISTS SG_PUBSEC_DEMO.EXTERNAL_DATA
+    COMMENT = 'External data sources from Snowflake Marketplace';
+
+-- Verify schema creation
+SHOW SCHEMAS IN DATABASE SG_PUBSEC_DEMO;
+
+-- Grant permissions on the schema
+GRANT USAGE ON SCHEMA SG_PUBSEC_DEMO.EXTERNAL_DATA TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
+GRANT ALL ON SCHEMA SG_PUBSEC_DEMO.EXTERNAL_DATA TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
 
 -- Instructions for integrating Snowflake Marketplace data sources
 -- These would be actual marketplace integrations in a real environment
@@ -12,7 +36,7 @@ USE WAREHOUSE SG_DEMO_WH;
 -- Search for "Weather Source" or "AccuWeather" in Snowflake Marketplace
 -- This example shows how to integrate weather data for service correlation
 
-CREATE SCHEMA IF NOT EXISTS SG_PUBSEC_DEMO.EXTERNAL_DATA;
+SELECT 'Creating weather data table...' as STATUS;
 
 -- Mock weather data structure (replace with actual marketplace data)
 CREATE OR REPLACE TABLE SG_PUBSEC_DEMO.EXTERNAL_DATA.WEATHER_DATA (
