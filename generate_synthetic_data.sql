@@ -263,19 +263,19 @@ INSERT INTO SNOWFLAKE_PUBSEC_DEMO.ANALYTICS.CURRENT_EVENTS_IMPACT (
 )
 VALUES 
     ('EVT001', 'Monsoon Season Service Adjustments', '2024-09-15', 
-     ['Transport Services', 'Emergency Services', 'Healthcare'], 
+     ARRAY_CONSTRUCT('Transport Services', 'Emergency Services', 'Healthcare'), 
      3.2, 45.6, 
-     ['Extended Service Hours', 'Mobile Response Units', 'Proactive Alerts'], 
+     ARRAY_CONSTRUCT('Extended Service Hours', 'Mobile Response Units', 'Proactive Alerts'), 
      'Active'),
     ('EVT002', 'Digital Services Upgrade Weekend', '2024-09-20', 
-     ['SingPass', 'Government Portals', 'Mobile Apps'], 
+     ARRAY_CONSTRUCT('SingPass', 'Government Portals', 'Mobile Apps'), 
      2.1, 23.4, 
-     ['Advance Notifications', 'Alternative Channels', 'Extended Support'], 
+     ARRAY_CONSTRUCT('Advance Notifications', 'Alternative Channels', 'Extended Support'), 
      'Completed'),
     ('EVT003', 'Public Holiday Service Planning', '2024-09-30', 
-     ['All Government Services'], 
+     ARRAY_CONSTRUCT('All Government Services'), 
      1.8, 15.2, 
-     ['Adjusted Operating Hours', 'Emergency Contact Info', 'Self-Service Options'], 
+     ARRAY_CONSTRUCT('Adjusted Operating Hours', 'Emergency Contact Info', 'Self-Service Options'), 
      'Planned');
 
 -- Create summary statistics for demo
