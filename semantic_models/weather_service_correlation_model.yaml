@@ -1,0 +1,235 @@
+# Semantic Model for Weather-Service Correlation Analytics
+# For use with Cortex Analyst in Singapore Smart Nation Intelligence Demo
+
+name: "Singapore Weather Service Impact Analytics"
+description: "Comprehensive analytics model for understanding how weather patterns impact government service usage and citizen behavior in Singapore"
+
+tables:
+  - name: "weather_service_correlation"
+    description: "Hourly correlation between weather conditions and citizen service interactions"
+    base_table:
+      database: "SG_PUBSEC_DEMO"
+      schema: "ANALYTICS"
+      table: "WEATHER_SERVICE_CORRELATION"
+    
+    dimensions:
+      - name: "hour_timestamp"
+        synonyms: ["time", "timestamp", "hour", "datetime"]
+        description: "Hour when weather and service data was recorded"
+        expr: "HOUR_TIMESTAMP"
+        data_type: "timestamp"
+        
+      - name: "region"
+        synonyms: ["area", "location", "geographic region", "singapore region"]
+        description: "Geographic region in Singapore (Central, East, West, North, South)"
+        expr: "REGION"
+        data_type: "text"
+        
+      - name: "service_type"
+        synonyms: ["service", "government service", "digital service", "service category"]
+        description: "Type of government service accessed by citizens"
+        expr: "SERVICE_TYPE"
+        data_type: "text"
+        
+      - name: "agency"
+        synonyms: ["government agency", "ministry", "department", "organization"]
+        description: "Government agency providing the service"
+        expr: "AGENCY"
+        data_type: "text"
+        
+      - name: "interaction_channel"
+        synonyms: ["channel", "access method", "service channel", "platform"]
+        description: "How citizens accessed the service (Mobile App, Web Portal, Service Center, Phone)"
+        expr: "INTERACTION_CHANNEL"
+        data_type: "text"
+        
+      - name: "dominant_weather"
+        synonyms: ["weather condition", "weather", "climate condition", "weather type"]
+        description: "Primary weather condition during the time period"
+        expr: "DOMINANT_WEATHER"
+        data_type: "text"
+        
+      - name: "weather_impact_category"
+        synonyms: ["weather impact", "impact category", "weather effect", "impact type"]
+        description: "Categorized impact of weather on services (Heavy Rain Impact, High Temperature Impact, etc.)"
+        expr: "WEATHER_IMPACT_CATEGORY"
+        data_type: "text"
+        
+      - name: "date"
+        synonyms: ["day", "date", "service date"]
+        description: "Date of the weather and service interaction"
+        expr: "DATE(HOUR_TIMESTAMP)"
+        data_type: "date"
+        
+      - name: "hour_of_day"
+        synonyms: ["hour", "time of day", "service hour"]
+        description: "Hour of the day (0-23)"
+        expr: "EXTRACT(HOUR FROM HOUR_TIMESTAMP)"
+        data_type: "number"
+
+    measures:
+      - name: "avg_temperature"
+        synonyms: ["temperature", "avg temp", "average temperature", "temp celsius"]
+        description: "Average temperature in Celsius during the time period"
+        expr: "AVG(AVG_TEMP_C)"
+        data_type: "number"
+        
+      - name: "avg_humidity"
+        synonyms: ["humidity", "humidity percentage", "moisture level"]
+        description: "Average humidity percentage during the time period"
+        expr: "AVG(AVG_HUMIDITY)"
+        data_type: "number"
+        
+      - name: "total_rainfall"
+        synonyms: ["rainfall", "rain", "precipitation", "rainfall mm"]
+        description: "Total rainfall in millimeters during the time period"
+        expr: "SUM(TOTAL_RAINFALL)"
+        data_type: "number"
+        
+      - name: "total_interactions"
+        synonyms: ["interactions", "service requests", "citizen interactions", "total services"]
+        description: "Total number of citizen service interactions"
+        expr: "SUM(INTERACTION_COUNT)"
+        data_type: "number"
+        
+      - name: "avg_duration"
+        synonyms: ["duration", "response time", "service time", "average duration"]
+        description: "Average duration of service interactions in minutes"
+        expr: "AVG(AVG_DURATION)"
+        data_type: "number"
+        
+      - name: "success_rate"
+        synonyms: ["success percentage", "completion rate", "service success rate"]
+        description: "Percentage of successful service interactions"
+        expr: "ROUND((SUM(SUCCESS_COUNT) * 100.0 / SUM(INTERACTION_COUNT)), 2)"
+        data_type: "number"
+        
+      - name: "mobile_adoption_rate"
+        synonyms: ["mobile usage", "mobile adoption", "app usage rate", "digital adoption"]
+        description: "Percentage of interactions using mobile apps"
+        expr: "AVG(MOBILE_ADOPTION_PCT)"
+        data_type: "number"
+        
+      - name: "weather_resilience_score"
+        synonyms: ["resilience", "weather resilience", "service resilience", "adaptation score"]
+        description: "Score indicating how well services perform during adverse weather"
+        expr: "AVG(WEATHER_RESILIENCE_SCORE)"
+        data_type: "number"
+        
+      - name: "weather_alert_hours"
+        synonyms: ["weather alerts", "alert hours", "severe weather", "weather warnings"]
+        description: "Number of hours with weather alerts"
+        expr: "SUM(WEATHER_ALERT_FLAG)"
+        data_type: "number"
+
+    filters:
+      - name: "heavy_rain_periods"
+        synonyms: ["heavy rain", "rainy weather", "high rainfall"]
+        description: "Filter for periods with heavy rainfall (>10mm)"
+        expr: "TOTAL_RAINFALL > 10"
+        
+      - name: "weather_alerts"
+        synonyms: ["weather alerts", "severe weather", "weather warnings"]
+        description: "Filter for periods with active weather alerts"
+        expr: "WEATHER_ALERT_FLAG = 1"
+        
+      - name: "high_temperature"
+        synonyms: ["hot weather", "high temp", "heat"]
+        description: "Filter for high temperature periods (>32°C)"
+        expr: "AVG_TEMP_C > 32"
+        
+      - name: "mobile_users"
+        synonyms: ["mobile", "app users", "smartphone users"]
+        description: "Filter for mobile app interactions"
+        expr: "INTERACTION_CHANNEL = 'Mobile App'"
+        
+      - name: "business_hours"
+        synonyms: ["business hours", "office hours", "working hours"]
+        description: "Filter for business hours (9 AM - 6 PM)"
+        expr: "EXTRACT(HOUR FROM HOUR_TIMESTAMP) BETWEEN 9 AND 18"
+
+verified_queries:
+  - name: "Weather Impact on Service Usage"
+    question: "How does rainfall affect citizen service usage patterns across different channels?"
+    sql: |
+      SELECT 
+        WEATHER_IMPACT_CATEGORY,
+        INTERACTION_CHANNEL,
+        SUM(INTERACTION_COUNT) as total_interactions,
+        AVG(AVG_DURATION) as avg_duration_minutes,
+        AVG(MOBILE_ADOPTION_PCT) as mobile_adoption_rate,
+        SUM(SUCCESS_COUNT) * 100.0 / SUM(INTERACTION_COUNT) as success_rate
+      FROM weather_service_correlation
+      WHERE HOUR_TIMESTAMP >= DATEADD(day, -30, CURRENT_TIMESTAMP())
+      GROUP BY 1, 2
+      ORDER BY total_interactions DESC
+    verified_at: "2024-09-22"
+    
+  - name: "Regional Weather Service Resilience"
+    question: "Which regions in Singapore have the most weather-resilient government services?"
+    sql: |
+      SELECT 
+        REGION,
+        AVG(WEATHER_RESILIENCE_SCORE) as avg_resilience_score,
+        SUM(INTERACTION_COUNT) as total_interactions,
+        AVG(CASE WHEN TOTAL_RAINFALL > 5 THEN MOBILE_ADOPTION_PCT END) as rainy_day_mobile_adoption,
+        COUNT(CASE WHEN WEATHER_ALERT_FLAG = 1 THEN 1 END) as weather_alert_hours
+      FROM weather_service_correlation
+      WHERE WEATHER_RESILIENCE_SCORE IS NOT NULL
+      GROUP BY 1
+      ORDER BY avg_resilience_score DESC
+    verified_at: "2024-09-22"
+    
+  - name: "Afternoon Thunderstorm Service Impact"
+    question: "How do afternoon thunderstorms affect government service performance?"
+    sql: |
+      SELECT 
+        EXTRACT(HOUR FROM HOUR_TIMESTAMP) as hour_of_day,
+        DOMINANT_WEATHER,
+        AVG(TOTAL_RAINFALL) as avg_rainfall,
+        SUM(INTERACTION_COUNT) as service_interactions,
+        AVG(AVG_DURATION) as avg_response_time,
+        AVG(MOBILE_ADOPTION_PCT) as mobile_usage_rate
+      FROM weather_service_correlation
+      WHERE EXTRACT(HOUR FROM HOUR_TIMESTAMP) BETWEEN 14 AND 18
+        AND HOUR_TIMESTAMP >= DATEADD(day, -60, CURRENT_TIMESTAMP())
+      GROUP BY 1, 2
+      ORDER BY hour_of_day, avg_rainfall DESC
+    verified_at: "2024-09-22"
+    
+  - name: "Weather-Driven Digital Adoption"
+    question: "Does bad weather increase mobile app usage for government services?"
+    sql: |
+      SELECT 
+        CASE 
+          WHEN TOTAL_RAINFALL > 10 THEN 'Heavy Rain'
+          WHEN TOTAL_RAINFALL > 2 THEN 'Light Rain'
+          WHEN AVG_TEMP_C > 32 THEN 'High Temperature'
+          ELSE 'Normal Weather'
+        END as weather_condition,
+        SERVICE_TYPE,
+        AVG(MOBILE_ADOPTION_PCT) as avg_mobile_adoption,
+        SUM(MOBILE_COUNT) as total_mobile_usage,
+        SUM(IN_PERSON_COUNT) as total_in_person_usage,
+        COUNT(*) as data_points
+      FROM weather_service_correlation
+      WHERE HOUR_TIMESTAMP >= DATEADD(day, -90, CURRENT_TIMESTAMP())
+      GROUP BY 1, 2
+      ORDER BY avg_mobile_adoption DESC
+    verified_at: "2024-09-22"
+    
+  - name: "Agency Weather Preparedness Comparison"
+    question: "Which government agencies maintain the best service levels during severe weather?"
+    sql: |
+      SELECT 
+        AGENCY,
+        AVG(CASE WHEN WEATHER_IMPACT_CATEGORY != 'Normal Weather' THEN AVG_SATISFACTION END) as severe_weather_satisfaction,
+        AVG(CASE WHEN WEATHER_IMPACT_CATEGORY = 'Normal Weather' THEN AVG_SATISFACTION END) as normal_weather_satisfaction,
+        AVG(WEATHER_RESILIENCE_SCORE) as resilience_score,
+        SUM(CASE WHEN WEATHER_ALERT_FLAG = 1 THEN INTERACTION_COUNT END) as alert_day_interactions
+      FROM weather_service_correlation
+      WHERE AVG_SATISFACTION IS NOT NULL
+      GROUP BY 1
+      HAVING alert_day_interactions > 10
+      ORDER BY resilience_score DESC
+    verified_at: "2024-09-22"

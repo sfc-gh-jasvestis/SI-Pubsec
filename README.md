@@ -77,13 +77,19 @@ Singapore Smart Nation Intelligence Hub + Cortex Analyst
 @cortex_analyst_setup.sql
 ```
 
-### Step 5: Configure Snowflake Intelligence Agent
+### Step 5: Integrate Weather-Service Analytics
+```sql
+-- Create weather-service correlation analytics for advanced insights
+@weather_service_integration.sql
+```
+
+### Step 6: Configure Snowflake Intelligence Agent
 1. Navigate to **AI & ML** → **Agents** in Snowsight
 2. Create new agent: `SG_Smart_Nation_Assistant`
 3. Follow configuration in `agent_configuration.md`
 4. Add custom tools and sample questions
 
-### Step 6: Test Demo Scenarios
+### Step 7: Test Demo Scenarios
 - Use queries from `demo_scenarios.md`
 - Verify all 4 demo scenarios work correctly
 - Test automated actions (briefing generation, alerts)
