@@ -10,14 +10,6 @@ USE DATABASE SNOWFLAKE_PUBSEC_DEMO;
 USE WAREHOUSE SNOWFLAKE_DEMO_WH;
 
 
--- Instructions for integrating Snowflake Marketplace data sources
--- These would be actual marketplace integrations in a real environment
-
--- 1. WEATHER DATA INTEGRATION
--- Search for "Weather Source" or "AccuWeather" in Snowflake Marketplace
--- This example shows how to integrate weather data for service correlation
-
-SELECT 'Creating weather data table...' as STATUS;
 
 -- Mock weather data structure (replace with actual marketplace data)
 CREATE OR REPLACE TABLE SNOWFLAKE_PUBSEC_DEMO.EXTERNAL_DATA.WEATHER_DATA (
