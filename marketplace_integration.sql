@@ -38,11 +38,11 @@ WITH SINGAPORE_WEATHER AS (
     SELECT 
         DATEADD(hour, -ROW_NUMBER() OVER (ORDER BY SEQ4()), CURRENT_TIMESTAMP()) as DATE_TIME,
         CASE 
-            WHEN UNIFORM(1, 10, RANDOM()) <= 2 THEN 'Central Singapore'     -- 20% CBD/Central
-            WHEN UNIFORM(1, 10, RANDOM()) <= 4 THEN 'East Singapore'        -- 20% East (Changi, Tampines)
-            WHEN UNIFORM(1, 10, RANDOM()) <= 6 THEN 'West Singapore'        -- 20% West (Jurong, Tuas)
-            WHEN UNIFORM(1, 10, RANDOM()) <= 8 THEN 'North Singapore'       -- 20% North (Woodlands, Yishun)
-            ELSE 'South Singapore'                                           -- 20% South (Sentosa, Marina)
+            WHEN UNIFORM(1, 10, RANDOM()) <= 2 THEN 'Changi'                -- 20% East
+            WHEN UNIFORM(1, 10, RANDOM()) <= 4 THEN 'Paya Lebar'            -- 20% East  
+            WHEN UNIFORM(1, 10, RANDOM()) <= 6 THEN 'Jurong West'           -- 20% West
+            WHEN UNIFORM(1, 10, RANDOM()) <= 8 THEN 'Woodlands'             -- 20% North
+            ELSE 'Marina Barrage'                                            -- 20% Central/South
         END as LOCATION,
         
         -- Singapore temperature: typically 24-34°C with seasonal variations
@@ -306,7 +306,7 @@ SELECT
 FROM SNOWFLAKE_PUBSEC_DEMO.SERVICES.SERVICE_INTERACTIONS si
 JOIN SNOWFLAKE_PUBSEC_DEMO.EXTERNAL_DATA.WEATHER_DATA wd 
     ON DATE(si.INTERACTION_TIMESTAMP) = DATE(wd.DATE_TIME)
-    AND wd.LOCATION = 'Central Singapore'
+    AND wd.LOCATION = 'Marina Barrage'
 GROUP BY 1,2,3,4,5,6;
 
 -- Economic impact on policy effectiveness
