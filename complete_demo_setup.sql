@@ -795,7 +795,7 @@ INSERT INTO SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.GOVERNMENT_KNOWLEDGE (
 VALUES 
     ('DOC001', 'Digital Government Blueprint 2025', 'Policy Document', 'Smart Nation Office', 
      'Singapore Digital Government Blueprint outlines the strategic direction for digital transformation of government services. Key initiatives include SingPass digital identity, GovTech digital services platform, and AI-powered citizen services. The blueprint emphasizes citizen-centric design, data-driven decision making, and seamless inter-agency collaboration. Priority areas include healthcare digitization, education technology integration, and smart urban planning systems.', 
-     'Digital Transformation', '2024-09-01', 'https://www.smartnation.gov.sg/digital-blueprint', 'digital government, SingPass, GovTech, AI services'),
+     'Digital Transformation', '2024-09-01', 'https://www.smartnation.gov.sg', 'digital government, SingPass, GovTech, AI services'),
 
     ('DOC002', 'Smart Nation Initiative Overview', 'Strategic Plan', 'Smart Nation Office', 
      'Smart Nation Singapore is a national initiative to harness technology and data to improve living, create economic opportunities, and build stronger communities. Key pillars include Digital Economy, Digital Government, and Digital Society. Major projects encompass autonomous vehicles, cashless payments, smart healthcare systems, and urban sensing platforms. The initiative promotes innovation through public-private partnerships and citizen engagement.', 
