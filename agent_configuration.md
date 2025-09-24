@@ -86,7 +86,7 @@ For sensitive queries, remind users about data governance policies and suggest a
 - **Identifier:** `SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.GENERATE_POLICY_BRIEF(STRING, STRING)`
 - **Parameters:**
   - `policy_name` (STRING): Name of the policy or topic for the brief
-  - `recipient_email` (STRING): Email address to send the brief (default: demo@govtech.gov.sg)
+  - `recipient_email` (STRING): Email address to send the brief (default: jonathan.asvestis@snowflake.com)
 - **Description:** Generate and send executive policy briefings to government officials
 - **Warehouse:** `SNOWFLAKE_DEMO_WH`
 

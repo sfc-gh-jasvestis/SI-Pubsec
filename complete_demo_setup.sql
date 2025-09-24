@@ -862,20 +862,34 @@ SELECT 'Phase 5: Government knowledge base populated (15 documents)' as SETUP_PH
 -- Create stored procedures for demo automation
 CREATE OR REPLACE PROCEDURE SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.GENERATE_POLICY_BRIEF(
     POLICY_NAME STRING,
-    RECIPIENT_EMAIL STRING DEFAULT 'demo@govtech.gov.sg'
+    RECIPIENT_EMAIL STRING DEFAULT 'jonathan.asvestis@snowflake.com'
 )
 RETURNS STRING
 LANGUAGE SQL
 AS
 $$
+DECLARE
+    result_message STRING;
 BEGIN
-    LET brief_content STRING := 'Policy Brief Generated for: ' || POLICY_NAME ||
-                               ' - Sent to: ' || RECIPIENT_EMAIL ||
-                               ' at ' || CURRENT_TIMESTAMP()::STRING;
+    -- Create a simple result message
+    result_message := 'Policy Brief Generated for: ' || POLICY_NAME || 
+                     ' - Sent to: ' || RECIPIENT_EMAIL || 
+                     ' at ' || CURRENT_TIMESTAMP()::STRING;
 
-    INSERT INTO SNOWFLAKE_PUBSEC_DEMO.ANALYTICS.SERVICE_PERFORMANCE
+    -- Insert with a timestamp-based ID
+    INSERT INTO SNOWFLAKE_PUBSEC_DEMO.ANALYTICS.SERVICE_PERFORMANCE (
+        METRIC_ID,
+        SERVICE_NAME,
+        AGENCY,
+        METRIC_TYPE,
+        METRIC_VALUE,
+        MEASUREMENT_DATE,
+        BENCHMARK_VALUE,
+        PERFORMANCE_STATUS,
+        CREATED_AT
+    )
     VALUES (
-        'BRIEF_' || UNIFORM(1000000, 9999999, RANDOM()),
+        'BRIEF_' || EXTRACT(EPOCH FROM CURRENT_TIMESTAMP())::STRING,
         'Policy Briefing Service',
         'Prime Ministers Office',
         'Briefings Generated',
@@ -886,7 +900,7 @@ BEGIN
         CURRENT_TIMESTAMP()
     );
 
-    RETURN brief_content;
+    RETURN result_message;
 END;
 $$;
 
@@ -900,9 +914,19 @@ LANGUAGE SQL
 AS
 $$
 BEGIN
-    LET alert_id STRING := 'ALERT_' || UNIFORM(1000000, 9999999, RANDOM());
+    LET alert_id STRING := (ABS(HASH(ALERT_MESSAGE || CURRENT_TIMESTAMP()::STRING)) % 9000000 + 1000000)::STRING;
 
-    INSERT INTO SNOWFLAKE_PUBSEC_DEMO.ANALYTICS.SERVICE_PERFORMANCE
+    INSERT INTO SNOWFLAKE_PUBSEC_DEMO.ANALYTICS.SERVICE_PERFORMANCE (
+        METRIC_ID,
+        SERVICE_NAME,
+        AGENCY,
+        METRIC_TYPE,
+        METRIC_VALUE,
+        MEASUREMENT_DATE,
+        BENCHMARK_VALUE,
+        PERFORMANCE_STATUS,
+        CREATED_AT
+    )
     VALUES (
         alert_id,
         'Alert System',
@@ -929,13 +953,23 @@ LANGUAGE SQL
 AS
 $$
 BEGIN
-    LET optimization_id STRING := 'OPT_' || UNIFORM(1000000, 9999999, RANDOM());
+    LET optimization_id STRING := (ABS(HASH(SERVICE_TYPE || CURRENT_TIMESTAMP()::STRING)) % 9000000 + 1000000)::STRING;
 
     LET recommendation STRING := 'Resource optimization completed for ' || SERVICE_TYPE ||
                                 ' for period: ' || TIME_PERIOD ||
                                 '. Recommendation ID: ' || optimization_id;
 
-    INSERT INTO SNOWFLAKE_PUBSEC_DEMO.ANALYTICS.SERVICE_PERFORMANCE
+    INSERT INTO SNOWFLAKE_PUBSEC_DEMO.ANALYTICS.SERVICE_PERFORMANCE (
+        METRIC_ID,
+        SERVICE_NAME,
+        AGENCY,
+        METRIC_TYPE,
+        METRIC_VALUE,
+        MEASUREMENT_DATE,
+        BENCHMARK_VALUE,
+        PERFORMANCE_STATUS,
+        CREATED_AT
+    )
     VALUES (
         optimization_id,
         'Resource Optimization',
