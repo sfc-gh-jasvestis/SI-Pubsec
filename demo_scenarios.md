@@ -3,8 +3,9 @@
 
 ### Demo Overview
 **Duration:** 20 minutes  
-**Audience:** Government officials, policy makers, IT leaders  
-**Theme:** "Talk to Enterprise Data Instantly - From Question to Action in Seconds"
+**Audience:** Government, healthcare, education, non-profit leaders  
+**Theme:** "Bridging Tomorrow: AI-Powered Public Services - From Question to Action in Seconds"  
+**Event Context:** Demonstrating Singapore's digital leadership through responsible AI
 
 ---
 

@@ -5,12 +5,12 @@
 
 ### Slide 1: Title Slide
 **Singapore Smart Nation Intelligence**  
-*Talk to Enterprise Data Instantly*
+*Bridging Tomorrow: AI-Powered Government*
 
 **Snowflake Intelligence Demo**  
 Public Sector Day Singapore 2025
 
-*Transforming Government Decision-Making with AI*
+*Accelerating Singapore's Digital Leadership Through Responsible AI*
 
 ---
 
