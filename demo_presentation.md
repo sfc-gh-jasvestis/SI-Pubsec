@@ -66,96 +66,81 @@ Public Sector Day Singapore 2025
 ---
 
 ### Slide 5: Live Demo - Scenario 1
-**Real-Time Service Performance**
+**Policy-Driven Performance Analysis**
+*Combining Cortex Search + Cortex Analyst*
 
 **Demo Question:**  
-*"How did our digital services perform over the weekend?"*
+*"What do our accessibility guidelines say, and how are we performing on accessibility metrics across demographics?"*
 
 **What You'll See:**
-- ⚡ Instant aggregation across 7 agencies
-- 📈 Performance dashboards with trend analysis
-- 🚨 Automatic identification of issues (SingPass delays)
-- 👥 Demographic breakdown of service usage
-- 💡 AI-generated recommendations
+- 🔍 **Cortex Search:** Instantly retrieves Digital Service Design Guidelines
+- 📊 **Cortex Analyst:** Creates accessibility compliance dashboard with charts
+- 🎯 **Key Insight:** 40% lower completion rates for seniors on mobile services
+- 💡 **Integrated Intelligence:** Policy requirements + performance gaps = actionable recommendations
 
-**Impact:** From 2-hour analysis to 10-second insight
+**Impact:** From policy question to compliance action in 30 seconds
 
 ---
 
 ### Slide 6: Live Demo - Scenario 2
-**Policy Impact Assessment**
+**Compliance Intelligence**
+*Automated Privacy & Data Protection Monitoring*
 
 **Demo Question:**  
-*"Show me the impact of our Digital Inclusion Initiative for seniors"*
+*"Show me our PDPC guidelines, then analyze our data collection practices for compliance"*
 
 **What You'll See:**
-- 📊 Before/after policy comparison
-- 📱 80% improvement in digital literacy scores
-- 📈 60% increase in mobile app usage
-- 💰 ROI calculation in real-time
-- 📧 Automated policy briefing generation
+- 🔍 **Cortex Search:** Retrieves Personal Data Protection Guidelines instantly
+- 📊 **Cortex Analyst:** Analyzes data retention across all government services
+- 🎯 **Key Insight:** Services retaining citizen data 60% longer than PDPC allows
+- 🚨 **Compliance Intelligence:** Automated risk flagging with remediation timeline
 
-**Impact:** Evidence-based policy making in real-time
+**Impact:** Prevents privacy violations before they happen
 
 ---
 
 ### Slide 7: Live Demo - Scenario 3
-**Inter-Agency Coordination**
+**Crisis Response Intelligence**
+*Optimizing Emergency Communication & Coordination*
 
 **Demo Question:**  
-*"Which inter-agency workflows are experiencing delays?"*
+*"What are our crisis communication protocols, and how effective were our recent emergency communications?"*
 
 **What You'll See:**
-- 🔍 Cross-agency workflow analysis
-- ⚠️ Bottleneck identification (MOH-HDB integration)
-- 📧 Automated alerts to affected agencies
-- 🔧 Process improvement recommendations
-- 📅 Automated meeting scheduling
+- 🔍 **Cortex Search:** Finds crisis communication protocols and best practices
+- 📊 **Cortex Analyst:** Analyzes citizen response rates by channel and demographic
+- 🎯 **Key Insight:** SMS reached 95% in 10 minutes, but apps had 3x higher engagement
+- 📈 **Crisis Intelligence:** Optimized communication strategy for different demographics
 
-**Impact:** Proactive problem-solving across government
+**Impact:** From reactive to predictive crisis management with data-driven optimization
 
 ---
 
-### Slide 8: Live Demo - Scenario 4
-**Crisis Response Simulation**
+### Slide 8: Key Capabilities Demonstrated
 
-**Demo Question:**  
-*"We have a weather alert tomorrow. How should we prepare?"*
+**🔍 Cortex Search: Institutional Knowledge**
+- Instantly retrieves policy documents and guidelines
+- Searches government knowledge base with natural language
+- Extracts relevant principles and requirements
+- Provides authoritative source material
 
-**What You'll See:**
-- 🌧️ Weather impact prediction on services
-- 📊 Historical pattern analysis
-- 🚑 Resource allocation recommendations
-- 📱 Proactive citizen communication drafts
-- 🎯 Targeted service preparation
+**📊 Cortex Analyst: Data Intelligence**
+- Creates visualizations automatically from natural language
+- Analyzes performance against policy standards
+- Generates compliance dashboards and trend analysis
+- Delivers actionable insights with specific metrics
 
-**Impact:** From reactive to predictive crisis management
-
----
-
-### Slide 9: Key Capabilities Demonstrated
-
-**🗣️ Natural Language Processing**
-- Ask questions like talking to a colleague
-- Understands Singapore government context
-- No technical query language required
-
-**🔗 Multi-Source Integration**
-- Citizen data + Service metrics + External data
-- Weather, economic, transport, health trends
-- Real-time marketplace data feeds
-
-**🤖 Automated Actions**
-- Generate policy briefings
-- Send inter-agency alerts
-- Schedule meetings and follow-ups
-- Create resource optimization plans
+**🤝 Combined Intelligence: Evidence-Based Governance**
+- Merges policy research with real-time performance data
+- Identifies gaps between guidelines and actual performance
+- Generates recommendations based on both knowledge and data
+- Enables evidence-based decision making in seconds
 
 **🛡️ Privacy & Governance**
-- Synthetic data for citizen privacy
-- Role-based access control
-- Full audit trail and data lineage
-- Compliance with Singapore data protection
+- Synthetic data for citizen privacy protection
+- Role-based access control for sensitive information
+- Full audit trail and data lineage tracking
+- Compliance with Singapore data protection standards
 
 ---
 
@@ -329,9 +314,12 @@ Public Sector Day Singapore 2025
 
 ### Timing Guide (20 minutes total)
 - **Slides 1-4:** Introduction and setup (3 minutes)
-- **Slides 5-8:** Live demo scenarios (12 minutes)
-- **Slides 9-11:** Capabilities and impact (3 minutes)
-- **Slides 12-16:** Implementation and Q&A (2 minutes)
+- **Slides 5-7:** Live combined Cortex demo scenarios (12 minutes)
+  - Scenario 1: Policy-Driven Performance (4 minutes)
+  - Scenario 2: Compliance Intelligence (4 minutes)  
+  - Scenario 3: Crisis Response Intelligence (4 minutes)
+- **Slide 8:** Combined Cortex capabilities (2 minutes)
+- **Slides 9-13:** Impact, implementation, and Q&A (3 minutes)
 
 ### Speaker Notes
 - **Energy Level:** High enthusiasm, confident delivery
