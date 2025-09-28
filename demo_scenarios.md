@@ -203,25 +203,6 @@
 
 ---
 
-## Audience Interaction (2 minutes)
-
-### Live Q&A
-*"Now I'd like to invite the audience to ask questions. What would you like to know about Singapore's digital services? Ask the AI directly!"*
-
-**Potential Questions from Audience:**
-- "What's our citizen satisfaction score compared to other smart cities?"
-- "How can we improve service accessibility for non-English speakers?"
-- "What's the ROI of our digital transformation initiatives?"
-- "Which inter-agency workflows need the most improvement?"
-
-**Key Talking Points:**
-- "Notice how it understands natural language questions from any government domain"
-- "It's providing context-aware answers specific to Singapore's situation"
-- "The responses combine both institutional knowledge and real-time data"
-- "Every answer is actionable, not just informational"
-
----
-
 ## Closing Impact Statement (2 minutes)
 
 ### The Transformation
