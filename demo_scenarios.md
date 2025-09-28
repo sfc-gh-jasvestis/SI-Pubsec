@@ -88,20 +88,31 @@
 - "Notice how the pie chart reveals the shift from in-person to digital channels"
 - "The ROI dashboard calculates real-time savings - $2.3M in operational costs avoided"
 
-### Live Query 4: Predictive Insights
-**Question:** *"Based on current trends, what should we expect for senior citizen digital service adoption in the next quarter? Generate a policy briefing for the Minister."*
+### Live Query 4: Policy Research + Predictive Insights (Cortex Search + Analyst Combined)
+**Question:** *"Find best practices for digital inclusion from our government knowledge base, then analyze current trends to predict senior citizen adoption rates for next quarter. Generate a comprehensive policy briefing for the Minister."*
 
 **Expected Response:**
-- Predictive model showing projected adoption rates
-- Identification of potential barriers and opportunities
-- Automated generation of executive briefing
-- Specific recommendations for policy adjustments
+**Phase 1 - Cortex Search:**
+- Searches government knowledge base for digital inclusion policies
+- Returns relevant documents: "Digital Service Design Guidelines" and "Citizen Engagement Strategy"
+- Extracts key principles: accessibility, multi-channel approach, user testing
+
+**Phase 2 - Cortex Analyst:**
+- Predictive model showing projected adoption rates with charts
+- Before/after comparison visualizations
+- ROI dashboard with cost-benefit analysis
+- Trend analysis incorporating best practices from search results
+
+**Phase 3 - Integrated Briefing:**
+- Automated policy briefing combining research findings with data insights
+- Evidence-based recommendations using both historical data and policy guidelines
 - Email notification sent to designated recipient
 
 **Key Talking Points:**
-- "The AI is not just analyzing past data, it's predicting future trends"
-- "It automatically generated and sent a policy briefing to the Minister"
-- "This transforms reactive governance into proactive policy making"
+- "First, Cortex Search found relevant policy documents from our knowledge base"
+- "Then Cortex Analyst analyzed the data and created these predictive charts"
+- "The AI combined policy research with data analysis for evidence-based recommendations"
+- "This shows how we integrate institutional knowledge with real-time insights"
 
 ---
 
@@ -164,6 +175,40 @@
 - "Based on historical patterns, we expect 200% increase in transport service queries"
 - "The AI is recommending pre-positioning mobile response units"
 - "It's already drafting proactive citizen communications"
+
+---
+
+## Bonus Demo: Intelligent Policy Research (2 minutes) - **CORTEX SEARCH + ANALYST SHOWCASE**
+
+### Setup
+**Persona:** Minister's Policy Advisor  
+**Context:** Preparing for parliamentary questions  
+**Goal:** Demonstrate the power of combining knowledge search with data analysis
+
+### Live Query 8: Comprehensive Policy Analysis
+**Question:** *"What do our government guidelines say about API security standards, and how does our current API performance compare to these standards? Show me compliance metrics with charts."*
+
+**Expected Response:**
+**Phase 1 - Cortex Search (Knowledge Retrieval):**
+- Searches government knowledge base for "API Integration Standards" (DOC004)
+- Returns: "Government APIs must follow RESTful design principles, implement OAuth 2.0 authentication, and provide comprehensive documentation. Rate limiting, versioning, and error handling standards ensure reliable inter-agency data exchange. All APIs must support JSON format, implement proper logging, and maintain 99.9% uptime SLA for critical services."
+
+**Phase 2 - Cortex Analyst (Data Analysis):**
+- Analyzes current API performance data against the 99.9% uptime SLA
+- Generates compliance dashboard with visual indicators
+- Creates charts showing OAuth 2.0 implementation rates across agencies
+- Displays API response time trends vs. performance standards
+
+**Phase 3 - Integrated Intelligence:**
+- Combines policy requirements with actual performance data
+- Identifies gaps between standards and current performance
+- Generates action items for compliance improvement
+
+**Key Talking Points:**
+- "Cortex Search instantly found the exact policy requirements from our knowledge base"
+- "Cortex Analyst then analyzed our actual performance against these standards"
+- "This is the power of combining institutional knowledge with real-time data"
+- "From policy question to compliance analysis in under 30 seconds"
 
 ---
 
