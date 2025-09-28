@@ -29,29 +29,58 @@
 ### **Scenario 1: Policy-Driven Performance Analysis** (6 minutes)
 **Persona:** Policy Director | **Impact:** Evidence-based governance
 
-**Live Query:** *"What do our government guidelines say about digital service accessibility, and how are we actually performing on accessibility metrics across different citizen demographics? Show me compliance trends with charts."*
+#### **Live Query Options (Choose 1-3 based on time and audience):**
 
-**🔍 Phase 1 - Cortex Search:**
+**Query 1A - Accessibility Compliance (Recommended for Government Leadership):**
+*"What do our government guidelines say about digital service accessibility, and how are we actually performing on accessibility metrics across different citizen demographics? Show me compliance trends with charts."*
+
+**🔍 Cortex Search Response:**
 - Retrieves "Digital Service Design Guidelines" (DOC002)
-- Extracts key principles: "inclusive design for all abilities, mobile-first approach, plain language communication"
-- Returns specific accessibility requirements and best practices
+- Extracts: "inclusive design for all abilities, mobile-first approach, plain language communication"
 
-**📊 Phase 2 - Cortex Analyst:**
-- Analyzes service completion rates by age group and digital literacy levels
-- Creates accessibility compliance dashboard with visual indicators
-- Generates charts showing mobile vs. desktop usage patterns across demographics
-- Displays service satisfaction scores by accessibility features
+**📊 Cortex Analyst Response:**
+- Service completion rates by age group and digital literacy levels
+- Accessibility compliance dashboard with visual indicators
+- Mobile vs. desktop usage patterns across demographics
 
-**🎯 Integrated Intelligence:**
-- Identifies 40% lower completion rates for seniors on mobile services
-- Highlights services not meeting accessibility guidelines
-- Generates specific recommendations for inclusive design improvements
-- Creates action plan with priority rankings
+**🎯 Key Insight:** 40% lower completion rates for seniors on mobile services
 
-**Key Talking Points:**
-- "Cortex Search instantly found our accessibility standards from the knowledge base"
-- "Cortex Analyst revealed the 40% mobile completion gap for seniors"
-- "This shows exactly where we need to improve accessibility compliance"
+---
+
+**Query 1B - Service Performance Standards (Great for Tech Leaders):**
+*"Find our service performance standards from the knowledge base, then analyze how our current digital services are performing against these benchmarks. Which services need immediate attention?"*
+
+**🔍 Cortex Search Response:**
+- Retrieves service performance standards and SLA requirements
+- Extracts uptime targets, response time benchmarks, user satisfaction thresholds
+
+**📊 Cortex Analyst Response:**
+- Real-time performance dashboard showing services below benchmark
+- Response time trends by service and agency
+- Citizen satisfaction scores vs. performance correlation
+
+**🎯 Key Insight:** 3 critical services operating below 95% uptime SLA
+
+---
+
+**Query 1C - Citizen-Centric Design Implementation (Perfect for Innovation Focus):**
+*"What do our design guidelines say about citizen-centric service development, and how well are we implementing these principles across our digital services? Show me user experience metrics."*
+
+**🔍 Cortex Search Response:**
+- Retrieves citizen-centric design principles from knowledge base
+- Extracts user testing requirements, feedback mechanisms, iterative improvement standards
+
+**📊 Cortex Analyst Response:**
+- User journey completion rates by service complexity
+- Citizen feedback sentiment analysis over time
+- Service redesign impact measurements
+
+**🎯 Key Insight:** Services following citizen-centric design have 65% higher satisfaction scores
+
+**Key Talking Points for All Queries:**
+- "Cortex Search instantly found our policy standards from the knowledge base"
+- "Cortex Analyst revealed performance gaps we need to address immediately"
+- "This shows exactly where policy meets performance reality"
 - "From policy question to actionable insights in 30 seconds"
 
 ---
@@ -59,28 +88,57 @@
 ### **Scenario 2: Compliance Intelligence** (6 minutes)
 **Persona:** Chief Privacy Officer | **Impact:** Automated compliance monitoring
 
-**Live Query:** *"Show me our Personal Data Protection guidelines for government agencies, then analyze our current data collection and retention practices. Are we compliant with the minimization principles? Create a compliance dashboard."*
+#### **Live Query Options (Choose 1-3 based on time and audience):**
 
-**🔍 Phase 1 - Cortex Search:**
-- Searches for "Personal Data Protection Guidelines" (DOC003)
-- Returns key principles: "data minimization, purpose limitation, consent management, privacy by design"
-- Extracts specific requirements for government data handling and retention limits
+**Query 2A - Data Protection Compliance (Recommended for Privacy Officers):**
+*"Show me our Personal Data Protection guidelines for government agencies, then analyze our current data collection and retention practices. Are we compliant with the minimization principles? Create a compliance dashboard."*
 
-**📊 Phase 2 - Cortex Analyst:**
-- Analyzes current data collection volumes across all government services
-- Creates retention period compliance charts by service type and agency
-- Generates consent rate visualizations and trends over time
-- Displays data sharing frequency and patterns between agencies
+**🔍 Cortex Search Response:**
+- Retrieves "Personal Data Protection Guidelines" (DOC003)
+- Extracts: "data minimization, purpose limitation, consent management, privacy by design"
 
-**🎯 Compliance Intelligence:**
-- Identifies services retaining citizen data 60% longer than PDPC guidelines allow
-- Flags potential compliance risks with severity indicators
-- Generates automated compliance report with specific violations
-- Creates remediation timeline and resource requirements
+**📊 Cortex Analyst Response:**
+- Data collection volumes across all government services
+- Retention period compliance charts by service type and agency
+- Consent rate visualizations and trends over time
 
-**Key Talking Points:**
-- "Our knowledge base contains the exact PDPC requirements for data minimization"
-- "The analysis shows we're retaining citizen data 60% longer than necessary in some services"
+**🎯 Key Insight:** Services retaining citizen data 60% longer than PDPC guidelines allow
+
+---
+
+**Query 2B - Cross-Agency Data Sharing Compliance (Great for Government Leadership):**
+*"What are our guidelines for data sharing between government agencies, and how frequently are we sharing citizen data? Show me compliance with purpose limitation principles."*
+
+**🔍 Cortex Search Response:**
+- Retrieves inter-agency data sharing protocols and restrictions
+- Extracts purpose limitation requirements and approval processes
+
+**📊 Cortex Analyst Response:**
+- Data sharing frequency and patterns between agencies
+- Purpose justification compliance rates
+- Citizen consent tracking for cross-agency data use
+
+**🎯 Key Insight:** 23% of data sharing occurs without proper purpose documentation
+
+---
+
+**Query 2C - Consent Management Effectiveness (Perfect for Digital Transformation Teams):**
+*"Find our consent management requirements from the knowledge base, then analyze how effectively we're obtaining and managing citizen consent across our digital services."*
+
+**🔍 Cortex Search Response:**
+- Retrieves consent management standards and requirements
+- Extracts opt-in/opt-out procedures and consent renewal timelines
+
+**📊 Cortex Analyst Response:**
+- Consent rates by service type and demographic
+- Consent withdrawal patterns and reasons
+- Compliance with consent renewal requirements
+
+**🎯 Key Insight:** Consent rates vary from 45% to 95% across services, indicating inconsistent implementation
+
+**Key Talking Points for All Queries:**
+- "Our knowledge base contains the exact PDPC requirements for government data handling"
+- "The analysis reveals specific compliance gaps we need to address immediately"
 - "This automated compliance monitoring prevents privacy violations before they happen"
 - "From policy research to compliance action plan in under a minute"
 
@@ -89,30 +147,59 @@
 ### **Scenario 3: Crisis Response Intelligence** (4 minutes)
 **Persona:** Emergency Response Coordinator | **Impact:** Proactive crisis management
 
-**Live Query:** *"What are our established protocols for citizen communication during emergencies, and how effective were our recent crisis communications? Analyze citizen response rates and engagement patterns during the last weather alert."*
+#### **Live Query Options (Choose 1-3 based on time and audience):**
 
-**🔍 Phase 1 - Cortex Search:**
-- Searches knowledge base for crisis communication protocols
-- Extracts guidelines: "proactive citizen communications, multi-channel alerts, clear messaging, demographic targeting"
-- Returns established emergency communication standards and best practices
+**Query 3A - Crisis Communication Effectiveness (Recommended for Emergency Management):**
+*"What are our established protocols for citizen communication during emergencies, and how effective were our recent crisis communications? Analyze citizen response rates and engagement patterns during the last weather alert."*
 
-**📊 Phase 2 - Cortex Analyst:**
-- Analyzes citizen response rates during recent weather alert by channel and demographic
-- Creates timeline charts showing message reach, engagement, and action rates
-- Generates channel effectiveness comparison (SMS, app notifications, social media, traditional media)
-- Displays demographic response patterns and optimal timing analysis
+**🔍 Cortex Search Response:**
+- Retrieves crisis communication protocols from knowledge base
+- Extracts: "proactive citizen communications, multi-channel alerts, clear messaging, demographic targeting"
 
-**🎯 Crisis Intelligence:**
-- Shows SMS reached 95% of citizens in 10 minutes, but app notifications had 3x higher engagement
-- Identifies that seniors responded better to traditional channels while youth preferred social media
-- Generates improved crisis communication strategy with channel optimization
-- Creates automated alert templates for different emergency types
+**📊 Cortex Analyst Response:**
+- Citizen response rates during recent weather alert by channel and demographic
+- Timeline charts showing message reach, engagement, and action rates
+- Channel effectiveness comparison (SMS, app, social media, traditional media)
 
-**Key Talking Points:**
-- "Our protocols emphasize multi-channel communication - let's see how we performed"
-- "SMS reached 95% of citizens quickly, but apps drove more actual engagement"
-- "The data shows we need different strategies for different age groups"
-- "This intelligence helps us optimize future emergency responses"
+**🎯 Key Insight:** SMS reached 95% of citizens in 10 minutes, but app notifications had 3x higher engagement
+
+---
+
+**Query 3B - Emergency Service Demand Prediction (Great for Resource Planning):**
+*"Find our emergency response protocols, then analyze historical patterns to predict service demand during the upcoming public holiday weekend. What resources should we prepare?"*
+
+**🔍 Cortex Search Response:**
+- Retrieves emergency response protocols and resource allocation guidelines
+- Extracts service level requirements and response time targets
+
+**📊 Cortex Analyst Response:**
+- Historical emergency service demand patterns during holidays
+- Resource utilization trends and capacity planning metrics
+- Predictive models for different emergency types
+
+**🎯 Key Insight:** Holiday weekends see 180% increase in medical emergencies and 240% increase in transport incidents
+
+---
+
+**Query 3C - Multi-Agency Crisis Coordination (Perfect for Government Leadership):**
+*"What do our protocols say about inter-agency coordination during crises, and how well did different agencies coordinate during our last emergency response? Show me collaboration effectiveness metrics."*
+
+**🔍 Cortex Search Response:**
+- Retrieves inter-agency crisis coordination protocols
+- Extracts communication chains, responsibility matrices, and escalation procedures
+
+**📊 Cortex Analyst Response:**
+- Inter-agency response time analysis during last crisis
+- Communication effectiveness between agencies
+- Resource sharing and coordination success rates
+
+**🎯 Key Insight:** Average inter-agency response coordination time was 23 minutes vs. 15-minute protocol target
+
+**Key Talking Points for All Queries:**
+- "Our protocols provide the framework - let's see how we performed in reality"
+- "The data reveals specific optimization opportunities for future emergencies"
+- "This intelligence helps us be proactive rather than reactive in crisis management"
+- "From protocol research to response optimization in seconds"
 
 ---
 
@@ -155,23 +242,46 @@
 
 ## 📋 **Presenter's Quick Reference**
 
-### **Scenario Selection by Audience:**
-- **Government Leadership:** Use Scenarios 1 + 3 (policy impact + crisis response)
-- **Privacy/Compliance Officers:** Use Scenarios 2 + 1 (compliance + accessibility)
-- **Innovation/Technology Leaders:** Use Scenarios 1 + 3 (data-driven decisions + emergency tech)
-- **Healthcare/Education Sectors:** Use Scenarios 1 + 2 (accessibility + data protection)
+### **Query Selection by Audience:**
 
-### **Time Flexibility:**
-- **15 minutes:** Use 2 scenarios + brief Q&A
-- **20 minutes:** Use all 3 scenarios + Q&A (recommended)
-- **25 minutes:** Use all 3 scenarios + extended Q&A + additional audience questions
+#### **Government Leadership Focus:**
+- **Scenario 1:** Query 1A (Accessibility) or 1B (Performance Standards)
+- **Scenario 2:** Query 2B (Cross-Agency Data Sharing)
+- **Scenario 3:** Query 3C (Multi-Agency Coordination)
 
-### **Key Success Metrics to Highlight:**
-- **40% mobile completion gap** identified and addressable
-- **60% excessive data retention** discovered and fixable  
-- **95% crisis message reach** in 10 minutes with optimization opportunities
-- **30-second analysis** vs. days of traditional research
-- **Evidence-based governance** combining policy and performance data
+#### **Privacy/Compliance Officers Focus:**
+- **Scenario 1:** Query 1A (Accessibility Compliance)
+- **Scenario 2:** Query 2A (Data Protection) + 2C (Consent Management)
+- **Scenario 3:** Query 3A (Crisis Communication)
+
+#### **Innovation/Technology Leaders Focus:**
+- **Scenario 1:** Query 1B (Performance Standards) + 1C (Citizen-Centric Design)
+- **Scenario 2:** Query 2C (Consent Management)
+- **Scenario 3:** Query 3B (Demand Prediction)
+
+#### **Healthcare/Education Sectors Focus:**
+- **Scenario 1:** Query 1A (Accessibility) + 1C (Citizen-Centric Design)
+- **Scenario 2:** Query 2A (Data Protection)
+- **Scenario 3:** Query 3A (Crisis Communication)
+
+### **Time-Based Query Selection:**
+- **15 minutes:** 1 query per scenario (3 total)
+- **20 minutes:** 1-2 queries per scenario (4-5 total) ⭐ **Recommended**
+- **25 minutes:** 2-3 queries per scenario (6-8 total) + extended Q&A
+
+### **High-Impact Metrics to Highlight:**
+- **40% mobile completion gap** for seniors (Query 1A)
+- **60% excessive data retention** vs. PDPC guidelines (Query 2A)
+- **23% undocumented data sharing** between agencies (Query 2B)
+- **95% SMS reach in 10 minutes** but 3x higher app engagement (Query 3A)
+- **180% holiday emergency increase** prediction (Query 3B)
+- **23 vs. 15 minute** inter-agency coordination gap (Query 3C)
+
+### **Pro Tips for Maximum Impact:**
+- **Start with recommended queries** for your primary audience
+- **Use additional queries** if audience shows high engagement
+- **Mix accessibility, compliance, and crisis scenarios** for comprehensive demo
+- **Always end with the most relevant metric** for your audience
 
 ---
 
