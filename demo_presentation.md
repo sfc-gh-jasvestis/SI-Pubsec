@@ -44,23 +44,28 @@ Public Sector Day Singapore 2025
 **Singapore Smart Nation Intelligence Hub**
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                 Natural Language Interface              │
-├─────────────────────────────────────────────────────────┤
-│              Snowflake Intelligence Agent               │
-├─────────────────────────────────────────────────────────┤
-│  Citizen Data  │  Service Metrics  │  Policy Impact    │
-│  (Privacy-Safe) │  (Real-time)      │  (Predictive)     │
-├─────────────────────────────────────────────────────────┤
-│  Weather Data  │  Economic Data    │  Transport Data   │
-│  (Marketplace) │  (Marketplace)    │  (Marketplace)    │
-└─────────────────────────────────────────────────────────┘
+Singapore Smart Nation Intelligence Hub
+├── 🔍 Cortex Search Service
+│   └── Government Knowledge Base (5 policy documents)
+├── 📊 Cortex Analyst 
+│   ├── Citizen Services Analytics Model
+│   ├── Policy Impact Analytics Model
+│   ├── Service Performance Analytics Model
+│   └── Weather Service Correlation Model
+├── 🗄️ Government Data Sources
+│   ├── Citizen Profiles (40,000 synthetic records)
+│   ├── Service Interactions (200,000 records)
+│   ├── Performance Metrics (real-time)
+│   └── Inter-Agency Workflows
+└── 🤖 Snowflake Intelligence Agent
+    └── Combined Cortex Intelligence
 ```
 
 **Key Components:**
 - 🧠 AI Agent with Singapore Government Context
-- 📊 10,000+ Synthetic Citizen Profiles (Privacy-Compliant)
-- 🔄 50,000+ Service Interactions
+- 📊 40,000 Synthetic Citizen Profiles (Privacy-Compliant)
+- 🔄 200,000 Service Interactions
+- 🔍 5 Government Policy Documents for Cortex Search
 - 🌐 Real-time Marketplace Data Integration
 
 ---
