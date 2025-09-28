@@ -212,6 +212,197 @@
 
 ---
 
+## Additional Combined Cortex Scenarios (Optional - Use Based on Audience Interest)
+
+### 🎯 **Scenario Selection Guide for Presenters:**
+
+**For Government Leadership Audience:**
+- **Scenario A** (Accessibility) - Shows inclusive governance commitment
+- **Scenario C** (Best Practices) - Demonstrates cross-agency collaboration
+
+**For Privacy/Compliance Officers:**
+- **Scenario B** (Privacy Compliance) - Direct relevance to data protection
+- **Scenario A** (Accessibility) - Compliance monitoring capabilities
+
+**For Innovation/Technology Leaders:**
+- **Scenario E** (Innovation Pipeline) - Future-focused service development
+- **Scenario D** (Crisis Communication) - Advanced emergency response
+
+**For Healthcare/Education Sectors:**
+- **Scenario A** (Accessibility) - Universal design principles
+- **Scenario C** (Best Practices) - Cross-sector knowledge sharing
+
+**Time-Based Selection:**
+- **5+ minutes available:** Use Scenario A or B (most comprehensive)
+- **3-4 minutes available:** Use Scenario C or D (focused impact)
+- **2-3 minutes available:** Use Scenario E (innovation focus)
+
+---
+
+### Scenario A: Citizen Service Accessibility Analysis (3 minutes)
+
+**Setup:** Director of Inclusive Services  
+**Context:** Reviewing accessibility compliance across government services  
+**Goal:** Combine accessibility guidelines with actual service performance data
+
+**Live Query A1:** *"What do our government guidelines say about inclusive design for digital services, and how are we performing on accessibility metrics across different citizen demographics? Show me compliance trends with charts."*
+
+**Expected Response:**
+**Phase 1 - Cortex Search:**
+- Retrieves "Digital Service Design Guidelines" (DOC002)
+- Extracts key principles: "inclusive design for all abilities, plain language communication, mobile-first approach"
+- Returns accessibility requirements and best practices
+
+**Phase 2 - Cortex Analyst:**
+- Analyzes service usage by age group and digital literacy levels
+- Creates accessibility compliance dashboard with visual indicators
+- Generates charts showing service completion rates by demographic
+- Displays mobile vs. desktop usage patterns across age groups
+
+**Phase 3 - Integrated Insights:**
+- Identifies gaps between accessibility guidelines and actual performance
+- Highlights services with low completion rates for seniors or disabled citizens
+- Generates recommendations for improving inclusive design
+
+**Key Talking Points:**
+- "Cortex Search found our inclusive design standards instantly"
+- "Cortex Analyst revealed that seniors have 40% lower completion rates on mobile"
+- "This shows exactly where we need to improve accessibility compliance"
+
+---
+
+### Scenario B: Data Privacy Compliance Monitoring (3 minutes)
+
+**Setup:** Chief Privacy Officer  
+**Context:** Monthly privacy compliance review  
+**Goal:** Combine PDPC guidelines with actual data handling practices
+
+**Live Query B1:** *"Show me our Personal Data Protection guidelines for government agencies, then analyze our current data collection and retention practices. Are we compliant with the minimization principles? Create a compliance dashboard."*
+
+**Expected Response:**
+**Phase 1 - Cortex Search:**
+- Searches for "Personal Data Protection Guidelines" (DOC003)
+- Returns key principles: "data minimization, purpose limitation, consent management, privacy by design"
+- Extracts specific requirements for government data handling
+
+**Phase 2 - Cortex Analyst:**
+- Analyzes current data collection volumes across services
+- Creates retention period compliance charts by service type
+- Generates consent rate visualizations and trends
+- Displays data sharing frequency between agencies
+
+**Phase 3 - Compliance Intelligence:**
+- Compares actual practices against PDPC guidelines
+- Identifies services collecting excessive data
+- Flags potential compliance risks with severity indicators
+- Generates automated compliance report
+
+**Key Talking Points:**
+- "Our knowledge base contains the exact PDPC requirements"
+- "The data shows we're retaining citizen data 60% longer than necessary in some services"
+- "This automated compliance monitoring prevents privacy violations before they happen"
+
+---
+
+### Scenario C: Inter-Agency Best Practices Implementation (3 minutes)
+
+**Setup:** Whole-of-Government Transformation Lead  
+**Context:** Scaling successful initiatives across agencies  
+**Goal:** Find proven strategies and measure implementation success
+
+**Live Query C1:** *"What does our knowledge base say about successful citizen engagement strategies, and which agencies are currently implementing these practices most effectively? Show me performance comparisons and adoption rates."*
+
+**Expected Response:**
+**Phase 1 - Cortex Search:**
+- Retrieves "Citizen Engagement Strategy" (DOC005)
+- Extracts best practices: "multi-channel approach, feedback mechanisms, user testing, accessibility compliance"
+- Returns proven engagement methodologies
+
+**Phase 2 - Cortex Analyst:**
+- Analyzes citizen satisfaction scores by agency and engagement method
+- Creates comparative charts showing which agencies excel at citizen feedback
+- Generates adoption rate visualizations for different engagement channels
+- Displays ROI analysis of various engagement strategies
+
+**Phase 3 - Implementation Intelligence:**
+- Identifies top-performing agencies for each engagement practice
+- Highlights successful implementation patterns
+- Generates recommendations for scaling best practices
+- Creates action plan for knowledge transfer between agencies
+
+**Key Talking Points:**
+- "Our knowledge base contains proven citizen engagement strategies"
+- "The data shows GovTech achieves 85% higher satisfaction using multi-channel approaches"
+- "We can now systematically scale successful practices across all agencies"
+
+---
+
+### Scenario D: Crisis Communication Effectiveness (3 minutes)
+
+**Setup:** National Crisis Communication Director  
+**Context:** Post-incident analysis and preparation  
+**Goal:** Combine communication guidelines with actual crisis response performance
+
+**Live Query D1:** *"What are our established protocols for citizen communication during emergencies, and how effective were our recent crisis communications? Analyze citizen response rates and engagement patterns during the last weather alert."*
+
+**Expected Response:**
+**Phase 1 - Cortex Search:**
+- Searches knowledge base for crisis communication protocols
+- Extracts guidelines: "proactive citizen communications, multi-channel alerts, clear messaging"
+- Returns established emergency communication standards
+
+**Phase 2 - Cortex Analyst:**
+- Analyzes citizen response rates during recent weather alert
+- Creates timeline charts showing message reach and engagement
+- Generates channel effectiveness comparison (SMS, app, social media)
+- Displays demographic response patterns and timing analysis
+
+**Phase 3 - Communication Intelligence:**
+- Compares actual performance against established protocols
+- Identifies most effective communication channels by demographic
+- Highlights timing optimization opportunities
+- Generates improved crisis communication strategy
+
+**Key Talking Points:**
+- "Our protocols emphasize multi-channel communication - let's see how we performed"
+- "SMS reached 95% of citizens in 10 minutes, but app notifications had higher engagement"
+- "Seniors responded better to traditional channels, while youth preferred social media"
+
+---
+
+### Scenario E: Service Innovation Pipeline (3 minutes)
+
+**Setup:** Chief Innovation Officer  
+**Context:** Planning next-generation government services  
+**Goal:** Combine innovation frameworks with citizen demand analysis
+
+**Live Query E1:** *"What do our service design guidelines say about innovation and user-centric design, and what new services are citizens requesting most? Show me demand patterns and innovation opportunities with trend analysis."*
+
+**Expected Response:**
+**Phase 1 - Cortex Search:**
+- Retrieves service design and innovation guidelines
+- Extracts principles: "citizen-centric design, user testing, iterative improvement, cross-agency collaboration"
+- Returns innovation methodology and success criteria
+
+**Phase 2 - Cortex Analyst:**
+- Analyzes citizen service requests and feedback patterns
+- Creates demand forecasting charts for emerging service needs
+- Generates innovation opportunity heat maps by service category
+- Displays cross-agency collaboration potential analysis
+
+**Phase 3 - Innovation Intelligence:**
+- Identifies high-demand, low-supply service gaps
+- Prioritizes innovation opportunities based on citizen impact and feasibility
+- Generates innovation roadmap aligned with design principles
+- Creates resource allocation recommendations for new service development
+
+**Key Talking Points:**
+- "Our design guidelines emphasize citizen-centric innovation"
+- "The data reveals 300% increase in demand for AI-powered service recommendations"
+- "This shows us exactly where to focus our innovation investments"
+
+---
+
 ## Audience Interaction (1 minute)
 
 ### Live Q&A
