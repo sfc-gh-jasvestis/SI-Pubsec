@@ -17,9 +17,7 @@ This demo showcases **Snowflake Intelligence** capabilities for Singapore's publ
 
 ### 2. Setup & Configuration
 - **`complete_demo_setup.sql`** - Single comprehensive setup script (legacy)
-- **`create_search_functions.sql`** - Standalone search function setup
 - **`agent_configuration.md`** - Snowflake Intelligence agent setup guide
-- **`SEARCH_DEMO_QUERIES.sql`** - Comprehensive demo queries and examples
 
 ### 3. Documentation & Knowledge Base
 - **`GOVERNMENT_KNOWLEDGE_BASE_DOCUMENTS.md`** - 5 government policy documents
@@ -63,16 +61,13 @@ Singapore Smart Nation Intelligence Hub
 ```sql
 -- Use the organized notebook for step-by-step setup
 -- Run Singapore_Smart_Nation_Setup_Phases.ipynb
--- Includes all phases: data, knowledge base, search functions
+-- Includes all phases: data, knowledge base, Cortex Search service
 ```
 
 #### Option 2: Single Command Setup
 ```sql
 -- Run the complete setup script (5-10 minutes)
 @complete_demo_setup.sql
-
--- Create search functions if Cortex Search unavailable
-@create_search_functions.sql
 ```
 
 ### Agent Configuration
