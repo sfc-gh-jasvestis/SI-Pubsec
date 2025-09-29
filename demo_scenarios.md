@@ -26,7 +26,7 @@
 ### **Scenario 1: Policy-Driven Performance Analysis**
 **Persona:** Policy Director | **Impact:** Evidence-based governance
 
-#### **Live Query Options (Choose 1-3 based on time and audience):**
+#### **Live Query Options:**
 
 **Query 1A - Accessibility Compliance (Recommended for Government Leadership):**
 *"What do our government guidelines say about digital service accessibility, and how are we actually performing on accessibility metrics across different citizen demographics? Show me compliance trends with charts."*
@@ -85,7 +85,7 @@
 ### **Scenario 2: Compliance Intelligence**
 **Persona:** Chief Privacy Officer | **Impact:** Automated compliance monitoring
 
-#### **Live Query Options (Choose 1-3 based on time and audience):**
+#### **Live Query Options:**
 
 **Query 2A - Data Protection Compliance (Recommended for Privacy Officers):**
 *"Show me our Personal Data Protection guidelines for government agencies, then analyze our current data collection and retention practices. Are we compliant with the minimization principles? Create a compliance dashboard."*
@@ -144,7 +144,7 @@
 ### **Scenario 3: Crisis Response Intelligence**
 **Persona:** Emergency Response Coordinator | **Impact:** Proactive crisis management
 
-#### **Live Query Options (Choose 1-3 based on time and audience):**
+#### **Live Query Options:**
 
 **Query 3A - Crisis Communication Effectiveness (Recommended for Emergency Management):**
 *"What are our established protocols for citizen communication during emergencies, and how effective were our recent crisis communications? Analyze citizen response rates and engagement patterns during the last weather alert."*
