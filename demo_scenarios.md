@@ -2,7 +2,6 @@
 ## Public Sector Day Singapore 2025 - Live Demo Script
 
 ### Demo Overview
-**Duration:** 20 minutes  
 **Audience:** Government, healthcare, education, non-profit leaders  
 **Theme:** "Bridging Tomorrow: AI-Powered Public Services - From Question to Action in Seconds"  
 **Event Context:** Demonstrating Singapore's digital leadership through responsible AI
