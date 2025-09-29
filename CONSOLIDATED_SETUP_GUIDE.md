@@ -103,7 +103,7 @@ ORDER BY METRIC;
 - Service Interactions: 200,000
 - Performance Metrics: 2,160
 - Weather Data Points: 2,160
-- Government Documents: 5
+- Government Documents: 15
 
 ### Test Cortex Search
 ```sql
