@@ -23,7 +23,7 @@
 
 ## 🎯 **Core Demo: Combined Cortex Search + Analyst Scenarios**
 
-### **Scenario 1: Policy-Driven Performance Analysis** (6 minutes)
+### **Scenario 1: Policy-Driven Performance Analysis**
 **Persona:** Policy Director | **Impact:** Evidence-based governance
 
 #### **Live Query Options (Choose 1-3 based on time and audience):**
@@ -82,7 +82,7 @@
 
 ---
 
-### **Scenario 2: Compliance Intelligence** (6 minutes)
+### **Scenario 2: Compliance Intelligence**
 **Persona:** Chief Privacy Officer | **Impact:** Automated compliance monitoring
 
 #### **Live Query Options (Choose 1-3 based on time and audience):**
@@ -141,7 +141,7 @@
 
 ---
 
-### **Scenario 3: Crisis Response Intelligence** (4 minutes)
+### **Scenario 3: Crisis Response Intelligence**
 **Persona:** Emergency Response Coordinator | **Impact:** Proactive crisis management
 
 #### **Live Query Options (Choose 1-3 based on time and audience):**
@@ -200,7 +200,7 @@
 
 ---
 
-## Closing Impact Statement (2 minutes)
+## Closing Impact Statement
 
 ### The Transformation
 *"What you've just seen represents a fundamental shift in how government can operate:*
