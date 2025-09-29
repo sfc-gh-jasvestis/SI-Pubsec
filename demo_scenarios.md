@@ -9,8 +9,6 @@
 
 ---
 
-## Opening Hook (2 minutes)
-
 ### The Challenge
 *"Imagine you're a senior government official on Monday morning. You have three critical questions:*
 - *How did our digital services perform over the weekend?*
