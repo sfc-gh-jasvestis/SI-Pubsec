@@ -26,7 +26,7 @@ Run this **one script** to set up the entire demo:
 - ✅ 200,000 service interactions
 - ✅ 2,160 performance metrics
 - ✅ Synthetic external data (weather, economic, transport, health)
-- ✅ Government knowledge base (5 policy documents)
+- ✅ Government knowledge base (15 policy documents)
 - ✅ Analytics views and stored procedures
 - ✅ Cortex Search service
 - ✅ Semantic model infrastructure
