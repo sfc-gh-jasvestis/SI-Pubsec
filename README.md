@@ -20,7 +20,7 @@ This demo showcases **Snowflake Intelligence** capabilities for Singapore's publ
 - **`agent_configuration.md`** - Snowflake Intelligence agent setup guide
 
 ### 3. Documentation & Knowledge Base
-- **`GOVERNMENT_KNOWLEDGE_BASE_DOCUMENTS.md`** - 5 government policy documents
+- **`GOVERNMENT_KNOWLEDGE_BASE_DOCUMENTS.md`** - 15 government policy documents
 - **`semantic_models/`** - Cortex Analyst YAML files (4 models)
 - **`demo_reset.sql`** - Environment cleanup script
 

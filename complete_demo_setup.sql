@@ -6,6 +6,13 @@
 
 -- This script sets up the complete Singapore Smart Nation Intelligence Demo
 -- including all databases, schemas, tables, data, semantic models, and services
+--
+-- UPDATED: Includes all correlation fixes for realistic data relationships:
+-- - Service interactions: Success correlates with satisfaction and duration
+-- - Citizen profiles: Digital literacy correlates with age group
+-- - Inter-agency workflows: Status correlates with completion timestamps
+-- - Weather data: Alert levels correlate with actual weather conditions
+-- - Transport data: Delay minutes correlate with service status
 
 -- ============================================================================
 -- SECTION 1: INITIAL SETUP AND PERMISSIONS
@@ -247,7 +254,7 @@ SELECT 'Phase 2: Core data tables created' as SETUP_PHASE;
 -- SECTION 3: SYNTHETIC DATA GENERATION
 -- ============================================================================
 
--- Generate synthetic citizen profiles (40,000 records across 4 runs)
+-- Generate synthetic citizen profiles with age-correlated digital literacy (40,000 records)
 INSERT INTO SNOWFLAKE_PUBSEC_DEMO.CITIZEN_DATA.CITIZEN_PROFILES (
     CITIZEN_ID,
     AGE_GROUP,
@@ -281,68 +288,59 @@ WITH SYNTHETIC_CITIZENS AS (
             WHEN UNIFORM(1, 100, RANDOM()) <= 95 THEN 'Malay'
             ELSE 'Tamil'
         END as PREFERRED_LANGUAGE,
-        ROUND(UNIFORM(1.0, 5.0, RANDOM()), 2) as DIGITAL_LITERACY_SCORE,
+        DATEADD(day, -UNIFORM(1, 365, RANDOM()), CURRENT_DATE()) as LAST_INTERACTION_DATE
+    FROM TABLE(GENERATOR(ROWCOUNT => 40000))
+),
+CITIZENS_WITH_CORRELATION AS (
+    SELECT 
+        CITIZEN_ID,
+        AGE_GROUP,
+        POSTAL_DISTRICT,
+        PREFERRED_LANGUAGE,
+        LAST_INTERACTION_DATE,
+        -- Digital literacy correlates with age group (younger = higher literacy)
         CASE 
-            WHEN UNIFORM(1, 100, RANDOM()) <= 20 THEN 'Daily'
-            WHEN UNIFORM(1, 100, RANDOM()) <= 50 THEN 'Weekly'
-            WHEN UNIFORM(1, 100, RANDOM()) <= 80 THEN 'Monthly'
-            ELSE 'Rarely'
+            WHEN AGE_GROUP = '18-25' THEN ROUND(UNIFORM(3.5, 5.0, RANDOM()), 2)
+            WHEN AGE_GROUP = '26-35' THEN ROUND(UNIFORM(3.0, 5.0, RANDOM()), 2)
+            WHEN AGE_GROUP = '36-50' THEN ROUND(UNIFORM(2.5, 4.5, RANDOM()), 2)
+            WHEN AGE_GROUP = '51-65' THEN ROUND(UNIFORM(2.0, 4.0, RANDOM()), 2)
+            ELSE ROUND(UNIFORM(1.0, 3.0, RANDOM()), 2)
+        END as DIGITAL_LITERACY_SCORE,
+        -- Service usage frequency correlates with age and digital literacy
+        CASE 
+            WHEN AGE_GROUP IN ('18-25', '26-35') THEN 
+                CASE 
+                    WHEN UNIFORM(1, 100, RANDOM()) <= 40 THEN 'Daily'
+                    WHEN UNIFORM(1, 100, RANDOM()) <= 70 THEN 'Weekly'
+                    ELSE 'Monthly'
+                END
+            WHEN AGE_GROUP IN ('36-50', '51-65') THEN 
+                CASE 
+                    WHEN UNIFORM(1, 100, RANDOM()) <= 20 THEN 'Daily'
+                    WHEN UNIFORM(1, 100, RANDOM()) <= 60 THEN 'Weekly'
+                    ELSE 'Monthly'
+                END
+            ELSE 
+                CASE 
+                    WHEN UNIFORM(1, 100, RANDOM()) <= 10 THEN 'Daily'
+                    WHEN UNIFORM(1, 100, RANDOM()) <= 30 THEN 'Weekly'
+                    WHEN UNIFORM(1, 100, RANDOM()) <= 70 THEN 'Monthly'
+                    ELSE 'Rarely'
+                END
         END as SERVICE_USAGE_FREQUENCY,
-        DATEADD(day, -UNIFORM(1, 365, RANDOM()), CURRENT_DATE()) as LAST_INTERACTION_DATE,
-        ROUND(UNIFORM(1.0, 5.0, RANDOM()), 2) as SATISFACTION_SCORE
-    FROM TABLE(GENERATOR(ROWCOUNT => 10000))
+        -- Satisfaction correlates with digital literacy (higher literacy = easier to use services)
+        CASE 
+            WHEN AGE_GROUP IN ('18-25', '26-35') THEN ROUND(UNIFORM(3.5, 5.0, RANDOM()), 2)
+            WHEN AGE_GROUP IN ('36-50', '51-65') THEN ROUND(UNIFORM(3.0, 4.5, RANDOM()), 2)
+            ELSE ROUND(UNIFORM(2.5, 4.0, RANDOM()), 2)
+        END as SATISFACTION_SCORE
+    FROM SYNTHETIC_CITIZENS
 )
-SELECT * FROM SYNTHETIC_CITIZENS;
-
--- Generate additional citizen batches for comprehensive dataset
-INSERT INTO SNOWFLAKE_PUBSEC_DEMO.CITIZEN_DATA.CITIZEN_PROFILES (
-    CITIZEN_ID, AGE_GROUP, POSTAL_DISTRICT, PREFERRED_LANGUAGE, 
-    DIGITAL_LITERACY_SCORE, SERVICE_USAGE_FREQUENCY, LAST_INTERACTION_DATE, SATISFACTION_SCORE
-)
-SELECT 
-    'SNOWFLAKE' || LPAD(10000 + ROW_NUMBER() OVER (ORDER BY SEQ4()), 8, '0'),
-    CASE WHEN UNIFORM(1, 100, RANDOM()) <= 15 THEN '18-25' WHEN UNIFORM(1, 100, RANDOM()) <= 35 THEN '26-35' WHEN UNIFORM(1, 100, RANDOM()) <= 55 THEN '36-50' WHEN UNIFORM(1, 100, RANDOM()) <= 75 THEN '51-65' ELSE '65+' END,
-    CASE WHEN UNIFORM(1, 28, RANDOM()) <= 5 THEN 'District 01-05' WHEN UNIFORM(1, 28, RANDOM()) <= 10 THEN 'District 06-10' WHEN UNIFORM(1, 28, RANDOM()) <= 15 THEN 'District 11-15' WHEN UNIFORM(1, 28, RANDOM()) <= 20 THEN 'District 16-20' ELSE 'District 21-28' END,
-    CASE WHEN UNIFORM(1, 100, RANDOM()) <= 70 THEN 'English' WHEN UNIFORM(1, 100, RANDOM()) <= 85 THEN 'Mandarin' WHEN UNIFORM(1, 100, RANDOM()) <= 95 THEN 'Malay' ELSE 'Tamil' END,
-    ROUND(UNIFORM(1.0, 5.0, RANDOM()), 2), 
-    CASE WHEN UNIFORM(1, 100, RANDOM()) <= 20 THEN 'Daily' WHEN UNIFORM(1, 100, RANDOM()) <= 50 THEN 'Weekly' WHEN UNIFORM(1, 100, RANDOM()) <= 80 THEN 'Monthly' ELSE 'Rarely' END,
-    DATEADD(day, -UNIFORM(1, 365, RANDOM()), CURRENT_DATE()),
-    ROUND(UNIFORM(1.0, 5.0, RANDOM()), 2)
-FROM TABLE(GENERATOR(ROWCOUNT => 10000));
-
-INSERT INTO SNOWFLAKE_PUBSEC_DEMO.CITIZEN_DATA.CITIZEN_PROFILES (
-    CITIZEN_ID, AGE_GROUP, POSTAL_DISTRICT, PREFERRED_LANGUAGE, 
-    DIGITAL_LITERACY_SCORE, SERVICE_USAGE_FREQUENCY, LAST_INTERACTION_DATE, SATISFACTION_SCORE
-)
-SELECT 
-    'SNOWFLAKE' || LPAD(20000 + ROW_NUMBER() OVER (ORDER BY SEQ4()), 8, '0'),
-    CASE WHEN UNIFORM(1, 100, RANDOM()) <= 15 THEN '18-25' WHEN UNIFORM(1, 100, RANDOM()) <= 35 THEN '26-35' WHEN UNIFORM(1, 100, RANDOM()) <= 55 THEN '36-50' WHEN UNIFORM(1, 100, RANDOM()) <= 75 THEN '51-65' ELSE '65+' END,
-    CASE WHEN UNIFORM(1, 28, RANDOM()) <= 5 THEN 'District 01-05' WHEN UNIFORM(1, 28, RANDOM()) <= 10 THEN 'District 06-10' WHEN UNIFORM(1, 28, RANDOM()) <= 15 THEN 'District 11-15' WHEN UNIFORM(1, 28, RANDOM()) <= 20 THEN 'District 16-20' ELSE 'District 21-28' END,
-    CASE WHEN UNIFORM(1, 100, RANDOM()) <= 70 THEN 'English' WHEN UNIFORM(1, 100, RANDOM()) <= 85 THEN 'Mandarin' WHEN UNIFORM(1, 100, RANDOM()) <= 95 THEN 'Malay' ELSE 'Tamil' END,
-    ROUND(UNIFORM(1.0, 5.0, RANDOM()), 2), 
-    CASE WHEN UNIFORM(1, 100, RANDOM()) <= 20 THEN 'Daily' WHEN UNIFORM(1, 100, RANDOM()) <= 50 THEN 'Weekly' WHEN UNIFORM(1, 100, RANDOM()) <= 80 THEN 'Monthly' ELSE 'Rarely' END,
-    DATEADD(day, -UNIFORM(1, 365, RANDOM()), CURRENT_DATE()),
-    ROUND(UNIFORM(1.0, 5.0, RANDOM()), 2)
-FROM TABLE(GENERATOR(ROWCOUNT => 10000));
-
-INSERT INTO SNOWFLAKE_PUBSEC_DEMO.CITIZEN_DATA.CITIZEN_PROFILES (
-    CITIZEN_ID, AGE_GROUP, POSTAL_DISTRICT, PREFERRED_LANGUAGE, 
-    DIGITAL_LITERACY_SCORE, SERVICE_USAGE_FREQUENCY, LAST_INTERACTION_DATE, SATISFACTION_SCORE
-)
-SELECT 
-    'SNOWFLAKE' || LPAD(30000 + ROW_NUMBER() OVER (ORDER BY SEQ4()), 8, '0'),
-    CASE WHEN UNIFORM(1, 100, RANDOM()) <= 15 THEN '18-25' WHEN UNIFORM(1, 100, RANDOM()) <= 35 THEN '26-35' WHEN UNIFORM(1, 100, RANDOM()) <= 55 THEN '36-50' WHEN UNIFORM(1, 100, RANDOM()) <= 75 THEN '51-65' ELSE '65+' END,
-    CASE WHEN UNIFORM(1, 28, RANDOM()) <= 5 THEN 'District 01-05' WHEN UNIFORM(1, 28, RANDOM()) <= 10 THEN 'District 06-10' WHEN UNIFORM(1, 28, RANDOM()) <= 15 THEN 'District 11-15' WHEN UNIFORM(1, 28, RANDOM()) <= 20 THEN 'District 16-20' ELSE 'District 21-28' END,
-    CASE WHEN UNIFORM(1, 100, RANDOM()) <= 70 THEN 'English' WHEN UNIFORM(1, 100, RANDOM()) <= 85 THEN 'Mandarin' WHEN UNIFORM(1, 100, RANDOM()) <= 95 THEN 'Malay' ELSE 'Tamil' END,
-    ROUND(UNIFORM(1.0, 5.0, RANDOM()), 2), 
-    CASE WHEN UNIFORM(1, 100, RANDOM()) <= 20 THEN 'Daily' WHEN UNIFORM(1, 100, RANDOM()) <= 50 THEN 'Weekly' WHEN UNIFORM(1, 100, RANDOM()) <= 80 THEN 'Monthly' ELSE 'Rarely' END,
-    DATEADD(day, -UNIFORM(1, 365, RANDOM()), CURRENT_DATE()),
-    ROUND(UNIFORM(1.0, 5.0, RANDOM()), 2)
-FROM TABLE(GENERATOR(ROWCOUNT => 10000));
+SELECT * FROM CITIZENS_WITH_CORRELATION;
 
 SELECT 'Phase 3a: Citizen profiles generated (40,000 records)' as SETUP_PHASE;
 
--- Generate service interactions (200,000 records across 4 runs)
+-- Generate service interactions with proper correlation between success and satisfaction (200,000 records)
 INSERT INTO SNOWFLAKE_PUBSEC_DEMO.SERVICES.SERVICE_INTERACTIONS (
     INTERACTION_ID,
     CITIZEN_ID,
@@ -357,7 +355,7 @@ INSERT INTO SNOWFLAKE_PUBSEC_DEMO.SERVICES.SERVICE_INTERACTIONS (
 WITH SYNTHETIC_INTERACTIONS AS (
     SELECT 
         'INT' || LPAD(ROW_NUMBER() OVER (ORDER BY SEQ4()), 10, '0') as INTERACTION_ID,
-        'SNOWFLAKE' || LPAD(UNIFORM(1, 10000, RANDOM()), 8, '0') as CITIZEN_ID,
+        'SNOWFLAKE' || LPAD(UNIFORM(1, 40000, RANDOM()), 8, '0') as CITIZEN_ID,
         CASE 
             WHEN UNIFORM(1, 100, RANDOM()) <= 25 THEN 'Healthcare Appointment'
             WHEN UNIFORM(1, 100, RANDOM()) <= 45 THEN 'Education Services'
@@ -382,62 +380,53 @@ WITH SYNTHETIC_INTERACTIONS AS (
             WHEN UNIFORM(1, 100, RANDOM()) <= 90 THEN 'Service Center'
             ELSE 'Phone'
         END as INTERACTION_CHANNEL,
-        UNIFORM(5, 120, RANDOM()) as DURATION_MINUTES,
-        CASE WHEN UNIFORM(1, 100, RANDOM()) <= 85 THEN TRUE ELSE FALSE END as SUCCESS_FLAG,
-        UNIFORM(1, 5, RANDOM()) as SATISFACTION_RATING,
+        UNIFORM(1, 100, RANDOM()) as SUCCESS_RANDOM,
         DATEADD(minute, -UNIFORM(1, 525600, RANDOM()), CURRENT_TIMESTAMP()) as INTERACTION_TIMESTAMP
-    FROM TABLE(GENERATOR(ROWCOUNT => 50000))
-)
-SELECT * FROM SYNTHETIC_INTERACTIONS;
-
--- Generate additional service interaction batches
-INSERT INTO SNOWFLAKE_PUBSEC_DEMO.SERVICES.SERVICE_INTERACTIONS (
-    INTERACTION_ID, CITIZEN_ID, SERVICE_TYPE, AGENCY, INTERACTION_CHANNEL, 
-    DURATION_MINUTES, SUCCESS_FLAG, SATISFACTION_RATING, INTERACTION_TIMESTAMP
-)
-SELECT 
-    'INT' || LPAD(50000 + ROW_NUMBER() OVER (ORDER BY SEQ4()), 10, '0'),
-    'SNOWFLAKE' || LPAD(UNIFORM(1, 40000, RANDOM()), 8, '0'),
-    CASE WHEN UNIFORM(1, 100, RANDOM()) <= 25 THEN 'Healthcare Appointment' WHEN UNIFORM(1, 100, RANDOM()) <= 45 THEN 'Education Services' WHEN UNIFORM(1, 100, RANDOM()) <= 60 THEN 'Housing Application' WHEN UNIFORM(1, 100, RANDOM()) <= 75 THEN 'Transport Services' WHEN UNIFORM(1, 100, RANDOM()) <= 85 THEN 'Social Services' WHEN UNIFORM(1, 100, RANDOM()) <= 95 THEN 'Business Registration' ELSE 'Tax Services' END,
-    CASE WHEN UNIFORM(1, 100, RANDOM()) <= 20 THEN 'MOH' WHEN UNIFORM(1, 100, RANDOM()) <= 35 THEN 'MOE' WHEN UNIFORM(1, 100, RANDOM()) <= 50 THEN 'HDB' WHEN UNIFORM(1, 100, RANDOM()) <= 65 THEN 'LTA' WHEN UNIFORM(1, 100, RANDOM()) <= 80 THEN 'MSF' WHEN UNIFORM(1, 100, RANDOM()) <= 90 THEN 'ACRA' ELSE 'IRAS' END,
-    CASE WHEN UNIFORM(1, 100, RANDOM()) <= 40 THEN 'Mobile App' WHEN UNIFORM(1, 100, RANDOM()) <= 70 THEN 'Web Portal' WHEN UNIFORM(1, 100, RANDOM()) <= 90 THEN 'Service Center' ELSE 'Phone' END,
-    UNIFORM(5, 120, RANDOM()), 
-    CASE WHEN UNIFORM(1, 100, RANDOM()) <= 85 THEN TRUE ELSE FALSE END,
-    UNIFORM(1, 5, RANDOM()),
-    DATEADD(minute, -UNIFORM(1, 525600, RANDOM()), CURRENT_TIMESTAMP())
-FROM TABLE(GENERATOR(ROWCOUNT => 50000));
-
-INSERT INTO SNOWFLAKE_PUBSEC_DEMO.SERVICES.SERVICE_INTERACTIONS (
-    INTERACTION_ID, CITIZEN_ID, SERVICE_TYPE, AGENCY, INTERACTION_CHANNEL, 
-    DURATION_MINUTES, SUCCESS_FLAG, SATISFACTION_RATING, INTERACTION_TIMESTAMP
-)
-SELECT 
-    'INT' || LPAD(100000 + ROW_NUMBER() OVER (ORDER BY SEQ4()), 10, '0'),
-    'SNOWFLAKE' || LPAD(UNIFORM(1, 40000, RANDOM()), 8, '0'),
-    CASE WHEN UNIFORM(1, 100, RANDOM()) <= 25 THEN 'Healthcare Appointment' WHEN UNIFORM(1, 100, RANDOM()) <= 45 THEN 'Education Services' WHEN UNIFORM(1, 100, RANDOM()) <= 60 THEN 'Housing Application' WHEN UNIFORM(1, 100, RANDOM()) <= 75 THEN 'Transport Services' WHEN UNIFORM(1, 100, RANDOM()) <= 85 THEN 'Social Services' WHEN UNIFORM(1, 100, RANDOM()) <= 95 THEN 'Business Registration' ELSE 'Tax Services' END,
-    CASE WHEN UNIFORM(1, 100, RANDOM()) <= 20 THEN 'MOH' WHEN UNIFORM(1, 100, RANDOM()) <= 35 THEN 'MOE' WHEN UNIFORM(1, 100, RANDOM()) <= 50 THEN 'HDB' WHEN UNIFORM(1, 100, RANDOM()) <= 65 THEN 'LTA' WHEN UNIFORM(1, 100, RANDOM()) <= 80 THEN 'MSF' WHEN UNIFORM(1, 100, RANDOM()) <= 90 THEN 'ACRA' ELSE 'IRAS' END,
-    CASE WHEN UNIFORM(1, 100, RANDOM()) <= 40 THEN 'Mobile App' WHEN UNIFORM(1, 100, RANDOM()) <= 70 THEN 'Web Portal' WHEN UNIFORM(1, 100, RANDOM()) <= 90 THEN 'Service Center' ELSE 'Phone' END,
-    UNIFORM(5, 120, RANDOM()), 
-    CASE WHEN UNIFORM(1, 100, RANDOM()) <= 85 THEN TRUE ELSE FALSE END,
-    UNIFORM(1, 5, RANDOM()),
-    DATEADD(minute, -UNIFORM(1, 525600, RANDOM()), CURRENT_TIMESTAMP())
-FROM TABLE(GENERATOR(ROWCOUNT => 50000));
-
-INSERT INTO SNOWFLAKE_PUBSEC_DEMO.SERVICES.SERVICE_INTERACTIONS (
-    INTERACTION_ID, CITIZEN_ID, SERVICE_TYPE, AGENCY, INTERACTION_CHANNEL, 
-    DURATION_MINUTES, SUCCESS_FLAG, SATISFACTION_RATING, INTERACTION_TIMESTAMP
+    FROM TABLE(GENERATOR(ROWCOUNT => 200000))
+),
+INTERACTIONS_WITH_CORRELATION AS (
+    SELECT 
+        INTERACTION_ID,
+        CITIZEN_ID,
+        SERVICE_TYPE,
+        AGENCY,
+        INTERACTION_CHANNEL,
+        INTERACTION_TIMESTAMP,
+        -- Duration correlates with success (failed interactions take longer)
+        CASE 
+            WHEN SUCCESS_RANDOM <= 85 THEN UNIFORM(5, 45, RANDOM())
+            ELSE UNIFORM(30, 120, RANDOM())
+        END as DURATION_MINUTES,
+        -- Success flag
+        CASE WHEN SUCCESS_RANDOM <= 85 THEN TRUE ELSE FALSE END as SUCCESS_FLAG,
+        -- Satisfaction correlates strongly with success
+        CASE 
+            WHEN SUCCESS_RANDOM <= 85 THEN 
+                CASE 
+                    WHEN UNIFORM(1, 100, RANDOM()) <= 60 THEN 5
+                    WHEN UNIFORM(1, 100, RANDOM()) <= 85 THEN 4
+                    ELSE 3
+                END
+            ELSE 
+                CASE 
+                    WHEN UNIFORM(1, 100, RANDOM()) <= 50 THEN 1
+                    WHEN UNIFORM(1, 100, RANDOM()) <= 80 THEN 2
+                    ELSE 3
+                END
+        END as SATISFACTION_RATING
+    FROM SYNTHETIC_INTERACTIONS
 )
 SELECT 
-    'INT' || LPAD(150000 + ROW_NUMBER() OVER (ORDER BY SEQ4()), 10, '0'),
-    'SNOWFLAKE' || LPAD(UNIFORM(1, 40000, RANDOM()), 8, '0'),
-    CASE WHEN UNIFORM(1, 100, RANDOM()) <= 25 THEN 'Healthcare Appointment' WHEN UNIFORM(1, 100, RANDOM()) <= 45 THEN 'Education Services' WHEN UNIFORM(1, 100, RANDOM()) <= 60 THEN 'Housing Application' WHEN UNIFORM(1, 100, RANDOM()) <= 75 THEN 'Transport Services' WHEN UNIFORM(1, 100, RANDOM()) <= 85 THEN 'Social Services' WHEN UNIFORM(1, 100, RANDOM()) <= 95 THEN 'Business Registration' ELSE 'Tax Services' END,
-    CASE WHEN UNIFORM(1, 100, RANDOM()) <= 20 THEN 'MOH' WHEN UNIFORM(1, 100, RANDOM()) <= 35 THEN 'MOE' WHEN UNIFORM(1, 100, RANDOM()) <= 50 THEN 'HDB' WHEN UNIFORM(1, 100, RANDOM()) <= 65 THEN 'LTA' WHEN UNIFORM(1, 100, RANDOM()) <= 80 THEN 'MSF' WHEN UNIFORM(1, 100, RANDOM()) <= 90 THEN 'ACRA' ELSE 'IRAS' END,
-    CASE WHEN UNIFORM(1, 100, RANDOM()) <= 40 THEN 'Mobile App' WHEN UNIFORM(1, 100, RANDOM()) <= 70 THEN 'Web Portal' WHEN UNIFORM(1, 100, RANDOM()) <= 90 THEN 'Service Center' ELSE 'Phone' END,
-    UNIFORM(5, 120, RANDOM()), 
-    CASE WHEN UNIFORM(1, 100, RANDOM()) <= 85 THEN TRUE ELSE FALSE END,
-    UNIFORM(1, 5, RANDOM()),
-    DATEADD(minute, -UNIFORM(1, 525600, RANDOM()), CURRENT_TIMESTAMP())
-FROM TABLE(GENERATOR(ROWCOUNT => 50000));
+    INTERACTION_ID,
+    CITIZEN_ID,
+    SERVICE_TYPE,
+    AGENCY,
+    INTERACTION_CHANNEL,
+    DURATION_MINUTES,
+    SUCCESS_FLAG,
+    SATISFACTION_RATING,
+    INTERACTION_TIMESTAMP
+FROM INTERACTIONS_WITH_CORRELATION;
 
 SELECT 'Phase 3b: Service interactions generated (200,000 records)' as SETUP_PHASE;
 
@@ -539,7 +528,7 @@ VALUES
     ('POL007', 'Cross-Agency Data Sharing Protocol', '2024-01-30', 'Inter-Agency Workflows', 48.6, 67.3, 38.48, 'Active'),
     ('POL008', 'Citizen Feedback Integration System', '2024-03-20', 'Service Users', 3.9, 4.6, 17.95, 'Active');
 
--- Generate inter-agency workflow data
+-- Generate inter-agency workflow data with proper status-timestamp correlation
 INSERT INTO SNOWFLAKE_PUBSEC_DEMO.SERVICES.INTER_AGENCY_WORKFLOWS (
     WORKFLOW_ID,
     CITIZEN_REQUEST_ID,
@@ -566,22 +555,43 @@ SYNTHETIC_WORKFLOWS AS (
         wt.SOURCE_AGENCY,
         wt.TARGET_AGENCY,
         wt.WORKFLOW_TYPE,
-        CASE 
-            WHEN UNIFORM(1, 100, RANDOM()) <= 70 THEN 'Completed'
-            WHEN UNIFORM(1, 100, RANDOM()) <= 85 THEN 'In Progress'
-            WHEN UNIFORM(1, 100, RANDOM()) <= 95 THEN 'Pending'
-            ELSE 'Escalated'
-        END as STATUS,
-        ROUND(UNIFORM(2.0, 72.0, RANDOM()), 2) as PROCESSING_TIME_HOURS,
         DATEADD(hour, -UNIFORM(1, 2160, RANDOM()), CURRENT_TIMESTAMP()) as HANDOFF_TIMESTAMP,
-        CASE 
-            WHEN UNIFORM(1, 100, RANDOM()) <= 70 THEN DATEADD(hour, UNIFORM(2, 48, RANDOM()), HANDOFF_TIMESTAMP)
-            ELSE NULL
-        END as COMPLETION_TIMESTAMP
+        UNIFORM(1, 100, RANDOM()) as STATUS_RANDOM
     FROM WORKFLOW_TYPES wt
     CROSS JOIN TABLE(GENERATOR(ROWCOUNT => 500))
+),
+WORKFLOWS_WITH_CORRELATION AS (
+    SELECT 
+        WORKFLOW_ID,
+        CITIZEN_REQUEST_ID,
+        SOURCE_AGENCY,
+        TARGET_AGENCY,
+        WORKFLOW_TYPE,
+        HANDOFF_TIMESTAMP,
+        -- Status determination
+        CASE 
+            WHEN STATUS_RANDOM <= 70 THEN 'Completed'
+            WHEN STATUS_RANDOM <= 85 THEN 'In Progress'
+            WHEN STATUS_RANDOM <= 95 THEN 'Pending'
+            ELSE 'Escalated'
+        END as STATUS,
+        -- Processing time correlates with status
+        CASE 
+            WHEN STATUS_RANDOM <= 70 THEN ROUND(UNIFORM(2.0, 48.0, RANDOM()), 2)
+            WHEN STATUS_RANDOM <= 85 THEN 
+                -- In Progress: limit to reasonable processing time (max 168 hours = 1 week)
+                ROUND(LEAST(DATEDIFF(hour, HANDOFF_TIMESTAMP, CURRENT_TIMESTAMP()), 168.0), 2)
+            WHEN STATUS_RANDOM <= 95 THEN ROUND(UNIFORM(0.5, 4.0, RANDOM()), 2)
+            ELSE ROUND(UNIFORM(48.0, 168.0, RANDOM()), 2)
+        END as PROCESSING_TIME_HOURS,
+        -- Completion timestamp only for completed workflows
+        CASE 
+            WHEN STATUS_RANDOM <= 70 THEN DATEADD(hour, UNIFORM(2, 48, RANDOM()), HANDOFF_TIMESTAMP)
+            ELSE NULL
+        END as COMPLETION_TIMESTAMP
+    FROM SYNTHETIC_WORKFLOWS
 )
-SELECT * FROM SYNTHETIC_WORKFLOWS;
+SELECT * FROM WORKFLOWS_WITH_CORRELATION;
 
 -- Generate current events impact data
 INSERT INTO SNOWFLAKE_PUBSEC_DEMO.ANALYTICS.CURRENT_EVENTS_IMPACT (
@@ -707,7 +717,7 @@ VALUES
     ('2024-08-01', 'Inflation Rate', 2.9, 'Percentage', 'Prices', 'SINGSTAT'),
     ('2024-08-01', 'Digital Economy Contribution', 17.1, 'Percentage of GDP', 'Digital', 'IMDA');
 
--- Generate transport data
+-- Generate transport data with proper correlation between delay and status
 INSERT INTO SNOWFLAKE_PUBSEC_DEMO.EXTERNAL_DATA.TRANSPORT_DATA (
     TIMESTAMP,
     TRANSPORT_MODE,
@@ -734,25 +744,64 @@ WITH TRANSPORT_SAMPLE AS (
             ELSE 'Woodlands'
         END as ROUTE_AREA,
         UNIFORM(50, 2000, RANDOM()) as PASSENGER_COUNT,
+        -- Use a single random number to determine both status and delay consistently
+        UNIFORM(1, 100, RANDOM()) as STATUS_RANDOM
+    FROM TABLE(GENERATOR(ROWCOUNT => 1000))
+),
+TRANSPORT_WITH_STATUS AS (
+    SELECT 
+        TIMESTAMP,
+        TRANSPORT_MODE,
+        ROUTE_AREA,
+        PASSENGER_COUNT,
+        STATUS_RANDOM,
+        -- Determine service status first
         CASE 
-            WHEN UNIFORM(1, 100, RANDOM()) <= 80 THEN 0
-            WHEN UNIFORM(1, 100, RANDOM()) <= 95 THEN UNIFORM(1, 10, RANDOM())
-            ELSE UNIFORM(10, 45, RANDOM())
-        END as DELAY_MINUTES,
-        CASE 
-            WHEN UNIFORM(1, 100, RANDOM()) <= 85 THEN 'Normal'
-            WHEN UNIFORM(1, 100, RANDOM()) <= 95 THEN 'Minor Delay'
+            WHEN STATUS_RANDOM <= 85 THEN 'Normal'
+            WHEN STATUS_RANDOM <= 95 THEN 'Minor Delay'
             ELSE 'Service Disruption'
         END as SERVICE_STATUS,
+        -- Then set delay minutes based on the service status
         CASE 
-            WHEN UNIFORM(1, 100, RANDOM()) <= 70 THEN 'None'
-            WHEN UNIFORM(1, 100, RANDOM()) <= 85 THEN 'Weather'
-            WHEN UNIFORM(1, 100, RANDOM()) <= 95 THEN 'Technical Issue'
-            ELSE 'Incident'
+            WHEN STATUS_RANDOM <= 85 THEN 
+                -- Normal service: mostly 0 delay, occasionally 1-2 minutes
+                CASE WHEN UNIFORM(1, 100, RANDOM()) <= 90 THEN 0 ELSE UNIFORM(1, 2, RANDOM()) END
+            WHEN STATUS_RANDOM <= 95 THEN 
+                -- Minor Delay: 3-15 minutes delay
+                UNIFORM(3, 15, RANDOM())
+            ELSE 
+                -- Service Disruption: 15-45 minutes delay
+                UNIFORM(15, 45, RANDOM())
+        END as DELAY_MINUTES,
+        -- Set disruption type based on service status
+        CASE 
+            WHEN STATUS_RANDOM <= 85 THEN 
+                -- Normal service: mostly no disruption
+                CASE WHEN UNIFORM(1, 100, RANDOM()) <= 95 THEN 'None' ELSE 'Weather' END
+            WHEN STATUS_RANDOM <= 95 THEN 
+                -- Minor Delay: weather or technical issues
+                CASE 
+                    WHEN UNIFORM(1, 100, RANDOM()) <= 50 THEN 'Weather'
+                    ELSE 'Technical Issue'
+                END
+            ELSE 
+                -- Service Disruption: technical issues or incidents
+                CASE 
+                    WHEN UNIFORM(1, 100, RANDOM()) <= 60 THEN 'Technical Issue'
+                    ELSE 'Incident'
+                END
         END as DISRUPTION_TYPE
-    FROM TABLE(GENERATOR(ROWCOUNT => 1000))
+    FROM TRANSPORT_SAMPLE
 )
-SELECT * FROM TRANSPORT_SAMPLE;
+SELECT 
+    TIMESTAMP,
+    TRANSPORT_MODE,
+    ROUTE_AREA,
+    PASSENGER_COUNT,
+    DELAY_MINUTES,
+    SERVICE_STATUS,
+    DISRUPTION_TYPE
+FROM TRANSPORT_WITH_STATUS;
 
 -- Generate health trends data
 INSERT INTO SNOWFLAKE_PUBSEC_DEMO.EXTERNAL_DATA.HEALTH_TRENDS (
@@ -996,9 +1045,9 @@ CREATE OR REPLACE VIEW SNOWFLAKE_PUBSEC_DEMO.ANALYTICS.CITIZEN_SATISFACTION_SUMM
 SELECT
     cp.AGE_GROUP,
     cp.POSTAL_DISTRICT,
-    AVG(cp.SATISFACTION_SCORE) as AVG_SATISFACTION,
+    ROUND(AVG(cp.SATISFACTION_SCORE), 2) as AVG_SATISFACTION,
     COUNT(*) as CITIZEN_COUNT,
-    AVG(cp.DIGITAL_LITERACY_SCORE) as AVG_DIGITAL_LITERACY
+    ROUND(AVG(cp.DIGITAL_LITERACY_SCORE), 2) as AVG_DIGITAL_LITERACY
 FROM SNOWFLAKE_PUBSEC_DEMO.CITIZEN_DATA.CITIZEN_PROFILES cp
 GROUP BY cp.AGE_GROUP, cp.POSTAL_DISTRICT;
 
@@ -1007,8 +1056,8 @@ SELECT
     sp.AGENCY,
     sp.SERVICE_NAME,
     sp.METRIC_TYPE,
-    AVG(sp.METRIC_VALUE) as AVG_PERFORMANCE,
-    AVG(sp.BENCHMARK_VALUE) as BENCHMARK,
+    ROUND(AVG(sp.METRIC_VALUE), 2) as AVG_PERFORMANCE,
+    ROUND(AVG(sp.BENCHMARK_VALUE), 2) as BENCHMARK,
     COUNT(CASE WHEN sp.PERFORMANCE_STATUS = 'Exceeding' THEN 1 END) as EXCEEDING_COUNT,
     COUNT(*) as TOTAL_METRICS
 FROM SNOWFLAKE_PUBSEC_DEMO.ANALYTICS.SERVICE_PERFORMANCE sp
@@ -1018,15 +1067,15 @@ GROUP BY sp.AGENCY, sp.SERVICE_NAME, sp.METRIC_TYPE;
 -- Create weather-service correlation views
 CREATE OR REPLACE VIEW SNOWFLAKE_PUBSEC_DEMO.ANALYTICS.WEATHER_SERVICE_CORRELATION_SIMPLE AS
 SELECT 
-    DATE(si.INTERACTION_TIMESTAMP) as SERVICE_DATE,
+    CONVERT_TIMEZONE('UTC', 'Asia/Singapore', DATE(si.INTERACTION_TIMESTAMP)) as SERVICE_DATE,
     wd.WEATHER_CONDITION,
-    wd.RAINFALL_MM,
+    ROUND(wd.RAINFALL_MM, 2) as RAINFALL_MM,
     wd.ALERT_LEVEL,
     si.SERVICE_TYPE,
     si.INTERACTION_CHANNEL,
     COUNT(*) as INTERACTION_COUNT,
-    AVG(si.DURATION_MINUTES) as AVG_DURATION,
-    AVG(si.SATISFACTION_RATING) as AVG_SATISFACTION
+    ROUND(AVG(si.DURATION_MINUTES), 2) as AVG_DURATION,
+    ROUND(AVG(si.SATISFACTION_RATING), 2) as AVG_SATISFACTION
 FROM SNOWFLAKE_PUBSEC_DEMO.SERVICES.SERVICE_INTERACTIONS si
 JOIN SNOWFLAKE_PUBSEC_DEMO.EXTERNAL_DATA.WEATHER_DATA wd 
     ON DATE(si.INTERACTION_TIMESTAMP) = DATE(wd.DATE_TIME)
@@ -1037,17 +1086,17 @@ GROUP BY 1,2,3,4,5,6;
 CREATE OR REPLACE VIEW SNOWFLAKE_PUBSEC_DEMO.ANALYTICS.WEATHER_SERVICE_CORRELATION AS
 WITH HOURLY_WEATHER AS (
     SELECT 
-        DATE_TRUNC('hour', DATE_TIME) as HOUR_TIMESTAMP,
+        CONVERT_TIMEZONE('UTC', 'Asia/Singapore', DATE_TRUNC('hour', DATE_TIME)) as HOUR_TIMESTAMP,
         CASE 
             WHEN LOCATION IN ('Changi', 'Paya Lebar') THEN 'East'
-            WHEN LOCATION IN ('Jurong West', 'Choa Chu Kang') THEN 'West'
-            WHEN LOCATION IN ('Woodlands', 'Ang Mo Kio') THEN 'North'
-            WHEN LOCATION IN ('Marina Barrage', 'Orchard', 'Tanjong Pagar') THEN 'Central'
-            ELSE 'South'
+            WHEN LOCATION IN ('Jurong West') THEN 'West'
+            WHEN LOCATION IN ('Woodlands') THEN 'North'
+            WHEN LOCATION IN ('Marina Barrage') THEN 'Central'
+            ELSE 'Central'
         END as REGION,
-        AVG(TEMPERATURE_C) as AVG_TEMP_C,
-        AVG(HUMIDITY_PCT) as AVG_HUMIDITY,
-        SUM(RAINFALL_MM) as TOTAL_RAINFALL,
+        ROUND(AVG(TEMPERATURE_C), 2) as AVG_TEMP_C,
+        ROUND(AVG(HUMIDITY_PCT), 2) as AVG_HUMIDITY,
+        ROUND(SUM(RAINFALL_MM), 2) as TOTAL_RAINFALL,
         MAX(CASE WHEN ALERT_LEVEL != 'Normal' THEN 1 ELSE 0 END) as WEATHER_ALERT_FLAG,
         MODE(WEATHER_CONDITION) as DOMINANT_WEATHER
     FROM SNOWFLAKE_PUBSEC_DEMO.EXTERNAL_DATA.WEATHER_DATA
@@ -1055,7 +1104,7 @@ WITH HOURLY_WEATHER AS (
 ),
 HOURLY_SERVICES AS (
     SELECT 
-        DATE_TRUNC('hour', si.INTERACTION_TIMESTAMP) as HOUR_TIMESTAMP,
+        CONVERT_TIMEZONE('UTC', 'Asia/Singapore', DATE_TRUNC('hour', si.INTERACTION_TIMESTAMP)) as HOUR_TIMESTAMP,
         CASE 
             WHEN cp.POSTAL_DISTRICT IN ('District 16-20') THEN 'East'
             WHEN cp.POSTAL_DISTRICT IN ('District 21-28') THEN 'West'  
@@ -1067,9 +1116,9 @@ HOURLY_SERVICES AS (
         si.AGENCY,
         si.INTERACTION_CHANNEL,
         COUNT(*) as INTERACTION_COUNT,
-        AVG(si.DURATION_MINUTES) as AVG_DURATION,
+        ROUND(AVG(si.DURATION_MINUTES), 2) as AVG_DURATION,
         SUM(CASE WHEN si.SUCCESS_FLAG THEN 1 ELSE 0 END) as SUCCESS_COUNT,
-        AVG(si.SATISFACTION_RATING) as AVG_SATISFACTION,
+        ROUND(AVG(si.SATISFACTION_RATING), 2) as AVG_SATISFACTION,
         COUNT(CASE WHEN si.INTERACTION_CHANNEL = 'Mobile App' THEN 1 END) as MOBILE_COUNT,
         COUNT(CASE WHEN si.INTERACTION_CHANNEL = 'Service Center' THEN 1 END) as IN_PERSON_COUNT
     FROM SNOWFLAKE_PUBSEC_DEMO.SERVICES.SERVICE_INTERACTIONS si
@@ -1102,12 +1151,12 @@ SELECT
         ELSE 'Normal Weather'
     END as WEATHER_IMPACT_CATEGORY,
     CASE 
-        WHEN hs.MOBILE_COUNT > 0 THEN 
+        WHEN hs.MOBILE_COUNT > 0 AND hs.INTERACTION_COUNT > 0 THEN 
             ROUND((hs.MOBILE_COUNT * 100.0) / hs.INTERACTION_COUNT, 2)
         ELSE 0 
     END as MOBILE_ADOPTION_PCT,
     CASE 
-        WHEN hw.TOTAL_RAINFALL > 5 AND hs.SUCCESS_COUNT > 0 THEN
+        WHEN hw.TOTAL_RAINFALL > 5 AND hs.SUCCESS_COUNT > 0 AND hs.INTERACTION_COUNT > 0 THEN
             ROUND((hs.SUCCESS_COUNT * 100.0) / hs.INTERACTION_COUNT, 2)
         ELSE NULL
     END as WEATHER_RESILIENCE_SCORE
