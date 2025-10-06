@@ -936,12 +936,9 @@ RETURNS STRING
 LANGUAGE SQL
 AS
 $$
-DECLARE
-    email_id STRING;
-    result STRING;
 BEGIN
-    -- Generate unique email ID
-    email_id := 'EMAIL_' || ABS(HASH(CURRENT_TIMESTAMP()::STRING || RECIPIENT_EMAIL))::STRING;
+    -- Generate unique email ID using LET statement
+    LET v_email_id STRING := 'EMAIL_' || ABS(HASH(CURRENT_TIMESTAMP()::STRING || RECIPIENT_EMAIL))::STRING;
     
     -- Log the email (in production, this would call SYSTEM$SEND_EMAIL or external email service)
     INSERT INTO SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.EMAIL_LOG (
@@ -953,15 +950,15 @@ BEGIN
         STATUS
     )
     VALUES (
-        email_id,
-        RECIPIENT_EMAIL,
-        SUBJECT,
-        BODY,
+        :v_email_id,
+        :RECIPIENT_EMAIL,
+        :SUBJECT,
+        :BODY,
         CURRENT_TIMESTAMP(),
         'SENT'
     );
     
-    result := 'Email sent successfully. ID: ' || email_id || ' to ' || RECIPIENT_EMAIL;
+    LET v_result STRING := 'Email sent successfully. ID: ' || :v_email_id || ' to ' || RECIPIENT_EMAIL;
     
     -- In production environment, uncomment and configure:
     -- CALL SYSTEM$SEND_EMAIL(
@@ -971,7 +968,7 @@ BEGIN
     --     BODY
     -- );
     
-    RETURN result;
+    RETURN :v_result;
 END;
 $$;
 
@@ -984,15 +981,10 @@ RETURNS STRING
 LANGUAGE SQL
 AS
 $$
-DECLARE
-    result_message STRING;
-    email_subject STRING;
-    email_body STRING;
-    email_result STRING;
 BEGIN
-    -- Create email content
-    email_subject := 'Policy Brief: ' || POLICY_NAME;
-    email_body := 'Dear Policy Analyst,\n\n' ||
+    -- Create email content using LET statements
+    LET v_email_subject STRING := 'Policy Brief: ' || POLICY_NAME;
+    LET v_email_body STRING := 'Dear Policy Analyst,\n\n' ||
                   'A new policy brief has been generated for: ' || POLICY_NAME || '\n\n' ||
                   'Generated at: ' || CURRENT_TIMESTAMP()::STRING || '\n\n' ||
                   'Please review the latest policy impact metrics in the dashboard.\n\n' ||
@@ -1000,15 +992,16 @@ BEGIN
                   'Singapore Smart Nation Intelligence System';
     
     -- Send email
+    LET v_email_result STRING;
     CALL SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.SEND_EMAIL(
-        RECIPIENT_EMAIL,
-        email_subject,
-        email_body
-    ) INTO email_result;
+        :RECIPIENT_EMAIL,
+        :v_email_subject,
+        :v_email_body
+    ) INTO :v_email_result;
     
     -- Create result message
-    result_message := 'Policy Brief Generated for: ' || POLICY_NAME || 
-                     ' - ' || email_result;
+    LET v_result_message STRING := 'Policy Brief Generated for: ' || POLICY_NAME || 
+                     ' - ' || :v_email_result;
 
     -- Insert with a timestamp-based ID
     INSERT INTO SNOWFLAKE_PUBSEC_DEMO.ANALYTICS.SERVICE_PERFORMANCE (
@@ -1034,7 +1027,7 @@ BEGIN
         CURRENT_TIMESTAMP()
     );
 
-    RETURN result_message;
+    RETURN :v_result_message;
 END;
 $$;
 
