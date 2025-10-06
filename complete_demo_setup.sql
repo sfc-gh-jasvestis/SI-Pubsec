@@ -79,6 +79,10 @@ GRANT ALL ON SCHEMA SNOWFLAKE_PUBSEC_DEMO.ANALYTICS TO ROLE SNOWFLAKE_INTELLIGEN
 GRANT ALL ON SCHEMA SNOWFLAKE_PUBSEC_DEMO.EXTERNAL_DATA TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
 GRANT ALL ON SCHEMA SNOWFLAKE_PUBSEC_DEMO.SEMANTIC_MODELS TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
 
+-- Grant all privileges on all future tables in INTELLIGENCE schema
+GRANT ALL ON ALL TABLES IN SCHEMA SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
+GRANT ALL ON FUTURE TABLES IN SCHEMA SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
+
 -- Grant role to current user
 GRANT ROLE SNOWFLAKE_INTELLIGENCE_ADMIN TO USER CURRENT_USER();
 
@@ -247,6 +251,16 @@ CREATE OR REPLACE TABLE SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.GOVERNMENT_KNOWLEDGE 
 -- Enable change tracking (required for Cortex Search)
 ALTER TABLE SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.GOVERNMENT_KNOWLEDGE SET
   CHANGE_TRACKING = TRUE;
+
+-- Create email log table for notification tracking
+CREATE OR REPLACE TABLE SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.EMAIL_LOG (
+    EMAIL_ID STRING,
+    RECIPIENT_EMAIL STRING,
+    SUBJECT STRING,
+    BODY TEXT,
+    SENT_TIMESTAMP TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
+    STATUS STRING DEFAULT 'SENT'
+);
 
 SELECT 'Phase 2: Core data tables created' as SETUP_PHASE;
 
@@ -908,6 +922,59 @@ SELECT 'Phase 5: Government knowledge base populated (15 documents)' as SETUP_PH
 -- SECTION 6: ANALYTICS VIEWS AND STORED PROCEDURES
 -- ============================================================================
 
+-- Create email notification integration (requires ACCOUNTADMIN)
+-- Note: This needs to be configured with actual SMTP settings
+-- For demo purposes, we'll create a mock email function that logs to a table
+
+-- Create email sending function
+CREATE OR REPLACE PROCEDURE SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.SEND_EMAIL(
+    RECIPIENT_EMAIL STRING,
+    SUBJECT STRING,
+    BODY TEXT
+)
+RETURNS STRING
+LANGUAGE SQL
+AS
+$$
+DECLARE
+    email_id STRING;
+    result STRING;
+BEGIN
+    -- Generate unique email ID
+    email_id := 'EMAIL_' || ABS(HASH(CURRENT_TIMESTAMP()::STRING || RECIPIENT_EMAIL))::STRING;
+    
+    -- Log the email (in production, this would call SYSTEM$SEND_EMAIL or external email service)
+    INSERT INTO SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.EMAIL_LOG (
+        EMAIL_ID,
+        RECIPIENT_EMAIL,
+        SUBJECT,
+        BODY,
+        SENT_TIMESTAMP,
+        STATUS
+    )
+    VALUES (
+        email_id,
+        RECIPIENT_EMAIL,
+        SUBJECT,
+        BODY,
+        CURRENT_TIMESTAMP(),
+        'SENT'
+    );
+    
+    result := 'Email sent successfully. ID: ' || email_id || ' to ' || RECIPIENT_EMAIL;
+    
+    -- In production environment, uncomment and configure:
+    -- CALL SYSTEM$SEND_EMAIL(
+    --     'your_notification_integration_name',
+    --     RECIPIENT_EMAIL,
+    --     SUBJECT,
+    --     BODY
+    -- );
+    
+    RETURN result;
+END;
+$$;
+
 -- Create stored procedures for demo automation
 CREATE OR REPLACE PROCEDURE SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.GENERATE_POLICY_BRIEF(
     POLICY_NAME STRING,
@@ -919,11 +986,29 @@ AS
 $$
 DECLARE
     result_message STRING;
+    email_subject STRING;
+    email_body STRING;
+    email_result STRING;
 BEGIN
-    -- Create a simple result message
+    -- Create email content
+    email_subject := 'Policy Brief: ' || POLICY_NAME;
+    email_body := 'Dear Policy Analyst,\n\n' ||
+                  'A new policy brief has been generated for: ' || POLICY_NAME || '\n\n' ||
+                  'Generated at: ' || CURRENT_TIMESTAMP()::STRING || '\n\n' ||
+                  'Please review the latest policy impact metrics in the dashboard.\n\n' ||
+                  'Best regards,\n' ||
+                  'Singapore Smart Nation Intelligence System';
+    
+    -- Send email
+    CALL SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.SEND_EMAIL(
+        RECIPIENT_EMAIL,
+        email_subject,
+        email_body
+    ) INTO email_result;
+    
+    -- Create result message
     result_message := 'Policy Brief Generated for: ' || POLICY_NAME || 
-                     ' - Sent to: ' || RECIPIENT_EMAIL || 
-                     ' at ' || CURRENT_TIMESTAMP()::STRING;
+                     ' - ' || email_result;
 
     -- Insert with a timestamp-based ID
     INSERT INTO SNOWFLAKE_PUBSEC_DEMO.ANALYTICS.SERVICE_PERFORMANCE (
@@ -1036,6 +1121,7 @@ END;
 $$;
 
 -- Grant execute permissions on procedures
+GRANT USAGE ON PROCEDURE SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.SEND_EMAIL(STRING, STRING, TEXT) TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
 GRANT USAGE ON PROCEDURE SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.GENERATE_POLICY_BRIEF(STRING, STRING) TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
 GRANT USAGE ON PROCEDURE SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.SEND_SERVICE_ALERT(STRING, STRING, STRING) TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
 GRANT USAGE ON PROCEDURE SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.OPTIMIZE_RESOURCES(STRING, STRING) TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
