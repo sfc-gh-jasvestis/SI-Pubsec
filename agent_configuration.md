@@ -21,7 +21,6 @@ Follow these sections in order:
 
 - **Agent Name:** `SNOWFLAKE_Smart_Nation_Assistant`
 - **Display Name:** `Singapore Smart Nation Intelligence Assistant`
-- **Schema:** `snowflake_intelligence.agents`
 - **Description:**
   ```
   AI-powered assistant for Singapore's digital government services, providing instant insights across citizen services, policy impact, and inter-agency coordination.
@@ -39,7 +38,7 @@ Follow these sections in order:
 6. "What service disruptions should we prepare for during the upcoming public holiday?"
 7. "How effective has our multilingual service enhancement been?"
 8. "Predict resource needs for healthcare appointment booking next week"
-9. "Show me the complete citizen journey from inquiry to service fulfillment"
+9. "Show me the complete citizen journey from inquiry to service fulfilment"
 10. "What's our cost per service delivered and how can we optimize it?"
 
 ---
@@ -64,7 +63,7 @@ Follow these sections in order:
 - **Database:** `SNOWFLAKE_PUBSEC_DEMO`
 - **Schema:** `SEMANTIC_MODELS`
 - **Semantic Model:** `citizen_journey_model.yaml`
-- **Description:** End-to-end citizen journey tracking from portal inquiry to service fulfillment with cost analysis
+- **Description:** End-to-end citizen journey tracking from portal inquiry to service fulfilment with cost analysis
 
 #### Tool 3: Policy Impact Analytics
 - **Tool Name:** `Policy_Impact_Analytics`
@@ -100,6 +99,7 @@ Follow these sections in order:
 - **Database:** `SNOWFLAKE_PUBSEC_DEMO`
 - **Schema:** `INTELLIGENCE`  
 - **Search Service:** `SNOWFLAKE_GOV_KNOWLEDGE_SERVICE`
+- **Max Results:** `10` ⭐ **(Recommended: 8-10 for comprehensive policy coverage across 15 documents)**
 - **Columns:**
   - **ID Column:** `DOCUMENT_ID`
   - **Title Column:** `TITLE`
@@ -267,7 +267,7 @@ CAPABILITIES SUMMARY:
 - Generating executive briefings and alerts for decision makers
 - Predicting service demand and optimizing resource allocation
 - Searching 15 government policy documents for procedures and best practices
-- Tracking complete citizen journeys from portal inquiry to service fulfillment
+- Tracking complete citizen journeys from portal inquiry to service fulfilment
 - Creating visualizations and charts for data-driven decisions
 - Analyzing external policy websites for competitive intelligence
 - Generating secure, time-limited document sharing links for inter-agency collaboration
@@ -303,7 +303,7 @@ CAPABILITIES SUMMARY:
    - `SNOWFLAKE_PUBSEC_DEMO.SERVICES.SERVICE_INTERACTIONS`
 3. **Portal Interactions** - 15,000 records (NEW)
    - `SNOWFLAKE_PUBSEC_DEMO.SERVICES.CITIZEN_PORTAL_INTERACTIONS`
-4. **Service Fulfillment** - 8,000 records (NEW)
+4. **Service Fulfilment** - 8,000 records (NEW)
    - `SNOWFLAKE_PUBSEC_DEMO.SERVICES.SERVICE_FULFILLMENT`
 5. **Performance Metrics** - 2,160 records across 18 services
    - `SNOWFLAKE_PUBSEC_DEMO.ANALYTICS.SERVICE_PERFORMANCE`
@@ -368,7 +368,7 @@ CAPABILITIES SUMMARY:
 
 **Citizen Journey:**
 ```
-"Show me the complete citizen journey from portal inquiry to service fulfillment. What's our cost per service?"
+"Show me the complete citizen journey from portal inquiry to service fulfilment. What's our cost per service?"
 ```
 
 **Automation:**
@@ -403,7 +403,7 @@ CAPABILITIES SUMMARY:
 - Example: `"Share the Q3 policy report with MOF, access for 48 hours"`
 
 ### Complete Citizen Journey Tracking
-- Track from inquiry → request → fulfillment → satisfaction
+- Track from inquiry → request → fulfilment → satisfaction
 - Calculate true cost-per-service delivered
 - Identify bottlenecks in service delivery
 
