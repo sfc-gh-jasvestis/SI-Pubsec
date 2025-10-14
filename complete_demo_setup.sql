@@ -1826,12 +1826,11 @@ SELECT 'Singapore Smart Nation Intelligence Demo setup completed successfully!' 
 
 -- Show comprehensive summary of generated data
 SELECT 
-    'FINAL DEMO STATISTICS' as SECTION,
-    '' as METRIC,
+    '========== FINAL DEMO STATISTICS ==========' as METRIC,
     '' as VALUE
 UNION ALL
 SELECT * FROM SNOWFLAKE_PUBSEC_DEMO.ANALYTICS.DEMO_SUMMARY_STATS
-ORDER BY SECTION DESC, METRIC;
+ORDER BY METRIC;
 
 -- ============================================================================
 -- SETUP COMPLETE - SINGAPORE SMART NATION INTELLIGENCE DEMO READY
