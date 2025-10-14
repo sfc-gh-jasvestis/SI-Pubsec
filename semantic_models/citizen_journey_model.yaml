@@ -1,0 +1,309 @@
+# Semantic Model for Complete Citizen Journey Analytics
+# Tracks citizens from portal inquiry through service fulfillment
+# For use with Cortex Analyst in Snowflake Intelligence Demo
+
+name: "Singapore Citizen Journey Analytics"
+description: "End-to-end citizen journey tracking from initial inquiry to service fulfillment, including cost and satisfaction analysis"
+
+tables:
+  - name: "citizen_portal_interactions"
+    description: "Citizen inquiries and interactions through digital portals"
+    base_table:
+      database: "SNOWFLAKE_PUBSEC_DEMO"
+      schema: "SERVICES"
+      table: "CITIZEN_PORTAL_INTERACTIONS"
+    
+    dimensions:
+      - name: "interaction_type"
+        synonyms: ["inquiry type", "request type", "contact type"]
+        description: "Type of portal interaction (Inquiry, Service Request, Feedback, Follow-up)"
+        expr: "INTERACTION_TYPE"
+        data_type: "text"
+        
+      - name: "channel"
+        synonyms: ["portal channel", "access channel", "digital channel", "platform"]
+        description: "How citizen accessed portal (Web Portal, Mobile App, Chatbot, Service Center)"
+        expr: "CHANNEL"
+        data_type: "text"
+        
+      - name: "inquiry_category"
+        synonyms: ["service category", "inquiry type", "request category"]
+        description: "Category of citizen inquiry"
+        expr: "INQUIRY_CATEGORY"
+        data_type: "text"
+        
+      - name: "assigned_agency"
+        synonyms: ["agency", "ministry", "handling agency", "responsible agency"]
+        description: "Government agency assigned to handle the inquiry"
+        expr: "ASSIGNED_AGENCY"
+        data_type: "text"
+        
+      - name: "status"
+        synonyms: ["inquiry status", "request status", "resolution status"]
+        description: "Current status of portal interaction (Received, Processing, Escalated, Resolved)"
+        expr: "STATUS"
+        data_type: "text"
+        
+      - name: "interaction_date"
+        synonyms: ["date", "inquiry date", "contact date"]
+        description: "Date of portal interaction"
+        expr: "DATE(INTERACTION_TIMESTAMP)"
+        data_type: "date"
+
+    measures:
+      - name: "total_interactions"
+        synonyms: ["total inquiries", "total requests", "interaction count"]
+        description: "Total number of portal interactions"
+        expr: "COUNT(*)"
+        data_type: "number"
+        
+      - name: "average_response_time"
+        synonyms: ["avg response time", "response time", "time to respond"]
+        description: "Average response time in hours"
+        expr: "ROUND(AVG(RESPONSE_TIME_HOURS), 2)"
+        data_type: "number"
+        
+      - name: "resolved_count"
+        synonyms: ["resolved inquiries", "completed inquiries", "closed requests"]
+        description: "Number of resolved interactions"
+        expr: "COUNT_IF(STATUS = 'Resolved')"
+        data_type: "number"
+        
+      - name: "resolution_rate"
+        synonyms: ["resolution percentage", "completion rate", "closure rate"]
+        description: "Percentage of interactions that are resolved"
+        expr: "ROUND((COUNT_IF(STATUS = 'Resolved') * 100.0 / COUNT(*)), 2)"
+        data_type: "number"
+        
+      - name: "escalation_rate"
+        synonyms: ["escalation percentage", "escalated rate"]
+        description: "Percentage of interactions that are escalated"
+        expr: "ROUND((COUNT_IF(STATUS = 'Escalated') * 100.0 / COUNT(*)), 2)"
+        data_type: "number"
+
+  - name: "service_fulfillment"
+    description: "Service request fulfillment tracking including costs and outcomes"
+    base_table:
+      database: "SNOWFLAKE_PUBSEC_DEMO"
+      schema: "SERVICES"
+      table: "SERVICE_FULFILLMENT"
+    
+    dimensions:
+      - name: "service_type"
+        synonyms: ["service", "service category", "fulfillment type"]
+        description: "Type of service being fulfilled"
+        expr: "SERVICE_TYPE"
+        data_type: "text"
+        
+      - name: "requesting_agency"
+        synonyms: ["requesting ministry", "source agency", "originating agency"]
+        description: "Agency that requested the service"
+        expr: "REQUESTING_AGENCY"
+        data_type: "text"
+        
+      - name: "fulfilling_agency"
+        synonyms: ["fulfilling ministry", "delivering agency", "service provider"]
+        description: "Agency fulfilling the service request"
+        expr: "FULFILLING_AGENCY"
+        data_type: "text"
+        
+      - name: "fulfillment_status"
+        synonyms: ["status", "service status", "completion status"]
+        description: "Status of service fulfillment (Completed, In Progress, Cancelled, Escalated)"
+        expr: "FULFILLMENT_STATUS"
+        data_type: "text"
+        
+      - name: "request_date"
+        synonyms: ["date", "request date", "service request date"]
+        description: "Date when service was requested"
+        expr: "REQUEST_DATE"
+        data_type: "date"
+        
+      - name: "fulfillment_date"
+        synonyms: ["completion date", "delivery date", "service date"]
+        description: "Date when service was fulfilled"
+        expr: "FULFILLMENT_DATE"
+        data_type: "date"
+
+    measures:
+      - name: "total_requests"
+        synonyms: ["total services", "request count", "service count"]
+        description: "Total number of service requests"
+        expr: "COUNT(*)"
+        data_type: "number"
+        
+      - name: "completed_requests"
+        synonyms: ["completed services", "fulfilled services", "delivered services"]
+        description: "Number of completed service requests"
+        expr: "COUNT_IF(FULFILLMENT_STATUS = 'Completed')"
+        data_type: "number"
+        
+      - name: "completion_rate"
+        synonyms: ["fulfillment rate", "success rate", "delivery rate"]
+        description: "Percentage of requests that are completed"
+        expr: "ROUND((COUNT_IF(FULFILLMENT_STATUS = 'Completed') * 100.0 / COUNT(*)), 2)"
+        data_type: "number"
+        
+      - name: "average_processing_time"
+        synonyms: ["avg processing time", "processing time", "time to complete"]
+        description: "Average processing time in days"
+        expr: "ROUND(AVG(PROCESSING_TIME_DAYS), 1)"
+        data_type: "number"
+        
+      - name: "total_cost"
+        synonyms: ["total cost", "cost to deliver", "service cost"]
+        description: "Total cost to deliver services"
+        expr: "SUM(COST_TO_DELIVER)"
+        data_type: "number"
+        
+      - name: "average_cost"
+        synonyms: ["avg cost", "cost per service", "average delivery cost"]
+        description: "Average cost to deliver a service"
+        expr: "ROUND(AVG(COST_TO_DELIVER), 2)"
+        data_type: "number"
+        
+      - name: "average_satisfaction"
+        synonyms: ["avg satisfaction", "citizen satisfaction", "satisfaction score"]
+        description: "Average citizen satisfaction score (1-5 scale)"
+        expr: "ROUND(AVG(CITIZEN_SATISFACTION_SCORE), 2)"
+        data_type: "number"
+        
+      - name: "high_satisfaction_count"
+        synonyms: ["satisfied citizens", "happy citizens", "good ratings"]
+        description: "Number of services with high satisfaction (>= 4.0)"
+        expr: "COUNT_IF(CITIZEN_SATISFACTION_SCORE >= 4.0)"
+        data_type: "number"
+
+    filters:
+      - name: "completed_services"
+        synonyms: ["completed", "finished", "delivered"]
+        description: "Filter for completed services only"
+        expr: "FULFILLMENT_STATUS = 'Completed'"
+        
+      - name: "recent_services"
+        synonyms: ["recent", "last 30 days", "current month"]
+        description: "Services from the last 30 days"
+        expr: "REQUEST_DATE >= DATEADD(day, -30, CURRENT_DATE())"
+        
+      - name: "high_cost_services"
+        synonyms: ["expensive services", "costly services"]
+        description: "Services costing more than $200"
+        expr: "COST_TO_DELIVER > 200"
+        
+      - name: "slow_services"
+        synonyms: ["delayed services", "long processing"]
+        description: "Services taking more than 30 days to complete"
+        expr: "PROCESSING_TIME_DAYS > 30"
+
+verified_queries:
+  - name: "Complete Citizen Journey Funnel"
+    question: "Show me the complete citizen journey from portal inquiry to service fulfillment"
+    sql: |
+      WITH portal_stats AS (
+        SELECT 
+          COUNT(*) as total_portal_interactions,
+          COUNT_IF(STATUS = 'Resolved') as resolved_interactions,
+          AVG(RESPONSE_TIME_HOURS) as avg_response_time
+        FROM SNOWFLAKE_PUBSEC_DEMO.SERVICES.CITIZEN_PORTAL_INTERACTIONS
+        WHERE INTERACTION_TIMESTAMP >= DATEADD(day, -90, CURRENT_TIMESTAMP())
+      ),
+      fulfillment_stats AS (
+        SELECT 
+          COUNT(*) as total_service_requests,
+          COUNT_IF(FULFILLMENT_STATUS = 'Completed') as completed_requests,
+          AVG(PROCESSING_TIME_DAYS) as avg_processing_days,
+          AVG(COST_TO_DELIVER) as avg_cost,
+          AVG(CITIZEN_SATISFACTION_SCORE) as avg_satisfaction
+        FROM SNOWFLAKE_PUBSEC_DEMO.SERVICES.SERVICE_FULFILLMENT
+        WHERE REQUEST_DATE >= DATEADD(day, -90, CURRENT_DATE())
+      )
+      SELECT 
+        p.total_portal_interactions,
+        p.resolved_interactions,
+        ROUND(p.resolved_interactions * 100.0 / p.total_portal_interactions, 2) as portal_resolution_rate,
+        p.avg_response_time,
+        f.total_service_requests,
+        f.completed_requests,
+        ROUND(f.completed_requests * 100.0 / f.total_service_requests, 2) as service_completion_rate,
+        ROUND(f.total_service_requests * 100.0 / p.resolved_interactions, 2) as inquiry_to_service_conversion,
+        f.avg_processing_days,
+        f.avg_cost,
+        f.avg_satisfaction
+      FROM portal_stats p, fulfillment_stats f
+    verified_at: 1727006400
+    
+  - name: "Cost per Service by Type"
+    question: "What is the cost to deliver services by service type?"
+    sql: |
+      SELECT 
+        SERVICE_TYPE,
+        COUNT(*) as total_services,
+        COUNT_IF(FULFILLMENT_STATUS = 'Completed') as completed,
+        ROUND(AVG(COST_TO_DELIVER), 2) as avg_cost,
+        ROUND(SUM(COST_TO_DELIVER), 2) as total_cost,
+        ROUND(AVG(PROCESSING_TIME_DAYS), 1) as avg_days,
+        ROUND(AVG(CITIZEN_SATISFACTION_SCORE), 2) as avg_satisfaction
+      FROM SNOWFLAKE_PUBSEC_DEMO.SERVICES.SERVICE_FULFILLMENT
+      WHERE REQUEST_DATE >= DATEADD(day, -90, CURRENT_DATE())
+      GROUP BY SERVICE_TYPE
+      ORDER BY total_cost DESC
+    verified_at: 1727006400
+    
+  - name: "Portal Channel Effectiveness"
+    question: "Which portal channel has the best response time and resolution rate?"
+    sql: |
+      SELECT 
+        CHANNEL,
+        INQUIRY_CATEGORY,
+        COUNT(*) as total_inquiries,
+        ROUND(AVG(RESPONSE_TIME_HOURS), 2) as avg_response_hours,
+        COUNT_IF(STATUS = 'Resolved') as resolved,
+        ROUND(COUNT_IF(STATUS = 'Resolved') * 100.0 / COUNT(*), 2) as resolution_rate,
+        COUNT_IF(STATUS = 'Escalated') as escalated,
+        ROUND(COUNT_IF(STATUS = 'Escalated') * 100.0 / COUNT(*), 2) as escalation_rate
+      FROM SNOWFLAKE_PUBSEC_DEMO.SERVICES.CITIZEN_PORTAL_INTERACTIONS
+      WHERE INTERACTION_TIMESTAMP >= DATEADD(day, -60, CURRENT_TIMESTAMP())
+      GROUP BY CHANNEL, INQUIRY_CATEGORY
+      ORDER BY resolution_rate DESC, avg_response_hours
+    verified_at: 1727006400
+    
+  - name: "Inter-Agency Service Efficiency"
+    question: "Which inter-agency workflows are most efficient in terms of time and cost?"
+    sql: |
+      SELECT 
+        REQUESTING_AGENCY,
+        FULFILLING_AGENCY,
+        SERVICE_TYPE,
+        COUNT(*) as total_requests,
+        ROUND(AVG(PROCESSING_TIME_DAYS), 1) as avg_days,
+        ROUND(AVG(COST_TO_DELIVER), 2) as avg_cost,
+        ROUND(AVG(CITIZEN_SATISFACTION_SCORE), 2) as avg_satisfaction,
+        COUNT_IF(FULFILLMENT_STATUS = 'Completed') * 100.0 / COUNT(*) as completion_rate
+      FROM SNOWFLAKE_PUBSEC_DEMO.SERVICES.SERVICE_FULFILLMENT
+      WHERE REQUEST_DATE >= DATEADD(day, -90, CURRENT_DATE())
+        AND REQUESTING_AGENCY != FULFILLING_AGENCY
+      GROUP BY REQUESTING_AGENCY, FULFILLING_AGENCY, SERVICE_TYPE
+      HAVING COUNT(*) >= 10
+      ORDER BY avg_days, avg_cost
+    verified_at: 1727006400
+    
+  - name: "Service Bottleneck Analysis"
+    question: "Which services have the longest processing times and need improvement?"
+    sql: |
+      SELECT 
+        SERVICE_TYPE,
+        REQUESTING_AGENCY,
+        FULFILLING_AGENCY,
+        COUNT(*) as total_requests,
+        ROUND(AVG(PROCESSING_TIME_DAYS), 1) as avg_processing_days,
+        ROUND(AVG(COST_TO_DELIVER), 2) as avg_cost,
+        COUNT_IF(FULFILLMENT_STATUS = 'Escalated') as escalated_count,
+        COUNT_IF(FULFILLMENT_STATUS = 'In Progress') as in_progress_count,
+        ROUND(AVG(CITIZEN_SATISFACTION_SCORE), 2) as avg_satisfaction
+      FROM SNOWFLAKE_PUBSEC_DEMO.SERVICES.SERVICE_FULFILLMENT
+      WHERE REQUEST_DATE >= DATEADD(day, -60, CURRENT_DATE())
+      GROUP BY SERVICE_TYPE, REQUESTING_AGENCY, FULFILLING_AGENCY
+      HAVING AVG(PROCESSING_TIME_DAYS) > 20
+      ORDER BY avg_processing_days DESC
+    verified_at: 1727006400
+

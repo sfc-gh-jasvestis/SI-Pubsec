@@ -262,7 +262,50 @@ CREATE OR REPLACE TABLE SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.EMAIL_LOG (
     STATUS STRING DEFAULT 'SENT'
 );
 
-SELECT 'Phase 2: Core data tables created' as SETUP_PHASE;
+-- Create citizen journey tracking tables
+CREATE OR REPLACE TABLE SNOWFLAKE_PUBSEC_DEMO.SERVICES.CITIZEN_PORTAL_INTERACTIONS (
+    PORTAL_INTERACTION_ID STRING,
+    CITIZEN_ID STRING,
+    INTERACTION_TYPE STRING,  -- 'Inquiry', 'Service Request', 'Feedback', 'Follow-up'
+    CHANNEL STRING,  -- 'Web Portal', 'Mobile App', 'Chatbot', 'Service Center'
+    INQUIRY_CATEGORY STRING,
+    INQUIRY_DETAILS TEXT,
+    ASSIGNED_AGENCY STRING,
+    INTERACTION_TIMESTAMP TIMESTAMP,
+    RESPONSE_TIME_HOURS NUMBER(5,2),
+    STATUS STRING,  -- 'Received', 'Processing', 'Escalated', 'Resolved'
+    CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP()
+);
+
+CREATE OR REPLACE TABLE SNOWFLAKE_PUBSEC_DEMO.SERVICES.SERVICE_FULFILLMENT (
+    FULFILLMENT_ID STRING,
+    CITIZEN_ID STRING,
+    SERVICE_REQUEST_ID STRING,
+    SERVICE_TYPE STRING,
+    REQUESTING_AGENCY STRING,
+    FULFILLING_AGENCY STRING,
+    REQUEST_DATE DATE,
+    FULFILLMENT_DATE DATE,
+    PROCESSING_TIME_DAYS NUMBER(5,1),
+    COST_TO_DELIVER NUMBER(10,2),
+    CITIZEN_SATISFACTION_SCORE NUMBER(3,2),
+    FULFILLMENT_STATUS STRING,  -- 'Completed', 'In Progress', 'Cancelled', 'Escalated'
+    NOTES TEXT,
+    CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP()
+);
+
+CREATE OR REPLACE TABLE SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.WEB_SCRAPE_LOG (
+    SCRAPE_ID STRING,
+    URL TEXT,
+    SCRAPED_CONTENT TEXT,
+    CONTENT_TYPE STRING,
+    SCRAPE_TIMESTAMP TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
+    STATUS STRING,
+    ERROR_MESSAGE TEXT,
+    CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP()
+);
+
+SELECT 'Phase 2: Core data tables created (including citizen journey tracking)' as SETUP_PHASE;
 
 -- ============================================================================
 -- SECTION 3: SYNTHETIC DATA GENERATION
@@ -640,6 +683,183 @@ SELECT
     'Planned';
 
 SELECT 'Phase 3d: Policy and workflow data generated' as SETUP_PHASE;
+
+-- Generate citizen portal interactions data (15,000 records)
+INSERT INTO SNOWFLAKE_PUBSEC_DEMO.SERVICES.CITIZEN_PORTAL_INTERACTIONS (
+    PORTAL_INTERACTION_ID,
+    CITIZEN_ID,
+    INTERACTION_TYPE,
+    CHANNEL,
+    INQUIRY_CATEGORY,
+    INQUIRY_DETAILS,
+    ASSIGNED_AGENCY,
+    INTERACTION_TIMESTAMP,
+    RESPONSE_TIME_HOURS,
+    STATUS
+)
+WITH SYNTHETIC_PORTAL_INTERACTIONS AS (
+    SELECT 
+        'PORTAL' || LPAD(ROW_NUMBER() OVER (ORDER BY SEQ4()), 8, '0') as PORTAL_INTERACTION_ID,
+        'SNOWFLAKE' || LPAD(UNIFORM(1, 40000, RANDOM()), 8, '0') as CITIZEN_ID,
+        CASE 
+            WHEN UNIFORM(1, 100, RANDOM()) <= 40 THEN 'Inquiry'
+            WHEN UNIFORM(1, 100, RANDOM()) <= 70 THEN 'Service Request'
+            WHEN UNIFORM(1, 100, RANDOM()) <= 85 THEN 'Feedback'
+            ELSE 'Follow-up'
+        END as INTERACTION_TYPE,
+        CASE 
+            WHEN UNIFORM(1, 100, RANDOM()) <= 45 THEN 'Web Portal'
+            WHEN UNIFORM(1, 100, RANDOM()) <= 75 THEN 'Mobile App'
+            WHEN UNIFORM(1, 100, RANDOM()) <= 90 THEN 'Chatbot'
+            ELSE 'Service Center'
+        END as CHANNEL,
+        CASE 
+            WHEN UNIFORM(1, 100, RANDOM()) <= 20 THEN 'Housing Application'
+            WHEN UNIFORM(1, 100, RANDOM()) <= 35 THEN 'Healthcare Services'
+            WHEN UNIFORM(1, 100, RANDOM()) <= 50 THEN 'Education Services'
+            WHEN UNIFORM(1, 100, RANDOM()) <= 65 THEN 'Tax & Finance'
+            WHEN UNIFORM(1, 100, RANDOM()) <= 80 THEN 'Transport Services'
+            ELSE 'Social Services'
+        END as INQUIRY_CATEGORY,
+        DATEADD(hour, -UNIFORM(1, 4320, RANDOM()), CURRENT_TIMESTAMP()) as INTERACTION_TIMESTAMP,
+        UNIFORM(1, 100, RANDOM()) as STATUS_RANDOM
+    FROM TABLE(GENERATOR(ROWCOUNT => 15000))
+),
+PORTAL_WITH_STATUS AS (
+    SELECT 
+        PORTAL_INTERACTION_ID,
+        CITIZEN_ID,
+        INTERACTION_TYPE,
+        CHANNEL,
+        INQUIRY_CATEGORY,
+        'Citizen inquiry regarding ' || INQUIRY_CATEGORY || ' via ' || CHANNEL as INQUIRY_DETAILS,
+        CASE 
+            WHEN INQUIRY_CATEGORY = 'Housing Application' THEN 'HDB'
+            WHEN INQUIRY_CATEGORY = 'Healthcare Services' THEN 'MOH'
+            WHEN INQUIRY_CATEGORY = 'Education Services' THEN 'MOE'
+            WHEN INQUIRY_CATEGORY = 'Tax & Finance' THEN 'IRAS'
+            WHEN INQUIRY_CATEGORY = 'Transport Services' THEN 'LTA'
+            ELSE 'MSF'
+        END as ASSIGNED_AGENCY,
+        INTERACTION_TIMESTAMP,
+        CASE 
+            WHEN STATUS_RANDOM <= 75 THEN ROUND(UNIFORM(0.5, 24.0, RANDOM()), 2)
+            WHEN STATUS_RANDOM <= 90 THEN ROUND(UNIFORM(24.0, 72.0, RANDOM()), 2)
+            ELSE ROUND(UNIFORM(72.0, 168.0, RANDOM()), 2)
+        END as RESPONSE_TIME_HOURS,
+        CASE 
+            WHEN STATUS_RANDOM <= 75 THEN 'Resolved'
+            WHEN STATUS_RANDOM <= 90 THEN 'Processing'
+            WHEN STATUS_RANDOM <= 95 THEN 'Escalated'
+            ELSE 'Received'
+        END as STATUS
+    FROM SYNTHETIC_PORTAL_INTERACTIONS
+)
+SELECT * FROM PORTAL_WITH_STATUS;
+
+-- Generate service fulfillment data (8,000 records)
+INSERT INTO SNOWFLAKE_PUBSEC_DEMO.SERVICES.SERVICE_FULFILLMENT (
+    FULFILLMENT_ID,
+    CITIZEN_ID,
+    SERVICE_REQUEST_ID,
+    SERVICE_TYPE,
+    REQUESTING_AGENCY,
+    FULFILLING_AGENCY,
+    REQUEST_DATE,
+    FULFILLMENT_DATE,
+    PROCESSING_TIME_DAYS,
+    COST_TO_DELIVER,
+    CITIZEN_SATISFACTION_SCORE,
+    FULFILLMENT_STATUS,
+    NOTES
+)
+WITH SYNTHETIC_FULFILLMENT AS (
+    SELECT 
+        'FULFILL' || LPAD(ROW_NUMBER() OVER (ORDER BY SEQ4()), 8, '0') as FULFILLMENT_ID,
+        'SNOWFLAKE' || LPAD(UNIFORM(1, 40000, RANDOM()), 8, '0') as CITIZEN_ID,
+        'REQ' || LPAD(UNIFORM(1, 100000, RANDOM()), 8, '0') as SERVICE_REQUEST_ID,
+        CASE 
+            WHEN UNIFORM(1, 100, RANDOM()) <= 25 THEN 'Housing Grant Application'
+            WHEN UNIFORM(1, 100, RANDOM()) <= 45 THEN 'Healthcare Subsidy'
+            WHEN UNIFORM(1, 100, RANDOM()) <= 60 THEN 'Education Grant'
+            WHEN UNIFORM(1, 100, RANDOM()) <= 75 THEN 'Business License'
+            WHEN UNIFORM(1, 100, RANDOM()) <= 85 THEN 'Tax Rebate'
+            ELSE 'Social Assistance'
+        END as SERVICE_TYPE,
+        DATEADD(day, -UNIFORM(1, 180, RANDOM()), CURRENT_DATE()) as REQUEST_DATE,
+        UNIFORM(1, 100, RANDOM()) as STATUS_RANDOM
+    FROM TABLE(GENERATOR(ROWCOUNT => 8000))
+),
+FULFILLMENT_WITH_DETAILS AS (
+    SELECT 
+        FULFILLMENT_ID,
+        CITIZEN_ID,
+        SERVICE_REQUEST_ID,
+        SERVICE_TYPE,
+        CASE 
+            WHEN SERVICE_TYPE = 'Housing Grant Application' THEN 'HDB'
+            WHEN SERVICE_TYPE = 'Healthcare Subsidy' THEN 'MOH'
+            WHEN SERVICE_TYPE = 'Education Grant' THEN 'MOE'
+            WHEN SERVICE_TYPE = 'Business License' THEN 'ACRA'
+            WHEN SERVICE_TYPE = 'Tax Rebate' THEN 'IRAS'
+            ELSE 'MSF'
+        END as REQUESTING_AGENCY,
+        CASE 
+            WHEN SERVICE_TYPE IN ('Housing Grant Application', 'Social Assistance') THEN 'CPF'
+            WHEN SERVICE_TYPE = 'Healthcare Subsidy' THEN 'Polyclinics'
+            WHEN SERVICE_TYPE = 'Education Grant' THEN 'MOE'
+            WHEN SERVICE_TYPE = 'Business License' THEN 'ACRA'
+            WHEN SERVICE_TYPE = 'Tax Rebate' THEN 'IRAS'
+            ELSE 'MSF'
+        END as FULFILLING_AGENCY,
+        REQUEST_DATE,
+        STATUS_RANDOM,
+        CASE 
+            WHEN STATUS_RANDOM <= 70 THEN 
+                DATEADD(day, UNIFORM(3, 45, RANDOM()), REQUEST_DATE)
+            ELSE NULL
+        END as FULFILLMENT_DATE,
+        CASE 
+            WHEN STATUS_RANDOM <= 70 THEN ROUND(UNIFORM(3.0, 45.0, RANDOM()), 1)
+            WHEN STATUS_RANDOM <= 90 THEN ROUND(UNIFORM(1.0, 30.0, RANDOM()), 1)
+            ELSE ROUND(UNIFORM(45.0, 90.0, RANDOM()), 1)
+        END as PROCESSING_TIME_DAYS,
+        ROUND(UNIFORM(50.0, 500.0, RANDOM()), 2) as COST_TO_DELIVER,
+        CASE 
+            WHEN STATUS_RANDOM <= 70 THEN ROUND(UNIFORM(3.5, 5.0, RANDOM()), 2)
+            WHEN STATUS_RANDOM <= 90 THEN ROUND(UNIFORM(3.0, 4.5, RANDOM()), 2)
+            ELSE ROUND(UNIFORM(2.0, 3.5, RANDOM()), 2)
+        END as CITIZEN_SATISFACTION_SCORE,
+        CASE 
+            WHEN STATUS_RANDOM <= 70 THEN 'Completed'
+            WHEN STATUS_RANDOM <= 90 THEN 'In Progress'
+            WHEN STATUS_RANDOM <= 95 THEN 'Escalated'
+            ELSE 'Cancelled'
+        END as FULFILLMENT_STATUS
+    FROM SYNTHETIC_FULFILLMENT
+)
+SELECT 
+    FULFILLMENT_ID,
+    CITIZEN_ID,
+    SERVICE_REQUEST_ID,
+    SERVICE_TYPE,
+    REQUESTING_AGENCY,
+    FULFILLING_AGENCY,
+    REQUEST_DATE,
+    FULFILLMENT_DATE,
+    PROCESSING_TIME_DAYS,
+    COST_TO_DELIVER,
+    CITIZEN_SATISFACTION_SCORE,
+    FULFILLMENT_STATUS,
+    CASE 
+        WHEN FULFILLMENT_STATUS = 'Completed' THEN 'Service successfully delivered'
+        WHEN FULFILLMENT_STATUS = 'In Progress' THEN 'Processing application'
+        WHEN FULFILLMENT_STATUS = 'Escalated' THEN 'Requires additional documentation'
+        ELSE 'Cancelled by citizen'
+    END as NOTES
+FROM FULFILLMENT_WITH_DETAILS;
+
+SELECT 'Phase 3e: Citizen journey tracking data generated (23,000 records)' as SETUP_PHASE;
 
 -- ============================================================================
 -- SECTION 4: EXTERNAL DATA (MARKETPLACE SIMULATION)
@@ -1113,11 +1333,203 @@ BEGIN
 END;
 $$;
 
+-- ============================================================================
+-- SECTION 6B: ADVANCED INTELLIGENCE CAPABILITIES
+-- ============================================================================
+
+-- Create external access integration for web scraping
+-- Note: Requires ACCOUNTADMIN role
+USE ROLE ACCOUNTADMIN;
+
+CREATE OR REPLACE NETWORK RULE SNOWFLAKE_PUBSEC_DEMO_WEB_ACCESS
+    MODE = EGRESS
+    TYPE = HOST_PORT
+    VALUE_LIST = ('0.0.0.0:443', '0.0.0.0:80');
+
+CREATE OR REPLACE EXTERNAL ACCESS INTEGRATION SNOWFLAKE_PUBSEC_DEMO_WEB_INTEGRATION
+    ALLOWED_NETWORK_RULES = (SNOWFLAKE_PUBSEC_DEMO_WEB_ACCESS)
+    ENABLED = TRUE
+    COMMENT = 'External access for web scraping government websites and policy documents';
+
+GRANT USAGE ON INTEGRATION SNOWFLAKE_PUBSEC_DEMO_WEB_INTEGRATION TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
+
+USE ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
+USE DATABASE SNOWFLAKE_PUBSEC_DEMO;
+USE SCHEMA INTELLIGENCE;
+
+-- Create web scraping function
+CREATE OR REPLACE FUNCTION SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.WEB_SCRAPE(url STRING)
+RETURNS VARIANT
+LANGUAGE PYTHON
+RUNTIME_VERSION = '3.10'
+HANDLER = 'scrape_url'
+EXTERNAL_ACCESS_INTEGRATIONS = (SNOWFLAKE_PUBSEC_DEMO_WEB_INTEGRATION)
+PACKAGES = ('requests', 'beautifulsoup4', 'lxml')
+AS
+$$
+import requests
+from bs4 import BeautifulSoup
+import _snowflake
+
+def scrape_url(url):
+    try:
+        # Set headers to mimic browser request
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        }
+        
+        # Make HTTP request
+        response = requests.get(url, headers=headers, timeout=10)
+        response.raise_for_status()
+        
+        # Parse HTML content
+        soup = BeautifulSoup(response.content, 'html.parser')
+        
+        # Extract text content
+        text_content = soup.get_text(separator=' ', strip=True)
+        
+        # Extract title
+        title = soup.title.string if soup.title else 'No title'
+        
+        # Extract meta description
+        meta_desc = soup.find('meta', attrs={'name': 'description'})
+        description = meta_desc['content'] if meta_desc else ''
+        
+        # Extract all links
+        links = [a.get('href') for a in soup.find_all('a', href=True)]
+        
+        # Log to database
+        insert_query = f"""
+            INSERT INTO SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.WEB_SCRAPE_LOG 
+            (SCRAPE_ID, URL, SCRAPED_CONTENT, CONTENT_TYPE, STATUS)
+            VALUES (
+                'SCRAPE_' || ABS(HASH('{url}' || CURRENT_TIMESTAMP()::STRING))::STRING,
+                '{url}',
+                '{text_content[:10000]}',
+                'text/html',
+                'SUCCESS'
+            )
+        """
+        
+        return {
+            'status': 'success',
+            'url': url,
+            'title': title,
+            'description': description,
+            'content': text_content[:5000],  # Limit content size
+            'link_count': len(links),
+            'links': links[:20]  # First 20 links only
+        }
+        
+    except Exception as e:
+        return {
+            'status': 'error',
+            'url': url,
+            'error': str(e)
+        }
+$$;
+
+-- Create presigned URL function for secure file sharing
+CREATE OR REPLACE FUNCTION SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.GET_FILE_PRESIGNED_URL(
+    file_path STRING,
+    expiry_hours NUMBER DEFAULT 24
+)
+RETURNS STRING
+LANGUAGE SQL
+AS
+$$
+    SELECT 
+        GET_PRESIGNED_URL(
+            @SNOWFLAKE_PUBSEC_DEMO.SEMANTIC_MODELS.ANALYST_STAGE,
+            file_path,
+            expiry_hours * 3600
+        )
+$$;
+
+-- Create procedure to analyze policy websites
+CREATE OR REPLACE PROCEDURE SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.ANALYZE_POLICY_WEBSITE(
+    WEBSITE_URL STRING
+)
+RETURNS STRING
+LANGUAGE SQL
+AS
+$$
+BEGIN
+    LET v_scrape_result VARIANT;
+    LET v_analysis_summary STRING;
+    
+    -- Scrape the website
+    v_scrape_result := (SELECT SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.WEB_SCRAPE(:WEBSITE_URL));
+    
+    -- Create analysis summary
+    v_analysis_summary := 'Policy Website Analysis:\n' ||
+                         'URL: ' || :WEBSITE_URL || '\n' ||
+                         'Title: ' || v_scrape_result:title::STRING || '\n' ||
+                         'Status: ' || v_scrape_result:status::STRING || '\n' ||
+                         'Content Preview: ' || SUBSTR(v_scrape_result:content::STRING, 1, 500);
+    
+    RETURN :v_analysis_summary;
+END;
+$$;
+
+-- Create procedure to share policy documents securely
+CREATE OR REPLACE PROCEDURE SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.SHARE_DOCUMENT(
+    DOCUMENT_NAME STRING,
+    RECIPIENT_EMAIL STRING,
+    EXPIRY_HOURS NUMBER DEFAULT 48
+)
+RETURNS STRING
+LANGUAGE SQL
+AS
+$$
+BEGIN
+    LET v_presigned_url STRING;
+    LET v_email_subject STRING;
+    LET v_email_body STRING;
+    LET v_email_result STRING;
+    
+    -- Generate presigned URL
+    v_presigned_url := (
+        SELECT SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.GET_FILE_PRESIGNED_URL(
+            :DOCUMENT_NAME,
+            :EXPIRY_HOURS
+        )
+    );
+    
+    -- Prepare email
+    v_email_subject := 'Secure Document Access: ' || :DOCUMENT_NAME;
+    v_email_body := 'Dear Colleague,\n\n' ||
+                    'You have been granted secure access to the following document:\n\n' ||
+                    'Document: ' || :DOCUMENT_NAME || '\n' ||
+                    'Access Link: ' || :v_presigned_url || '\n\n' ||
+                    'This link will expire in ' || :EXPIRY_HOURS || ' hours.\n\n' ||
+                    'Best regards,\n' ||
+                    'Singapore Smart Nation Intelligence System';
+    
+    -- Send email with secure link
+    CALL SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.SEND_EMAIL(
+        :RECIPIENT_EMAIL,
+        :v_email_subject,
+        :v_email_body
+    ) INTO :v_email_result;
+    
+    RETURN 'Document shared successfully. ' || :v_email_result;
+END;
+$$;
+
 -- Grant execute permissions on procedures
 GRANT USAGE ON PROCEDURE SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.SEND_EMAIL(STRING, STRING, TEXT) TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
 GRANT USAGE ON PROCEDURE SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.GENERATE_POLICY_BRIEF(STRING, STRING) TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
 GRANT USAGE ON PROCEDURE SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.SEND_SERVICE_ALERT(STRING, STRING, STRING) TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
 GRANT USAGE ON PROCEDURE SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.OPTIMIZE_RESOURCES(STRING, STRING) TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
+GRANT USAGE ON PROCEDURE SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.ANALYZE_POLICY_WEBSITE(STRING) TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
+GRANT USAGE ON PROCEDURE SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.SHARE_DOCUMENT(STRING, STRING, NUMBER) TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
+
+-- Grant usage on functions
+GRANT USAGE ON FUNCTION SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.WEB_SCRAPE(STRING) TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
+GRANT USAGE ON FUNCTION SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.GET_FILE_PRESIGNED_URL(STRING, NUMBER) TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
+
+SELECT 'Phase 6b: Advanced intelligence capabilities created (web scraping & file sharing)' as SETUP_PHASE;
 
 -- Create analytics views
 CREATE OR REPLACE VIEW SNOWFLAKE_PUBSEC_DEMO.ANALYTICS.CITIZEN_SATISFACTION_SUMMARY AS

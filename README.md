@@ -11,17 +11,19 @@ This demo showcases **Snowflake Intelligence** capabilities for Singapore's publ
 ## 📋 Core Files
 
 ### 1. Demo Delivery
+- **`DEMO_SCRIPT.md`** - Comprehensive demo script with 23 guided questions
+- **`DEMO_PRESENTATION_GUIDE.md`** - Quick reference for presenters
 - **`demo_presentation.md`** - 5 focused slides for professional setup
 - **`demo_scenarios.md`** - 3 Combined Cortex scenarios with 9 flexible query options
 - **`Singapore_Smart_Nation_Setup_Phases.ipynb`** - Phased setup notebook (recommended)
 
 ### 2. Setup & Configuration
-- **`complete_demo_setup.sql`** - Single comprehensive setup script (legacy)
+- **`complete_demo_setup.sql`** - Single comprehensive setup script with advanced capabilities
 - **`agent_configuration.md`** - Snowflake Intelligence agent setup guide
 
 ### 3. Documentation & Knowledge Base
 - **`GOVERNMENT_KNOWLEDGE_BASE_DOCUMENTS.md`** - 15 government policy documents
-- **`semantic_models/`** - Cortex Analyst YAML files (4 models)
+- **`semantic_models/`** - Cortex Analyst YAML files (5 models)
 - **`demo_reset.sql`** - Environment cleanup script
 
 ---
@@ -31,19 +33,28 @@ This demo showcases **Snowflake Intelligence** capabilities for Singapore's publ
 ```
 Singapore Smart Nation Intelligence Hub
 ├── 🔍 Cortex Search Service
-│   └── Government Knowledge Base (5 policy documents)
+│   └── Government Knowledge Base (15 policy documents)
 ├── 📊 Cortex Analyst 
 │   ├── Citizen Services Analytics Model
+│   ├── Citizen Journey Analytics Model (NEW)
 │   ├── Policy Impact Analytics Model
 │   ├── Service Performance Analytics Model
 │   └── Weather Service Correlation Model
-├── 🗄️ Government Data Sources
+├── 🗄️ Government Data Sources (283,000+ records)
 │   ├── Citizen Profiles (40,000 synthetic records)
 │   ├── Service Interactions (200,000 records)
+│   ├── Portal Interactions (15,000 records) (NEW)
+│   ├── Service Fulfillment (8,000 records) (NEW)
 │   ├── Performance Metrics (real-time)
-│   └── Inter-Agency Workflows
+│   ├── Inter-Agency Workflows (3,000 records)
+│   └── External Data (Weather, Transport, Economic, Health)
+├── 🌐 Advanced Intelligence Capabilities (NEW)
+│   ├── Web Scraping Function (policy analysis)
+│   ├── Presigned URL Generation (secure file sharing)
+│   ├── Email Notifications (automated alerts)
+│   └── Document Sharing (inter-agency collaboration)
 └── 🤖 Snowflake Intelligence Agent
-    └── Combined Cortex Intelligence
+    └── Combined Cortex + Web Intelligence + Automation
 ```
 
 ---
@@ -106,37 +117,59 @@ Live interaction with 9 total query options for maximum flexibility
 ## 📊 Key Demo Data
 
 ### Government Knowledge Base
-- **5 Policy Documents:** Smart Nation, Digital Services, Data Protection, API Standards, Citizen Engagement
-- **Search Capabilities:** Natural language policy research
-- **Content Coverage:** Accessibility, privacy, crisis response, innovation
+- **15 Policy Documents:** Smart Nation, Digital Services, SingPass, Healthcare, Education, Housing FAQs, Business Registration, Cybersecurity, Data Governance, Inter-Agency Collaboration, and more
+- **Search Capabilities:** Natural language policy research with full context
+- **Content Coverage:** Accessibility, privacy, crisis response, innovation, inter-agency workflows
 
-### Synthetic Data Sources
-- **40,000** citizen profiles (privacy-compliant)
-- **200,000** service interaction records  
-- **Real-time** performance metrics across agencies
-- **Complete** inter-agency workflow data
+### Synthetic Data Sources (283,000+ Records)
+- **40,000** citizen profiles (privacy-compliant, age-correlated digital literacy)
+- **200,000** service interaction records (success correlation with satisfaction)
+- **15,000** portal interactions (NEW - inquiry to service tracking)
+- **8,000** service fulfillment records (NEW - cost and satisfaction tracking)
+- **3,000** inter-agency workflows (status-timestamp correlation)
+- **2,160** weather data points (90-day history with service correlation)
+- **Real-time** performance metrics across 18 government services
+
+### Advanced Capabilities (NEW)
+- **Web Scraping:** Analyze external policy websites and government portals in real-time
+- **Secure File Sharing:** Generate presigned URLs for inter-agency document collaboration
+- **Automated Alerts:** Email policy briefs, service alerts, and resource optimization recommendations
+- **Complete Citizen Journey:** Track from portal inquiry → service request → fulfillment → satisfaction
 
 ### Performance Targets
-- **Query Response Time:** < 10 seconds
-- **Combined Intelligence:** Policy + Data in single workflow
+- **Query Response Time:** < 5 seconds for most queries
+- **Combined Intelligence:** Policy + Data + External Web Intelligence
 - **Privacy Compliance:** 100% synthetic citizen data
+- **Data Scale:** Matches industry-leading demos (283K records)
 
 ---
 
 ## 🎯 Demo Success
 
 ### What Makes This Demo Powerful
-✅ **Combined Cortex Intelligence:** First demo to showcase Search + Analyst integration  
+✅ **Combined Cortex Intelligence:** Search + Analyst + Web Scraping + Automation  
+✅ **Complete Citizen Journey:** Track from inquiry to fulfillment (like Salesforce CRM for citizens)  
+✅ **External Intelligence:** Web scraping for policy analysis and competitive benchmarking  
+✅ **Actionable Automation:** Email alerts, secure file sharing, resource optimization  
 ✅ **Evidence-Based Governance:** Policy research meets real-time data analysis  
-✅ **Flexible Delivery:** 9 query options for any audience or time constraint  
-✅ **Singapore Context:** Real government use cases and policy documents  
-✅ **Professional Polish:** Streamlined presentation + detailed scenarios  
+✅ **Singapore Context:** Real government use cases and 15 policy documents  
+✅ **Industry-Leading Scale:** 283,000+ records matching corporate demos  
+✅ **Professional Polish:** Comprehensive demo scripts + presentation guides  
+
+### Unique Government Capabilities
+🏛️ **Policy Impact Tracking** - Quantify policy effectiveness in real-time  
+🤝 **Inter-Agency Workflows** - Break down silos with shared intelligence  
+👥 **Citizen Journey Analytics** - End-to-end service delivery tracking  
+🌐 **Web Intelligence** - Automated policy research from external sources  
+🔒 **Secure Collaboration** - Presigned URLs for inter-agency file sharing  
+💰 **Cost-per-Service Analytics** - Government efficiency metrics  
 
 ### Target Audience Impact
-- **Government Leadership:** Cross-agency collaboration and policy effectiveness
-- **Privacy Officers:** Automated compliance monitoring and risk prevention  
-- **Innovation Leaders:** Data-driven service optimization and citizen experience
-- **Healthcare/Education:** Accessibility compliance and inclusive design
+- **Government Leadership:** Cross-agency collaboration and policy effectiveness with ROI tracking
+- **Privacy Officers:** Automated compliance monitoring and risk prevention with audit trails
+- **Innovation Leaders:** Data-driven service optimization and citizen experience with journey analytics
+- **Healthcare/Education:** Accessibility compliance and inclusive design with outcome measurement
+- **Smart Nation Office:** External intelligence integration and competitive benchmarking
 
 ---
 
