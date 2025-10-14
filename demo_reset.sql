@@ -39,24 +39,29 @@ SELECT 'Step 1: Please manually remove any Snowflake Intelligence agents from th
 -- Drop Cortex Search Services
 DROP CORTEX SEARCH SERVICE IF EXISTS SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.SNOWFLAKE_GOV_KNOWLEDGE_SERVICE;
 
--- Drop Semantic Models (if created)
-DROP SEMANTIC MODEL IF EXISTS SNOWFLAKE_PUBSEC_DEMO.SEMANTIC_MODELS.CITIZEN_SERVICES_MODEL;
-DROP SEMANTIC MODEL IF EXISTS SNOWFLAKE_PUBSEC_DEMO.SEMANTIC_MODELS.POLICY_IMPACT_MODEL;
-DROP SEMANTIC MODEL IF EXISTS SNOWFLAKE_PUBSEC_DEMO.SEMANTIC_MODELS.SERVICE_PERFORMANCE_MODEL;
-DROP SEMANTIC MODEL IF EXISTS SNOWFLAKE_PUBSEC_DEMO.SEMANTIC_MODELS.WEATHER_SERVICE_CORRELATION_MODEL;
+-- Note: Semantic models are YAML files in stages, not database objects
+-- They will be removed when the stage is dropped in Section 7
+-- If you need to remove them manually, use: REMOVE @SNOWFLAKE_PUBSEC_DEMO.SEMANTIC_MODELS.ANALYST_STAGE
 
-SELECT 'Phase 1: Cortex services removed' as RESET_PHASE;
+SELECT 'Phase 1: Cortex Search service removed' as RESET_PHASE;
 
 -- ============================================================================
 -- SECTION 4: REMOVE STORED PROCEDURES
 -- ============================================================================
 
 -- Drop custom stored procedures
+DROP PROCEDURE IF EXISTS SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.SEND_EMAIL(STRING, STRING, TEXT);
 DROP PROCEDURE IF EXISTS SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.GENERATE_POLICY_BRIEF(STRING, STRING);
 DROP PROCEDURE IF EXISTS SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.SEND_SERVICE_ALERT(STRING, STRING, STRING);
 DROP PROCEDURE IF EXISTS SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.OPTIMIZE_RESOURCES(STRING, STRING);
+DROP PROCEDURE IF EXISTS SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.ANALYZE_POLICY_WEBSITE(STRING);
+DROP PROCEDURE IF EXISTS SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.SHARE_DOCUMENT(STRING, STRING, NUMBER);
 
-SELECT 'Phase 2: Stored procedures removed' as RESET_PHASE;
+-- Drop custom functions
+DROP FUNCTION IF EXISTS SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.WEB_SCRAPE(STRING);
+DROP FUNCTION IF EXISTS SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.GET_FILE_PRESIGNED_URL(STRING, NUMBER);
+
+SELECT 'Phase 2: Stored procedures and functions removed' as RESET_PHASE;
 
 -- ============================================================================
 -- SECTION 5: REMOVE VIEWS
@@ -88,6 +93,8 @@ DROP TABLE IF EXISTS SNOWFLAKE_PUBSEC_DEMO.CITIZEN_DATA.CITIZEN_PROFILES;
 -- Drop service tables
 DROP TABLE IF EXISTS SNOWFLAKE_PUBSEC_DEMO.SERVICES.SERVICE_INTERACTIONS;
 DROP TABLE IF EXISTS SNOWFLAKE_PUBSEC_DEMO.SERVICES.INTER_AGENCY_WORKFLOWS;
+DROP TABLE IF EXISTS SNOWFLAKE_PUBSEC_DEMO.SERVICES.CITIZEN_PORTAL_INTERACTIONS;
+DROP TABLE IF EXISTS SNOWFLAKE_PUBSEC_DEMO.SERVICES.SERVICE_FULFILLMENT;
 
 -- Drop analytics tables
 DROP TABLE IF EXISTS SNOWFLAKE_PUBSEC_DEMO.ANALYTICS.SERVICE_PERFORMANCE;
@@ -102,6 +109,8 @@ DROP TABLE IF EXISTS SNOWFLAKE_PUBSEC_DEMO.EXTERNAL_DATA.HEALTH_TRENDS;
 
 -- Drop intelligence tables
 DROP TABLE IF EXISTS SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.GOVERNMENT_KNOWLEDGE;
+DROP TABLE IF EXISTS SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.EMAIL_LOG;
+DROP TABLE IF EXISTS SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.WEB_SCRAPE_LOG;
 
 SELECT 'Phase 4: All tables and data removed' as RESET_PHASE;
 
@@ -116,7 +125,25 @@ DROP FILE FORMAT IF EXISTS SNOWFLAKE_PUBSEC_DEMO.SEMANTIC_MODELS.YAML_FORMAT;
 SELECT 'Phase 5: Stages and file formats removed' as RESET_PHASE;
 
 -- ============================================================================
--- SECTION 8: REMOVE SCHEMAS
+-- SECTION 8: REMOVE EXTERNAL ACCESS INTEGRATIONS
+-- ============================================================================
+
+-- Switch to ACCOUNTADMIN for integration cleanup
+USE ROLE ACCOUNTADMIN;
+
+-- Drop external access integration for web scraping
+DROP EXTERNAL ACCESS INTEGRATION IF EXISTS SNOWFLAKE_PUBSEC_DEMO_WEB_INTEGRATION;
+
+-- Drop network rule
+DROP NETWORK RULE IF EXISTS SNOWFLAKE_PUBSEC_DEMO_WEB_ACCESS;
+
+SELECT 'Phase 6: External access integrations removed' as RESET_PHASE;
+
+-- Switch back to intelligence admin role
+USE ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
+
+-- ============================================================================
+-- SECTION 9: REMOVE SCHEMAS
 -- ============================================================================
 
 -- Drop all demo schemas
@@ -127,10 +154,10 @@ DROP SCHEMA IF EXISTS SNOWFLAKE_PUBSEC_DEMO.SERVICES;
 DROP SCHEMA IF EXISTS SNOWFLAKE_PUBSEC_DEMO.CITIZEN_DATA;
 DROP SCHEMA IF EXISTS SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE;
 
-SELECT 'Phase 6: Demo schemas removed' as RESET_PHASE;
+SELECT 'Phase 7: Demo schemas removed' as RESET_PHASE;
 
 -- ============================================================================
--- SECTION 9: REMOVE DATABASE AND WAREHOUSE
+-- SECTION 10: REMOVE DATABASE AND WAREHOUSE
 -- ============================================================================
 
 -- Drop the demo database
@@ -139,10 +166,10 @@ DROP DATABASE IF EXISTS SNOWFLAKE_PUBSEC_DEMO;
 -- Drop the demo warehouse
 DROP WAREHOUSE IF EXISTS SNOWFLAKE_DEMO_WH;
 
-SELECT 'Phase 7: Demo database and warehouse removed' as RESET_PHASE;
+SELECT 'Phase 8: Demo database and warehouse removed' as RESET_PHASE;
 
 -- ============================================================================
--- SECTION 10: CLEAN UP ROLES AND PERMISSIONS
+-- SECTION 11: CLEAN UP ROLES AND PERMISSIONS
 -- ============================================================================
 
 -- Switch back to ACCOUNTADMIN for role cleanup
@@ -158,10 +185,10 @@ USE ROLE ACCOUNTADMIN;
 -- DROP SCHEMA IF EXISTS snowflake_intelligence.agents;
 -- DROP DATABASE IF EXISTS snowflake_intelligence;
 
-SELECT 'Phase 8: Role cleanup completed (role preserved for future use)' as RESET_PHASE;
+SELECT 'Phase 9: Role cleanup completed (role preserved for future use)' as RESET_PHASE;
 
 -- ============================================================================
--- SECTION 11: RESET CONFIRMATION
+-- SECTION 12: RESET CONFIRMATION
 -- ============================================================================
 
 -- Final verification
