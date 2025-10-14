@@ -115,10 +115,10 @@ Follow these sections in order:
 - **Database:** `SNOWFLAKE_PUBSEC_DEMO`
 - **Schema:** `INTELLIGENCE`
 - **Identifier:** `GENERATE_POLICY_BRIEF(STRING, STRING)`
+- **Description:** Generate and email executive policy briefings to government officials
 - **Parameters:**
   - `policy_name` (STRING): Name of the policy or topic for the brief
   - `recipient_email` (STRING): Email address to send the brief
-- **Description:** Generate and email executive policy briefings to government officials
 
 #### Tool 8: Service Alert System
 - **Tool Name:** `Send_Service_Alert`
@@ -126,11 +126,11 @@ Follow these sections in order:
 - **Database:** `SNOWFLAKE_PUBSEC_DEMO`
 - **Schema:** `INTELLIGENCE`
 - **Identifier:** `SEND_SERVICE_ALERT(STRING, STRING, STRING)`
+- **Description:** Send alerts to relevant government agencies about service issues or updates
 - **Parameters:**
   - `alert_message` (STRING): The alert message content
   - `severity` (STRING): Alert severity level (LOW, MEDIUM, HIGH, CRITICAL)
   - `target_agencies` (STRING): Comma-separated list of agencies to notify
-- **Description:** Send alerts to relevant government agencies about service issues or updates
 
 #### Tool 9: Resource Optimizer
 - **Tool Name:** `Optimize_Resources`
@@ -138,10 +138,10 @@ Follow these sections in order:
 - **Database:** `SNOWFLAKE_PUBSEC_DEMO`
 - **Schema:** `INTELLIGENCE`
 - **Identifier:** `OPTIMIZE_RESOURCES(STRING, STRING)`
+- **Description:** Analyze service patterns and recommend resource allocation optimizations
 - **Parameters:**
   - `service_type` (STRING): Type of service to optimize
   - `time_period` (STRING): Time period for optimization (NEXT_WEEK, NEXT_MONTH)
-- **Description:** Analyze service patterns and recommend resource allocation optimizations
 
 #### Tool 10: Web Scraping (Advanced)
 - **Tool Name:** `Analyze_Policy_Website`
@@ -149,9 +149,9 @@ Follow these sections in order:
 - **Database:** `SNOWFLAKE_PUBSEC_DEMO`
 - **Schema:** `INTELLIGENCE`
 - **Identifier:** `ANALYZE_POLICY_WEBSITE(STRING)`
+- **Description:** Scrape and analyze external policy websites for competitive intelligence and benchmarking
 - **Parameters:**
   - `website_url` (STRING): URL of the policy website to analyze
-- **Description:** Scrape and analyze external policy websites for competitive intelligence and benchmarking
 
 #### Tool 11: Document Sharing (Advanced)
 - **Tool Name:** `Share_Document`
@@ -159,11 +159,11 @@ Follow these sections in order:
 - **Database:** `SNOWFLAKE_PUBSEC_DEMO`
 - **Schema:** `INTELLIGENCE`
 - **Identifier:** `SHARE_DOCUMENT(STRING, STRING, NUMBER)`
+- **Description:** Generate secure presigned URLs for inter-agency document sharing with time-limited access
 - **Parameters:**
   - `document_name` (STRING): Name of the document to share
   - `recipient_email` (STRING): Email address of recipient
   - `expiry_hours` (NUMBER): Hours until access expires (default: 48)
-- **Description:** Generate secure presigned URLs for inter-agency document sharing with time-limited access
 
 ---
 
