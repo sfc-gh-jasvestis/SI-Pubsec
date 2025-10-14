@@ -21,6 +21,9 @@
 -- Switch to ACCOUNTADMIN role for initial setup
 USE ROLE ACCOUNTADMIN;
 
+-- Set session timezone to Singapore time for accurate timestamps
+ALTER SESSION SET TIMEZONE = 'Asia/Singapore';
+
 -- Create the standard Snowflake Intelligence database (as per documentation)
 CREATE DATABASE IF NOT EXISTS snowflake_intelligence
     COMMENT = 'Snowflake Intelligence configuration and agents';
