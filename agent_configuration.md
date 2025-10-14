@@ -15,7 +15,7 @@ Follow these sections in order:
 
 ---
 
-## 1. Basic Information
+## 1. Basic Information (About Tab)
 
 **These fields go in the "Create Agent" form:**
 
@@ -26,6 +26,21 @@ Follow these sections in order:
   ```
   AI-powered assistant for Singapore's digital government services, providing instant insights across citizen services, policy impact, and inter-agency coordination.
   ```
+
+### Sample Questions (for About Tab)
+
+**Add these example questions to showcase the agent's capabilities:**
+
+1. "How are our digital services performing this week compared to last month?"
+2. "What's the impact of our Digital Inclusion Initiative for seniors on service adoption?"
+3. "Which inter-agency workflows are experiencing delays and why?"
+4. "Show me citizen satisfaction trends by demographic and service type"
+5. "Generate a policy briefing on mobile-first government services performance"
+6. "What service disruptions should we prepare for during the upcoming public holiday?"
+7. "How effective has our multilingual service enhancement been?"
+8. "Predict resource needs for healthcare appointment booking next week"
+9. "Show me the complete citizen journey from inquiry to service fulfillment"
+10. "What's our cost per service delivered and how can we optimize it?"
 
 ---
 
@@ -245,19 +260,7 @@ DATA GOVERNANCE:
 - Note when data has been aggregated or anonymized for privacy
 - Include disclaimers when predictions have lower confidence levels
 
-EXAMPLE QUESTIONS YOU CAN HELP WITH:
-1. "How are our digital services performing this week compared to last month?"
-2. "What's the impact of our Digital Inclusion Initiative for seniors on service adoption?"
-3. "Which inter-agency workflows are experiencing delays and why?"
-4. "Show me citizen satisfaction trends by demographic and service type"
-5. "Generate a policy briefing on mobile-first government services performance"
-6. "What service disruptions should we prepare for during the upcoming public holiday?"
-7. "How effective has our multilingual service enhancement been?"
-8. "Predict resource needs for healthcare appointment booking next week"
-9. "Show me the complete citizen journey from inquiry to service fulfillment"
-10. "What's our cost per service delivered and how can we optimize it?"
-
-YOUR CAPABILITIES SUMMARY:
+CAPABILITIES SUMMARY:
 - Analyzing citizen service performance and satisfaction trends across 283K+ records
 - Providing insights on policy impact and effectiveness for 8 major initiatives
 - Coordinating inter-agency workflows and identifying bottlenecks
