@@ -119,7 +119,6 @@ Follow these sections in order:
   - `policy_name` (STRING): Name of the policy or topic for the brief
   - `recipient_email` (STRING): Email address to send the brief
 - **Description:** Generate and email executive policy briefings to government officials
-- **Warehouse:** `SNOWFLAKE_DEMO_WH`
 
 #### Tool 8: Service Alert System
 - **Tool Name:** `Send_Service_Alert`
@@ -132,7 +131,6 @@ Follow these sections in order:
   - `severity` (STRING): Alert severity level (LOW, MEDIUM, HIGH, CRITICAL)
   - `target_agencies` (STRING): Comma-separated list of agencies to notify
 - **Description:** Send alerts to relevant government agencies about service issues or updates
-- **Warehouse:** `SNOWFLAKE_DEMO_WH`
 
 #### Tool 9: Resource Optimizer
 - **Tool Name:** `Optimize_Resources`
@@ -144,7 +142,6 @@ Follow these sections in order:
   - `service_type` (STRING): Type of service to optimize
   - `time_period` (STRING): Time period for optimization (NEXT_WEEK, NEXT_MONTH)
 - **Description:** Analyze service patterns and recommend resource allocation optimizations
-- **Warehouse:** `SNOWFLAKE_DEMO_WH`
 
 #### Tool 10: Web Scraping (Advanced)
 - **Tool Name:** `Analyze_Policy_Website`
@@ -155,7 +152,6 @@ Follow these sections in order:
 - **Parameters:**
   - `website_url` (STRING): URL of the policy website to analyze
 - **Description:** Scrape and analyze external policy websites for competitive intelligence and benchmarking
-- **Warehouse:** `SNOWFLAKE_DEMO_WH`
 
 #### Tool 11: Document Sharing (Advanced)
 - **Tool Name:** `Share_Document`
@@ -168,7 +164,6 @@ Follow these sections in order:
   - `recipient_email` (STRING): Email address of recipient
   - `expiry_hours` (NUMBER): Hours until access expires (default: 48)
 - **Description:** Generate secure presigned URLs for inter-agency document sharing with time-limited access
-- **Warehouse:** `SNOWFLAKE_DEMO_WH`
 
 ---
 
