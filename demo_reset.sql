@@ -118,11 +118,10 @@ SELECT 'Phase 4: All tables and data removed' as RESET_PHASE;
 -- SECTION 7: REMOVE STAGES AND FILE FORMATS
 -- ============================================================================
 
--- Drop semantic model stage and file formats
+-- Drop semantic model stage (no file format needed for YAML files)
 DROP STAGE IF EXISTS SNOWFLAKE_PUBSEC_DEMO.SEMANTIC_MODELS.ANALYST_STAGE;
-DROP FILE FORMAT IF EXISTS SNOWFLAKE_PUBSEC_DEMO.SEMANTIC_MODELS.YAML_FORMAT;
 
-SELECT 'Phase 5: Stages and file formats removed' as RESET_PHASE;
+SELECT 'Phase 5: Stage removed' as RESET_PHASE;
 
 -- ============================================================================
 -- SECTION 8: REMOVE EXTERNAL ACCESS INTEGRATIONS
