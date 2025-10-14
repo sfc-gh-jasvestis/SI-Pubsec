@@ -1375,6 +1375,23 @@ CREATE OR REPLACE EXTERNAL ACCESS INTEGRATION SNOWFLAKE_PUBSEC_DEMO_WEB_INTEGRAT
 
 GRANT USAGE ON INTEGRATION SNOWFLAKE_PUBSEC_DEMO_WEB_INTEGRATION TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
 
+-- Create stage for semantic model files (needed for presigned URL function)
+CREATE STAGE IF NOT EXISTS SNOWFLAKE_PUBSEC_DEMO.SEMANTIC_MODELS.ANALYST_STAGE
+    COMMENT = 'Stage for Cortex Analyst semantic model YAML files and shared documents';
+
+-- Create file format for YAML files
+CREATE OR REPLACE FILE FORMAT SNOWFLAKE_PUBSEC_DEMO.SEMANTIC_MODELS.YAML_FORMAT
+    TYPE = 'CSV'
+    FIELD_DELIMITER = NONE
+    RECORD_DELIMITER = NONE
+    SKIP_HEADER = 0
+    FIELD_OPTIONALLY_ENCLOSED_BY = NONE
+    ESCAPE_UNENCLOSED_FIELD = NONE
+    COMMENT = 'File format for YAML semantic model files';
+
+GRANT READ ON STAGE SNOWFLAKE_PUBSEC_DEMO.SEMANTIC_MODELS.ANALYST_STAGE TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
+GRANT WRITE ON STAGE SNOWFLAKE_PUBSEC_DEMO.SEMANTIC_MODELS.ANALYST_STAGE TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
+
 USE ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
 USE DATABASE SNOWFLAKE_PUBSEC_DEMO;
 USE SCHEMA INTELLIGENCE;
@@ -1732,25 +1749,13 @@ SELECT 'Phase 7: Cortex Search service created' as SETUP_PHASE;
 -- SECTION 8: SEMANTIC MODEL INFRASTRUCTURE
 -- ============================================================================
 
--- Create stage for semantic model files
-CREATE STAGE IF NOT EXISTS SNOWFLAKE_PUBSEC_DEMO.SEMANTIC_MODELS.ANALYST_STAGE
-    COMMENT = 'Stage for Cortex Analyst semantic model YAML files';
+-- Note: Stage and file format already created in Section 6B (before advanced functions)
+-- This ensures the stage exists when GET_FILE_PRESIGNED_URL function is created
 
--- Create file format for YAML files
-CREATE OR REPLACE FILE FORMAT SNOWFLAKE_PUBSEC_DEMO.SEMANTIC_MODELS.YAML_FORMAT
-    TYPE = 'CSV'
-    FIELD_DELIMITER = NONE
-    RECORD_DELIMITER = NONE
-    SKIP_HEADER = 0
-    FIELD_OPTIONALLY_ENCLOSED_BY = NONE
-    ESCAPE_UNENCLOSED_FIELD = NONE
-    COMMENT = 'File format for YAML semantic model files';
-
--- Grant necessary privileges for Cortex Analyst
+-- Grant necessary privileges for Cortex Analyst (if not already granted)
 GRANT USAGE ON SCHEMA SNOWFLAKE_PUBSEC_DEMO.SEMANTIC_MODELS TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
-GRANT READ ON STAGE SNOWFLAKE_PUBSEC_DEMO.SEMANTIC_MODELS.ANALYST_STAGE TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
 
-SELECT 'Phase 8: Semantic model infrastructure created' as SETUP_PHASE;
+SELECT 'Phase 8: Semantic model infrastructure ready (stage created in Section 6B)' as SETUP_PHASE;
 
 -- ============================================================================
 -- SECTION 9: FINAL SUMMARY AND VERIFICATION
