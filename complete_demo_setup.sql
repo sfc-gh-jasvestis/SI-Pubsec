@@ -1379,9 +1379,6 @@ GRANT USAGE ON INTEGRATION SNOWFLAKE_PUBSEC_DEMO_WEB_INTEGRATION TO ROLE SNOWFLA
 CREATE STAGE IF NOT EXISTS SNOWFLAKE_PUBSEC_DEMO.SEMANTIC_MODELS.ANALYST_STAGE
     COMMENT = 'Stage for Cortex Analyst semantic model YAML files and shared documents';
 
--- Note: No file format needed for YAML files - they are uploaded directly via PUT commands
--- Cortex Analyst reads YAML files directly from the stage without requiring a file format
-
 GRANT READ ON STAGE SNOWFLAKE_PUBSEC_DEMO.SEMANTIC_MODELS.ANALYST_STAGE TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
 GRANT WRITE ON STAGE SNOWFLAKE_PUBSEC_DEMO.SEMANTIC_MODELS.ANALYST_STAGE TO ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;
 
@@ -1462,20 +1459,39 @@ def scrape_url(url):
 $$;
 
 -- Create presigned URL function for secure file sharing
+-- Note: Using Python wrapper because GET_PRESIGNED_URL requires constant expiry time
 CREATE OR REPLACE FUNCTION SNOWFLAKE_PUBSEC_DEMO.INTELLIGENCE.GET_FILE_PRESIGNED_URL(
     file_path STRING,
-    expiry_hours NUMBER DEFAULT 24
+    expiry_hours NUMBER
 )
 RETURNS STRING
-LANGUAGE SQL
+LANGUAGE PYTHON
+RUNTIME_VERSION = '3.10'
+HANDLER = 'get_url'
 AS
 $$
-    SELECT 
-        GET_PRESIGNED_URL(
+def get_url(file_path, expiry_hours):
+    import _snowflake
+    
+    # Calculate expiry in seconds
+    expiry_seconds = int(expiry_hours * 3600)
+    
+    # Call the system function with calculated value
+    query = f"""
+        SELECT GET_PRESIGNED_URL(
             @SNOWFLAKE_PUBSEC_DEMO.SEMANTIC_MODELS.ANALYST_STAGE,
-            file_path,
-            expiry_hours * 3600
+            '{file_path}',
+            {expiry_seconds}
         )
+    """
+    
+    session = _snowflake.get_active_session()
+    result = session.sql(query).collect()
+    
+    if result and len(result) > 0:
+        return result[0][0]
+    else:
+        return None
 $$;
 
 -- Create procedure to analyze policy websites
