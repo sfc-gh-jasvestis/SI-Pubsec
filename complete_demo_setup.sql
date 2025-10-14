@@ -1200,15 +1200,18 @@ BEGIN
         'SENT'
     );
     
-    LET v_result STRING := 'Email sent successfully. ID: ' || :v_email_id || ' to ' || RECIPIENT_EMAIL;
-    
-    -- In production environment, uncomment and configure:
+    -- Send actual email using Snowflake notification integration
+    -- Uncomment this after creating SNOWFLAKE_EMAIL_INTEGRATION:
     -- CALL SYSTEM$SEND_EMAIL(
-    --     'your_notification_integration_name',
-    --     RECIPIENT_EMAIL,
-    --     SUBJECT,
-    --     BODY
+    --     OBJECT_CONSTRUCT(
+    --         'integration_name', 'SNOWFLAKE_EMAIL_INTEGRATION',
+    --         'recipients', ARRAY_CONSTRUCT(RECIPIENT_EMAIL),
+    --         'subject', SUBJECT,
+    --         'body', BODY
+    --     )
     -- );
+    
+    LET v_result STRING := 'Email logged successfully. ID: ' || :v_email_id || ' to ' || RECIPIENT_EMAIL || ' (Note: Actual email sending is disabled in demo mode. Uncomment SYSTEM$SEND_EMAIL to enable.)';
     
     RETURN :v_result;
 END;
