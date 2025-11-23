@@ -173,4 +173,4 @@ Live interaction with 9 total query options for maximum flexibility
 
 ---
 
-**🇸🇬 Ready to showcase Singapore's digital leadership through responsible AI at Public Sector Day Singapore 2025! 🚀**
+**🇸🇬 Ready to showcase Singapore's digital leadership through responsible AI at Public Sector Day Singapore 2025! (https://govinsider.asia/intl-en/public-sector/public-sector-day-singapore-1) 🚀**
