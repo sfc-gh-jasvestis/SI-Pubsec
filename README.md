@@ -174,3 +174,11 @@ Live interaction with 9 total query options for maximum flexibility
 ---
 
 **🇸🇬 Ready to showcase Singapore's digital leadership through responsible AI at Public Sector Day Singapore 2025! (https://govinsider.asia/intl-en/public-sector/public-sector-day-singapore-1) 🚀**
+
+---
+
+## Legal
+
+Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE).
+
+This is a personal project and is **not an official Snowflake offering**. It comes with **no support or warranty**. Use it at your own risk. Snowflake has no obligation to maintain, update, or support this code. Do not use this code in production without thorough review and testing.
